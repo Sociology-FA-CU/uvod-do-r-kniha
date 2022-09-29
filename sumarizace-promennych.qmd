@@ -1,0 +1,38 @@
+# Sumarizace proměnných
+
+```{r data-packages}
+#| echo: false
+#| message: false
+
+library(tidyverse)
+countries <- read_csv("data-raw/countries.csv")
+```
+
+Sumarizace proměnncých je prováděně velmi podobně jako jejich transformace, slouží k ní ale funkce `summarise()`. Pokud jste si již osvojili funkci `mutate()` z předchozí kapitoly, budete i zde jako doma.
+
+## Jednoduchá sumarizace
+
+Jak již bylo zmíněno, základní aplikace `summarise()` je velmi podobná transformaci proměnných. Výpočet průměru a směrodatné odchylky průměrné naděje na dožití je tedy jednodochý. V rámci `summarise()` je možné aplikovat nejen klasické funkce jako jsou `mean()` nebo `sd()`, ale i základní matematické operace. Stejně tak je možné i používat i funkce vnořené. Toho využijme pro výpočet průměrné absolutní odchylky (*mean absolute deviation*), alternativy ke směrodatné odchylce:
+
+```{r summarise-simple}
+countries %>% 
+  summarise(mean = mean(life_exp, na.rm = TRUE),
+            sd   = sd(life_exp, na.rm = TRUE),
+            mae  = mean(abs(life_exp - mean(life_exp, na.rm = TRUE)), na.rm = TRUE))
+```
+
+Průměrná naděje na dožití v našem datasetu je 79.6 let, se směrodatnou odchylkou 2.8 roku a průměrnou absolutní odchylkou 2.6 roku. Protože naději na dožití některých zemí neznáme, je nutné využít `na.rm = TRUE` pro odstranění chybějících hodnot (viz @sec-fn-arguments).
+
+## Sumarizace po skupinách
+
+Funkci `summarise()` lze jako mnoho již představených kombinovat s funkcí `group_by()` pro skupinovou analýzu. Pro získání průměru, směrodatné odchylky a průměrné absolutní odchylky naděje na dožití postsovětských a západních zemí:
+
+```{r summarise-groupby}
+countries %>% 
+  group_by(postsoviet) %>% 
+  summarise(mean = mean(life_exp, na.rm = TRUE),
+            sd   = sd(life_exp, na.rm = TRUE),
+            mae  = mean(abs(life_exp - mean(life_exp, na.rm = TRUE)), na.rm = TRUE))
+```
+
+Postsovětské země mají v průměru nižší naději na dožití, než ty západní, jsou ale také mezi nimi větší rozdíly, což je možné vidět jak na základě směrodatné, tak absolutní odchylky.

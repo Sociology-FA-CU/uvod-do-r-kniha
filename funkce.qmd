@@ -1,0 +1,297 @@
+# Funkce {#sec-factors-chapter}
+
+Jedním z centrálních typů objektů, o kterém jsme zatím nemluvili, jsou funkce. Funkce jsou objekty které nám umožňují manipulovat jinými objekty. Poznat funkci je jednoduché, protože jméno každé z nich je následované závorky `()`. V předchozích kapitolách jsme již funkce dokonce používali, ať už se jednalo o `c()`, `data.frame()` nebo `install.packages()`. Teď se na ně konečně podíváme pořádně.
+
+## Používání funkcí
+
+Používat funkce je jednoduché. Každá funkce obsahuje argumenty, pomocí kterých funkci upřesňujete, co přesně má vykonat. Tyto argumenty si píší právě do závorek za jménem funkce. Funkce, kterou jsme viděli opakovaně, je například naše staré dobré `c()`:
+
+```{r function-simple-example1}
+name <- c("Fred", "Daphne", "Velma", "Shaggy", "Scooby")
+```
+
+V tomto případě jsme použili funkci `c()` pro vytvoření nového vektoru. Této funkci jsme zadali pět argumentů, definující z jakých elementů se má nový vektor skládat. Obdobně bychom na náš nový objekt `name` mohli použít funkci `print()`:
+
+```{r function-simple-example2}
+print(name)
+```
+
+V tomto případě jsme funkci `print()` specifikovali pouze jeden argument, a to který objekt má vytisknout do konzole.
+
+::: callout-warning
+## Ukládejte si své výsledky!
+
+Častým zdrojem zmatení u nových uživatelů bývá, že R zdánlivě dělá co mu říkají, ale výsledky nikdy neukládá! Toto nedorozumění je nejsnažnější vysvětlit na praktickém příkladu.
+
+Co kdybychom chtěli zaokrouhlit čísla v následujícím vektor?
+
+```{r saving-vector}
+age <- c(16.45, 16.52, 15.9, 17.1, 3.234)
+```
+
+Zaokrouhlení čísel je jednoduchá záležitost, pro kterou můžeme využít funkci `round()`:
+
+```{r saving-bad}
+round(age)
+```
+
+A je zaokrouhleno. Nebo ne? Pokud se podíváme na vektor `age`, zjistíme že pořád obsahuje původní čísla:
+
+```{r saving-bad-print}
+age
+```
+
+Proč si R odmítá zapamatovat, že jsme čísla zaokrouhlili? Protože jsme mu neřekli, že má výsledek funkce `round()` uložit do paměti. Vektor se zaokrouhlenými čísly je objekt jako každý jiný a pokud ho chceme využívat v budoucnu, musíme mu přiřadit jméno. Pokud nám nevadí přijít o původní nezaokrouhlená jména, můžeme klidně použít jméno původního vektoru:
+
+```{r saving-good}
+age <- round(age)
+age
+```
+:::
+
+## Argumenty funkcí {#sec-fn-arguments}
+
+Jak jsme zmínili, každá funkce má argumenty, které ovlivňují její fungování. V předchozích příkladech sloužili argumenty primárně pro určení toho, se kterými daty má funkce pracovat. Většina argumentů ale upravuje primárně to, *co* má funkce s daty dělat. Pro ukázku si vytvořme nový vektor:
+
+```{r arguments-vector}
+age <- c(16, 16, 17, 15, NA)
+```
+
+Jedná se o numerický vektor, jehož poslední hodnota je neznámá (`NA`). Co kdybychom chtěli spočítat průměr těchto hodnot? K tomu poslouží funkce `mean()`, pokud bychom ji ale aplikovali na náš vektor, narazili bychom na problém:
+
+```{r arguments-example}
+mean(age)
+```
+
+R nám říká, že průměr těchto čísel je `NA`, tedy neznámý. Proč? Narážíme tu na jistou pedantnost typickou pro R. R nám svým způsobem říká *"Alespoň jedno z čísel v tomto vektoru je neznámé a může teoreticky nabývat jakékoliv hodnoty. Proto i výsledný průměr může nabývat jakékoliv hodnoty, a je tedy sám neznámý"*. V tom má R jistě pravdu. Co kdybychom se ale spokojili s tím, že budeme neznámé hodnoty ignorovat a spočítat průměr jen pro známá čísla? Přesně k tomu má funkce `mean()` argument `na.rm` (*remove NAs*). Tento argument může nabývat dvou hodnot `TRUE` a `FALSE`. Ve výchozím nastavení je tento argument nastaven na `FALSE`, což mi ale můžeme jednoduše změnit:
+
+```{r arguments-narm}
+mean(age, na.rm = TRUE)
+```
+
+A je to! Pomocí argumentu `na.rm` jsme změnili fungování funkce `mean()` tak, aby ignorovalo neznámé hodnoty.
+
+## Funkce a vnořené objekty {#sec-nested-objects}
+
+V předchozí kapitole jsme si řekli, že většina dat je uchovávaných v dataframech. Jeden takový dataframe můžeme vytvořit pomocí:
+
+```{r nested-data}
+gang <- data.frame(name   = c("Fred", "Daphne", "Velma", "Shaggy", "Scooby"),
+                   age    = c(16, 16, 15, 17, 3),
+                   is_dog = c(FALSE, FALSE, FALSE, FALSE, TRUE))
+```
+
+Co kdybychom chtěli spočítat počet členů členů Scoobyho gangu? Jako první se nabízí možnost:
+
+```{r nested-bad}
+#| eval: false
+
+length(name) # Error: object 'name' not found
+```
+
+To ovšem nebude fungovat, protože R nemůže najít žádný objekt jménem `name`. Tento objekt je totiž vnořený (*nested*) uvnitř jiného objektu, `gang` a R nebude prohledávat všechny existující objekty pokaždé, když mu řekneme, aby aplikovalo některou funkci. Je tedy na nás, abychom R navedli, kde má proměnnou `name` hledat.
+
+Toho lze docílit několik způsoby. Tím prvním je pomocí operátoru `$`. Tímto operátorem můžeme navigovat vnořenými objekty, například jím můžeme vybrat proměnnou `name` v dataframu `gang`:
+
+```{r nested-dollar}
+length(gang$name)
+```
+
+R teď ví, že objekt `name` by mělo hledat unvitř objektu `gang`.
+
+Specifikování vnořených objektu pomocí `$` je asi nejpoužívanější způsob pokud pracujeme s dataframy, není ale jediný. Alternativní způsob představuje indexovaní pomocí hranatých závorek `[]`. Ty lze aplikovat několika způsoby. Prvním z nich je skrze jméno vnořeného objektu:
+
+```{r nested-index-name}
+gang["name"]
+```
+
+Alternativně můžeme využít pořadí řádků a sloupců v objektu. `name` je první proměnnou v dataframu `gang` a můžeme ji tedy vybrat následovně:
+
+```{r nested-index-col}
+gang[, 1]
+```
+
+Všimněte si, že závorky v tomto případě obsahují čárku (`[, 1]`). To proto, že pomocí hranatých závorek můžeme vybírat jak sloupce, tak řádky. Pořadí řádku se z konvence píše na první pozici, sloupce na druhé. Kdybychom se chtěli dozvědět více o Fredovi, mohli bychom použít:
+
+```{r nested-index-row}
+gang[1, ]
+```
+
+::: callout-tip
+## Vylučovací metoda
+
+Indexování je možné využít i pro výběr všech sloupců/řádků kromě zmíněních. Pro vybrání všech sloupců kromě třetího použijeme `gang[, -3]`.
+:::
+
+Oboje možnosti je samozřejmě možné kombinovat. Hodnotu prvního řádku a prvního sloupce bychom získali následovně:
+
+```{r nested-index-both}
+gang[1,1]
+```
+
+Pokud tedy pracujeme s vnořenými objekty, a to budeme téměř neustále, nesmíme R nikdy zapomenout říct, kde má hledat.
+
+::: callout-note
+## \[\[\]\] je více než \[\]
+
+Čas od času se můžete setkat s kódem využívajícím dvojité závorky (`[[]]`), místo jednoduchých (`[]`). Každá z těchto variant má své využití.
+
+Všimněme si, jaký typ objektu vrátí následující kód:
+
+```{r brackets-simple}
+gang["name"]
+```
+
+Jedná se o dataframe, stejně jako byl původní objekt, pouze byly odstraněny všechny sloupce kromě toho se jménem `name`. Co naproti tomu dělá následující kód?
+
+```{r brackets-double}
+gang[["name"]]
+```
+
+Tento kód vrátil stejné hodnoty, ale v jiném formátu. Už se nejedná o (filtrovaný) dataframe, ale o atomický vektor. Rozdíl mezi těmito dvěma způsoby vybírání vnořených objektů je důležitý, protože argumenty funkcí často očekávají data v určitém formátu.
+:::
+
+## Řetězení funkcí {#sec-pipes}
+
+Všechny příklady, které jsme zatím viděli, aplikovali vždy pouze jednu funkci. Asi ovšem tušíte, že v reálné analýze budeme muset na naše data aplikovat mnohem více funkcí, než se dostaneme ke kýženým výsledkům. To s sebou přináší praktický problém. Jak na sebe efektivně řetězit větší počet funkcí tak, aby byl náš kód stále čitelný? V principu existují tři varianty.
+
+První možnost je aplikovat funkci jednu po druhé a ukládat mezivýsledky do nových objektů:
+
+```{r fns-basic}
+#| eval: false
+
+me_awake   <- wake_up(me)
+me_clean   <- wash(me_awake)
+me_fed     <- eat_breakfest(me_clean)
+me_working <- go_to_work(me_fed)
+```
+
+Tento postup je analogický tomu, co jsme dělali dosud. Aplikujeme funkci a její výsledek uložíme do nového objektu. Jedná se o vcelku přehledný postup, nevýhodou ovšem je, že vytváříme velké množství objektu, které zabírají místo a znepřehledňují naše prostředí.
+
+Alternativně je možné na sebe funkce "nabalovat":
+
+```{r fns-wrap}
+#| eval: false
+
+me_working <- go_to_work(eat_breakfest(wash(wake_up(me))))
+```
+
+Tímto se vyhneme vytváření nových objektů, výsledný kód ovšem není příliš čitelný. Hlavním problém je, že pokud chceme vědět, co tento kód dělá, je nutné ho číst od středu. Jako první je aplikovaná funkce v "jádru", tedy `wake_up()`, a poté všechny ostatní směrem k okraji. Funkce `go_to_work()` je aplikovaná jako poslední a to i přesto, že je na řádku jako první.
+
+Poslední, námi preferovanou, metodu je využívání takzvaných *pipes*. Používat budeme *pipes* z balíčku magrittr, který je součástí Tidyverse. Ty vypadají takto: `%>%` a aplikuje se následovně:
+
+```{r fns-pipes}
+#| eval: false
+
+me_working <- me %>% 
+  wake_up() %>% 
+  wash() %>% 
+  eat_breakfest() %>% 
+  go_to_work()
+```
+
+*Pipes* (`%>%`) vezmou objekt nalevo od nich a vloží ho do funkce napravo. První *pipe* tedy vezme objekt `me` a vloží ho do funkce `wake_up()`. Druhá *pipe* vezme výsledek funkce `wake_up()` a vloží ho do funkce `wash()`. Takto celý řetězec pokračuje dále až po funkci `go_to_work()`. Výsledek celého řetězce je uložen do objektu `me_working` tak, jak jsme zvyklý. Protože psát jednotlivé *pipes* ručně by bylo otravné, existuje pro ně v Rstudiu klávesová zkrátka `Shift` + `Ctrl` + `M` (respektive `Shift` + `Command` + `M` na MacOS).
+
+*Pipes* jsou preferovaný způsob řetězení funkcí v Tidyverse a budou využívány ve zbytku této knihy. Jejich hlavní výhodou je, že výsledný kód je dobře čitelný, protože je možné ho číst zleva doprava, tak jak jsme zvyklí u normálního textu. Na druhou stranu, někteří lidé argumentují že takto psaný kód zabírá příliš mnoho místa.
+
+::: callout-note
+## Tidyverse vs základní *pipes*
+
+*Pipes* byly v R dlouhou dobu čistě Tidyverse záležitostí. Od verze 4.1. jsou ale podporovány i základní instalací R a je tedy možné využívat tento způsob řetězení funkcí bez nutnosti instalovat další balíčky. Pipes v základním R vypadají a chovají se trochu odlišně od svých Tidyverse příbuzných. Základní verze pipes vypadá tako: `|>`. Příklad s řetězením funkcí by tedy vypadal následovně:
+
+```{r pipes-base}
+#| eval: false
+
+me_working <- me |> 
+  wake_up() |> 
+  wash() |>
+  eat_breakfest() |> 
+  go_to_work()
+```
+
+Kromě odlišného vzhledu se také obě verze chovají trochu jinak. Hlavním rozdílem je, že používají jiný *"placeholder"* pro specifikaci argumentů. Obě verze ve výchozím nastavení vloží objekt na jejich levé straně do prvního argumentu funkce napravo. Pokud bychom chtěli vložit objekt do jiného než prvního argumentu, je nutné využít právě *placeholder.* Tidyverse pipe používá jako placeholder tečku. Například, pokud bychom chtěli vložit objekt `iris` do argumentu `data`, který je na druhém místě funkce `lm()`:
+
+```{r placeholder-tidy}
+#| eval: false
+
+iris %>% lm(Sepal.Width ~ Species, data = .)
+```
+
+Naproti tomu základní *pipe* využívá jako placeholder podtržítko:
+
+```{r placeholder-base}
+#| eval: false
+
+iris |> lm(Sepal.Width ~ Species, data = _)
+```
+
+Kromě placeholderů se obě verze *pipes* liší i interním fungováním. Ve zkratce řečeno, tidyverse *pipe* je flexibilnější a umí více věcí, základní *pipe* je zhruba dvakrát až třikrát rychlejší.
+
+Pokud byste si chtěli základní verzi *pipe* vyzkoušet, můžete upravit klávesovou zkratku `Shift` + `Ctrl` + `M` tak, že půjdete do *Tools* -\> *Global Options* -\> *Code* -\> *Use native pipe operator.*
+:::
+
+## Dokumentace funkcí
+
+Po všem tom povídání si teď možná říkate, jak si má člověk zapamatovat, co která funkce dělá, nemluvě o tom, jaké má argumenty. Naštěstí pro nás si toho moc nazpaměť pamatovat nemusíme, protože každá funkce má svou vlastní dokumentaci. Ta obsahuje popis funkce, výčet všech jejich argumentů, detaily o jejím fungování a příklady použití. Dokumentaci pro vybranou funkci můžeme zobrazit pomocí funkce `help()`, případně `?`:
+
+```{r help-example}
+#| eval: false
+
+help(mean)
+?mean
+```
+
+Obě výše zmíněné funkce mají stejný výsledek, a to otevření dokumentace pro funkci `mean()`. Dokumentace všech funkcí má stejnou strukturu, složenou z následujících součástí.
+
+První sekcí je *Description*, která obsahuje krátký popis funkce, v tomto případě vysvětlení, že funkce `mean()` počítá aritmetický průměr.
+
+V sekci *Usage* je k vidění výchozí nastavení funkce, vidíme například, že argument `trim` má výchozí hodnotu 0 a argument `na.rm` je nastavený na FALSE.
+
+Sekce *Arguments* nepřekvapivě popisuje jednotlivé argumenty, k čemu slouží a jakých hodnot mohou nabývat.
+
+Následuje sekce *Value*, která popisuje výsledek dané funkce, tedy co dostaname, pokud funkci aplikujeme.
+
+Občas přítomná je také sekce *Details,* která poskytuje další detaily o fungování funkce. Tato sekce se objevuje hlavně u funkcí pro výpočet statistických modelů a podobně komplikovanějších funkcí.
+
+*References* je klasickým seznamem literatury. Najdeme zde všechny texty citované v dokumentaci a odkazy na další užitečné práce.
+
+*See Also* je seznamem příbuzných funkcí, které by uživatele mohli zajímat. Vidíme například, že je nám doporučena funkce `weighted.mean()` pro výpočet váženého průměru.
+
+*Examples* je poslední sekcí dokumentace, která obsahuje ukázky použití funkce v praxi.
+
+## Vytváření vlastních funkcí
+
+Jedním z největších předností R je, že se při naší práci nemusíme spoléhat pouze na funkce, které pro nás připravili jiné lidé, ale můžeme si vytvořit funkce na míru naším potřebám. Vytvoření nové funkce je velmi jednoduché, pomocí funkce `function`.
+
+Funkci, kterou základní instalace R překvapivě postrádá, je výpočet počtu chybějících hodnot v proměnné. Ne, že by se jednalo o obtížný úkol. Lze k tomu využít kombinaci dvou funkcí, `is.na()` a `sum()`.
+
+Funkce `is.na()` zkontroluje, jestli každý element vektoru chybějící hodnota a vrátí nám nový logický vektor, který bude mít hodnotu `TRUE` v případě chybějících hodnot a hodnotu `FALSE` v případě těch platných. Například:
+
+```{r custom-nas}
+age <- c(NA, 16, 17, NA, 3)
+is.na(age)
+```
+
+Jak vidíme, na první a čtvrtý element jsou chybějící hodnoty. Nyní můžeme použít funkci `sum()`, který při aplikaci na logický vektor vrátí počet `TRUE` hodnot:
+
+```{r custom-sum}
+sum(is.na(age))
+```
+
+A opravdu, dozvěděli jsme se, že v našem vektoru jsou dvě chybějící hodnoty. Nabízí se ale otázka, jestli by se kombinace funkcí `sum(is.na())` nedala nějak zjednodušit. Přeci jen, počítat chybějící hodnoty budeme relativně často, a čím méně závorek v našem kódu, tím menší šance, že některou z nich zapomeneme uzavřít.
+
+Vytvoříme si proto vlastní funkci, která bude počítat chybějící hodnoty za nás. Taková funkce by mohla vypadat třeba takto:
+
+```{r custom-fn}
+count_missings <- function(var) {
+  sum(is.na(var))
+}
+```
+
+Jako první musíme naší funkci vymyslet jméno. V tomto případě použijeme popisné `count_missings`. Novou funkci vytvoříme pomocí funkce `function()`. Do kulatých závorek vypíšeme, jaké argumenty by naše nová funkce měla mít. V našem případě bude stačit pouze jediný argument, a to `var`. Následují spojené závorky a uvnitř to hlavní, tedy popis toho, co má naše nová funkce dělat. V tomto případě spočítá počet chybějících hodnot. Všimněte si, že se zde znovu objevu argument `var`, který jsme definovali v předchozím kroku.
+
+A to je vše. Teď už můžeme používat naší novou funkci a ušetřit si trochu psaní:
+
+```{r custom-example}
+count_missings(age)
+```

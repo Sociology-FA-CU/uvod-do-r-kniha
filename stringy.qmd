@@ -1,0 +1,73 @@
+# Práce se stringy
+
+```{r import}
+#| echo: false
+#| message: false
+
+library(tidyverse)
+countries <- read_csv("data-raw/countries.csv")
+```
+
+Předmětem této kapitoly jsou *stringy*, tedy nestrukturovaný text. O analýze nestrukturovaného toho lze napsat mnoho, mnohem více, než kolik dokáže pojmout tato kniha. Představíme si proto pouze úplné základy a to s pomocí balíčku `stringr`, který je součástí Tidyverse.
+
+## Detekce stringů
+
+Náš data frame `countries` obsahuje proměnnou `hd_title_name`. Jedná se o titula a jméno hlavy dané země (k roku 2018). Na rozdíl od ostatních kategoriálních proměnných jsou jak titul, tak jméno osoby v jednom sloupci. Práce s nimi tedy bude vyžadovat o něco jiný přístup, než na jaký jsme zvyklí.
+
+Jedním z nejběžnějších úkonů je vyhledávání vzorců (*patterns*) v textu. Pro vybraní zemí, jejichž hlavou je král, je možné zkombinovat již známou funkci `filter()` s funkcí `str_detect()`. Tato funkce vrátí hodnotu `TRUE` pro všechny řádky, ve kterých se nachází zvolený vzorec znaků, v našem případě "*King"*:
+
+```{r str-detect}
+countries %>% 
+  filter(str_detect(hd_title_name, pattern = "King")) %>% 
+  select(country, hd_title_name)
+```
+
+Pomocí stejné funkce je možné hledat i více vzorců na jednou. Pro vyhledání všech království našem datasetu vyhledáme všechny hlavy států s titulem *"King"* nebo *"Queen".* Oba hledané vzorce oddělíme znakem `|`, značící logický operátor *OR*:
+
+```{r str-detect-multiple}
+countries %>% 
+  filter(str_detect(hd_title_name, pattern = "King|Queen")) %>% 
+  select(country, hd_title_name)
+```
+
+V některých případech nám bude stačit vědět, kolikrát se určitý vzorec vyskytuje v datech. K tomu využijeme funkci `str_count()`. Protože pracujeme s vektorem stringů, zkombinujeme ji s funkcí `sum()`, abychom získali celkový počet monarchů napří všemi zeměmi:
+
+```{r str-count}
+sum(str_count(countries$hd_title_name, pattern = "King|Queen"))
+```
+
+## Separace stringů
+
+Pro usnadnění budoucí práce by bylo lepší proměnnou `hd_title_name` rozdělit do dvou nových proměnných. První z nových proměnných bude titul hlavy státu (`title`), druhou poté samotné jméno státnika (`name`). Toho nejjednodušeji docíleme pomocí funkce `separate()` z balíčku `tidyr`. Prvním argumentem této funkce, je string, který chceme rozdělit. Druhým argumentem, `into`, je vektor obsahující jména nových proměnných. Třetím argumentem je separátor (`sep`), který rozděluje obsah první a druhé z nových proměnných:
+
+```{r separate}
+countries %>% 
+  select(hd_title_name) %>% 
+  separate(hd_title_name,
+           into = c("title", "name"),
+           sep = "-") %>% 
+  head(5)
+```
+
+Tento kód téměř funguje, jak má, s jedním drobným problémem. Jak nás upozorňuje varování `Warning: Expected 2 pieces. Additional pieces discarded in 4 rows [5, 11, 19, 30].` v několika jménech se objevil náš separátor `-` více než jednou. Protože jsme ale specifikovali pouze dvě nové proměnné, `title` a `name`, zahodili jsme omylem část jmen na řádcích 5, 11, 19 a 30. Napravit to můžeme pomocí argumentu `extra = "merge"`, pomocí kterého zachováme všechny jména celé:
+
+```{r separate-merge}
+countries %>% 
+  select(hd_title_name) %>% 
+  separate(hd_title_name,
+           into = c("title", "name"),
+           sep = "-",
+           extra = "merge") %>%
+  head(5)
+```
+
+## Transformace stringů {#sec-string-transformations}
+
+V některých případech je nutné stringy transformovat, buď do podoby vhodné pro analýzy nebo naopak do podoby vhodné pro prezentaci výstupů. Balíček `stringr` pro transformaci stringů nabízí hned několik funkcí. Funkce `str_to_lower()` převede všechny písmena na malá, `str_to_upper()` naopak na velká. `str_to_sentence()` převede první písmeno na velké a zbytek na malá, a nakonec `str_to_title()` převede první písmeno každého slova na velké a zbytek na malá:
+
+```{r string-transformation}
+str_to_lower(countries$hd_title_name) %>% head(5)
+str_to_upper(countries$hd_title_name) %>% head(5)
+str_to_sentence(countries$hd_title_name) %>% head(5)
+str_to_title(countries$hd_title_name) %>% head(5)
+```

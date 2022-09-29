@@ -1,0 +1,157 @@
+# Typy objektů {#sec-objects}
+
+Jednou z velkých životních pravd je, že vše v R je objekt. Některé objekty jsou velmi jednoduché, jiné mají komplexní strukturu. Každý objekt s má své využití a všechna data, se kterými budeme pracovat, budou uložena v některém z nich. Vyplatí se proto mít alespoň základní přehled o tom, s jakými typy objekty se v R můžeme setkat.
+
+## Atomové vektory
+
+Nejzákladnějšími objekty je takzvané atomické vektory (*atomic vectors*). Atomické vektory jsou základním stavebním kamenem R a všechny ostatní objekty, se kterými se setkáme, z nich vychází. Každý vektor je složen z určitého počtu elementů, tedy dílčích částí. Atomový vektor s jedním elementem představuje základní jednotku informace. Příkladem takového vektoru je:
+
+```{r atomic-simple-example}
+"Fred"
+```
+
+Výše zmíněný je takzvaný *character* vektor, obsahující jeden element, `Fred`. Vektory ale mohou obsahovat i více elementů:
+
+```{r atomic-multiple-example}
+c("Fred", "Daphne", "Velma", "Shaggy", "Scooby")
+```
+
+Na rozdíl od předchozího příkladu, tento vektor obsahuje pět elementů. Všimněte si, že elementy jsou spojeny do jednoho vektoru pomocí funkce `c()` (zkratka pro *combine*). R zná čtyři typy atomových vektorů:
+
+| Typ       | Popis                                                                                                                                         | Příklady               |
+|---------------|-------------------------------------------|---------------|
+| character | Písmena a další znaky. Poznáte je podle toho, že elementy jsou "obaleny" úvozkovami (`"` nebo `'`).                                           | `"Fred"`, `"?"`, `"1"` |
+| integer   | Celá čísla. Spolu s typem *double* tvoří skupinu numerických (*numeric*) vektorů.                                                             | `-1`, `316`, `17`      |
+| double    | Desetinná čísla. Zkratka pro *double precision floating point format*. Spolu s typem *integer* tvoří skupinu numerických (*numeric*) vektorů. | `1.32`, `0.1`, `-9.0`  |
+| logical   | Binární vektor, který může nabývat pouze dvou hodnota: pravda (*TRUE*) a nepravda (*FALSE*).                                                  | `TRUE`, `FALSE`        |
+
+: Typy atomových vektorů
+
+(Technicky existují ještě dva další typy atomových vektorů, *raw* a *complex*, s těmi se ovšem běžný uživatel nikdy nesetká, takže je přeskočíme.)
+
+::: callout-caution
+## 1 není "1"
+
+Při práci s R je třeba si dát pozor na to, že ne vše, co vypadá jako číslo, nutně číslo je. R vám s radostí spočítá průměr vektoru `c(1,2,3)`, pokud byste se pokusili spočítat průměr vektoru `c("1", "2", "3")`, narazíte na problém a chybovou hlášku. Proč? Protože zatímco první vektor je typu *numeric* (konkrétně *integer*), druhý vektor je typu *character*. R tedy druhý vektor vidí v podstatě jako písmena a pro písmena se průměr spočítat přeci nedá!
+:::
+
+Pro atomové vektory platí, že jejich elementy musí být stejného typu. Není tedy možné vytvořit atomový vektor, který by byl kombinací znaků a čísel (`c(18, "Fred")`. Pokud se to pokusíte, R vás buď zastaví nebo převede všechny elementy do stejného typu (`c("18", "Fred")`). Na toto automatické převádění elementů typů si dávejte pozor, jedná se o častý zdroj chyb a problémů.
+
+Kromě běžných hodnot, kterých mohou elementy nabývat, existují tři speciální hodnoty, se kterými se budeme setkávat. Těmi jsou `NA` a `NULL` a`NaN`. `NA` představuje chybějící hodnotu ve statistickém smyslu slova. Setkáme se s ní pokud respondenti odmítnou odpovědět na některou z otázek v dotazníkovém šetření nebo pokud R nemá dostatek informací pro výpočet nějaké veličiny. Jedná se tedy o hodnotu existující, ale nám neznámou. Naproti tomu `NULL` reprezentuje absenci platné hodnoty. Setkáme se s ní v situaci, kdy žádné pozorování v datasetu neodpovídá námi specifikovaným filtrům. Hodnota `NaN` je zkratkou pro *"Not a Number"*. Pokud se s ní setkáte, znamená to zpravidla, že jste se dopočítali někam, kam jste nechtěli.
+
+## Faktory {#sec-factors}
+
+Komplikovanějším typem vektoru jsou takzvané faktory. Jedná se v podstatě *integer* vektory, jejichž hodnotám bylo přiřazeno slovní označení (*label*):
+
+```{r factor-example}
+#| echo: false
+
+factor(c("Agree", "Neutral", "Disagree"))
+```
+
+Přestože se faktory na první pohled tváří jako běžné *character* vektory, každé kategorii byla přiřazena číselná hodnota. V našem případě `"Agree" = 1`, `"Disagree = 2`, `"Neutral = 3"` (všimněte si, že číselné hodnoty byly přiřazeny podle abecedního pořadí slovních označení). Toho mnoho R funkcí využívá při statistických výpočtech, v rámci kterých je třeba zakódovat kategorické proměnné do číselných hodnot. S faktory se proto v datové analýze setkáme velmi často, ať už se bude jednat o odpovědi na likertovské položky v dotazníkových šetřeních, název bydliště nebo třeba název prodaného produktu.
+
+Další důležitou vlastností faktoru je, že mohou nabývat pouze hodnot, které byly definovány při jejich vytvoření:
+
+```{r factor-labeling-example}
+
+factor(x = c("Agree", "Neutral", "Disagree", "Don't know"),
+       levels = c("Agree", "Neutral", "Disagree"))
+```
+
+Přestože se v "datech" se vyskytují čtyři různé hodnoty, hodnota `"Don't know"` byla po vytvoření faktoru převedena na `NA`. Důvodem je, že jsme při vytváření našeho faktoru uvedli pouze tři platné hodnoty: `"Agree"`, `"Neutral"`, `"Disagree"` a žádná další nebude naším faktorem akceptována. Tato vlastnost se hodí zejména v situacích, kdy víme, jakých hodnot může proměnná nabývat, například u likertovských položek, a všechny ostatní naměřené hodnoty jsou nutně chybné.
+
+Nakonec ještě zmiňme, že kromě klasických faktorů existují také takzvané *ordered factors*. Historicky se jednalo o faktory, které nemají pevně dané pouze to, jakých hodnot mohou elementy nabývat, ale i v jakém pořadím mají být seřazeny. Většina současných funkcí mezi klasickými a *ordered* faktory nerozlišuje, takže se jimi zpravidla nemusíte trápit.
+
+Klasický faktor lze vytvořit funkcí `factor()`, ordered faktor poté pomocí funkce `ordered()`.
+
+## Matice a tabulky
+
+Do této chvíle jsme viděli pouze jednorozměrné vektory, jako je například řada jmen v *character* vektoru. V datové analýze se ale budeme běžně setkávat i s vícerozměrnými objekty, z nichž tím nejzákladnějším je matice (*matrix*). Jedná se o starou známou matici, kterou si můžete pamatovat z hodin matematiky:
+
+```{r matrix-example}
+#| echo: false
+
+matrix(c(1, 2, 3,
+         4, 5, 6,
+         7, 8, 9),
+       ncol = 3,
+       byrow = TRUE)
+```
+
+V příkladu výše vidíme dvourozměrnou matici s devíti elementy. Matice mohou mít i více dimenzí a v takovém případě jim říkáme *arrays.*
+
+Matice jsou samozřejmě extrémně důležité pro jakoukoliv manipulaci s daty. Pokud si již ovšem z hodin lineární algebry mnoho nepamatujete, nemusíte panikařit. Mnoho funkcí sice matice interně využívá, jejich uživatelé to ovšem často ani nepostřehnout. Matematické operace jsou v R značně abstrahované a většina běžných datových analytiků proto s maticemi interaguje minimálně. Pokud byste je někdy potřebovali vytvořit, poslouží vám k tomu funkce `matrix()` a `array()`.
+
+Typem objektu, se kterým se setkáte o něco častěji, je tabulka (*table*). Tabulky jsou také maticemi, jejichž dimenzím byla přiřazena slovní označení. Nejčastěji se s tabulkami setkáme při agregací vektorů. Příkladem tabulky je například
+
+```{r table-example}
+#| echo: false
+
+table(c(rep("Like", 13), rep("Dislike", 7)))
+```
+
+Tato tabulka je výsledkem funkce `table()`, aplikované na atomový *character* vektor obsahující sedmkrát hodnotu `Dislike` a třináctkrát hodnotu `Like`. Studenti sociálních věd také jistě budou znát kontingenční tabulky, tedy frekvenční tabulky pro dvě nebo více proměnných:
+
+```{r contingency-table-example}
+#| echo: false
+
+set.seed(123)
+table(data.frame(Transport  = c(rep("Car", 10), rep("Bus", 10), rep("Bike", 10)),
+           Preference = sample(c("Like", "Dislike"), size = 30, replace = TRUE)))
+```
+
+Jak matice, tak tabulky, mohou nepřekvapivě obsahovat pouze numerické elementy.
+
+## Listy
+
+Všechny předchozí typy objektů mohli uchovávat pouze elementy stejného typu. Realita je ovšem komplikovanější a je na nás, abychom se jí přizpůsobili.
+
+Základním typem objektu pro uchovávání elementů různého typu je list:
+
+```{r list-example}
+#| echo: false
+
+list(1, "Fred", TRUE)
+```
+
+Listy mohou uchovávat objekty různých typů, v podstatě bez jakýchkoliv omezení. List může dokonce obsahovat jiný list! Poradí si dokonce i s objekty různé délky:
+
+```{r list-vectors-example}
+#| echo: false
+
+list(c("Fred", "Daphne", "Velma", "Shaggy", "Scooby"),
+     c(42, 1.3, 666),
+     c(TRUE, FALSE),
+     list("Car", "Bus", "Bike"))
+```
+
+Díky své flexibilitě se listy využívají primárně pokud chceme uchovávat velmi různorodá data na jednom místě. Většina výstupů statistických analýz bude právě ve formě listu. List je možné vytvořit funkcí `list()`.
+
+## Dataframy
+
+To nejlepší jsme si nechali nakonec. Zdaleka nejužitečnějším typem objektu pro datového analytika je *dataframe:*
+
+```{r dataframe-example}
+#| echo: false
+
+data.frame(V1 = c("Fred", "Daphne", "Velma", "Shaggy", "Scooby"),
+           V2 = c(16, 16, 15, 17, 3),
+           V3 = c(FALSE, FALSE, FALSE, FALSE, TRUE))
+```
+
+Dataframy slouží stejnému účelu jako spreadsheety v jiných softwarech. Je v nich uchovávaná drtivá většina všech dat a pracuje s nimi většina funkcí, se kterými se v této knize setkáme. U běžného dataframu platí, že každý sloupec představuje jednu proměnnou a každý řádek jedno pozorování (např. respondenta).
+
+Zvláštní vlastností dataframů je, že všechny jeho elementy musí být stejně dlouhé. Jinak řečeno, pro každou proměnnou musíme mít stejný počet pozorování. Co když tomu tak není? V takovém případě vstupuje do hry hodnota `NA`, zmíněná dříve, která kóduje chybějící hodnoty. Například v následujícím dataframu máme ve druhém sloupci jen čtyři hodnoty, plus jednu `NA`:
+
+```{r bad-dataframe-example}
+#| echo: false
+
+data.frame(V1 = c("Fred", "Daphne", "Velma", "Shaggy", "Scooby"),
+           V2 = c(16, 16, 15, NA, 3),
+           V3 = c(FALSE, FALSE, FALSE, FALSE, TRUE))
+```
+
+Jak jsme již zmínili, naprostá většina naší práce bude probíhat v dataframech. Konkrétně budeme využívat speciální typ dataframu, zvaný *tibble*. *Tibble* je druh dataframu pocházející z Tidyverse, a většinou se chová identicky jako jeho základní varianta. Hlavním rozdílem je o něco hezčí vzhled.
+
+Klasický dataframe je možný vytvořit funkcí `data.frame()`, tibble poté pomocí funkce `tibble()`.

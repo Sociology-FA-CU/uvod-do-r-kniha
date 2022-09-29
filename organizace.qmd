@@ -1,0 +1,76 @@
+# Jak si organizovat práci
+
+Pokud byste se zeptali, co dělá datového analytika dobrým analytikem, většina lidí by vám asi odpověděla, že je to dobrá znalost statistických technik. Další by možná řekli, že je to schopnost psát počítačový kód nebo vytvářet poutavé grafy. A všechny tyto věci opravdu jsou extrémně důležité. Neméně důležitou, zato však často opomíjenou schopností, je ale také schopnost efektivně organizovat svoji vlastní práci. Ta se týká všeho, od organizace souborů v počítači, až po pojmenovávání proměnných. Předtím než se vrhneme do R samotného, si tedy řekneme několik organizačních tipů.
+
+## Rstudio projekty {#sec-rstudio-projects}
+
+První tip se týká organizace souborů, se kterými pracujeme. Ty mohou být cokoliv od datasetů, dotazníků a codebooků až po vytvořené grafy a reporty. Naše první rada je zde jednoduchá: **Každý projekt, na kterém pracujete, by měl mít svou vlastní složku**. To se může zdát triviální, znepokojivě velké množství lidí si ovšem osvojilo zvyk ukládat všechny své soubory v jedné obří složce. Ve výsledku to vede pouze ke zmatenému hledání, který z souborů pojmenovaný *data-kopie3.csv* obsahuje data, která hledáme.
+
+Pokud používáte Rstudio, můžeme organizaci souborů usnadnit ještě o něco více. **Každý projekt by měl mít svůj vlastní Rstudio projekt**. Rstudio projekt je v podstatě jen složka, obsahující soubor s koncovkou *.Rproj.* To se může zdát triviální, tyto projekty jsou ale extrémně užitečné, protože umožňují Rstudiu automaticky nastavit pracovní adresář (s ním se setkáme při importu dat), ukládat historii vaší práce pro každý pracovní projekt zvlášť a mnoho dalšího. Jedná se tedy o skvělý nástroj, jak si udržet pořádek, zvláště pokud pracujete na několika projektech najednou.
+
+Nový Rstudio projekt vytvoříte kliknutím na *File -\> New Project...* v levém horním rohu. V otevřeném menu zvolte *New Directory -\> New Project* a vyberte si název a adresu, kde má být projekt vytvořen. Pokud už máte složku, ze které byste chtěli vytvořit Rstudio projekt, stačí zvolit *Existing Directory*. Po vytvoření se nový Rstudio projekt automaticky otevře. Pokud byste Rstudio projekt zavřeli, můžete ho znovu otevřít v pravém horním rohu kliknutím na malou modrou ikonu R, za kterou následuje buď *Project: (None)*, případně název současně otevřeného projektu. Na tomto místě můžete také přepínat mezi projekty nebo je zavřít.
+
+## Organizace projektů
+
+Teď, když je vaše práce organizovaná do (Rstudio) projektů, můžeme se zaměřit na to, jak organizovat jednotlivé soubory. **Udržujte přehlednou a konzistentní strukturu napříč všemi projekty**.
+
+Všechny vaše soubory by v rámci jednoho projektu měli být roztříděny do srozumitelně pojmenovaných podsložek. Konkrétní struktura projektu závisí na osobních preferencích a povaze práce, nám se obecně osvědčilo následující schéma:
+
+    project/
+    |-data-raw/
+    |-data-cleaned/
+    |-scripts/
+    |-documentation/
+    |-outputs/
+    |-project.Rproj
+
+Složka projektu by měla obsahovat alespoň následující podsložky a soubory. V podsložce *data-raw* jsou uchována data se kterými pracujeme, a to v takové podobě, v jaké se k nám dostala. Tato syrová data nikdy nepřepisujeme! Slouží jako poslední záchrana, pokud by bylo nutné provést všechny analýzy znovu od začátku. Naproti tomu, složka *data-cleaned* je pro již zpracovaná data. Nachází se zde vyčištěná data ze složky *data-raw*, připravená k další analýze. Data v té složce můžeme přepisovat, protože v případě potřeby je můžeme vždy znovuvytvořit pomocí našich skriptů. Skripty samotné bydlí ...(dramatická pauza)... ve složce *scripts.* Zde asi není nutní mnoho vysvětlovat. Ve slože *documentation* je uchována dokumentace k projektu. Zpravidla se jedná o PDF verze dotazníků, popis sběru dat, codebooky a podobně. Poslední složkou je *output*, do které ukládáme všechny naše výstupy, ať už se jedná o dílčí grafy nebo celé reporty. V kořenovém adresáři se nachází pouze soubor .Rproj (který Rstudiu říká, že tato složka je Rstudio projekt).
+
+Na konci kurzu Úvodu do R by složka vašeho Rstudio projektu mohla vypadat zhruba nějak takto:
+
+    uvod-do-r/
+    |-data-raw/
+      |-countries.csv
+      |-cvvm-cerven-2019.csv
+    |-data-cleaned/
+      |-countries-clean.csv
+    |-scripts/
+      |-01-import-export.R
+      |-02-data-manipulation.R
+      |-03-data-visualization.R
+      |-04-final-homework.R
+    |-documentation/
+      |-cvvm-codebook.pdf
+    |-outputs/
+      |-vomacka-intro-r-homework.docx
+    |-uvod-do-r.Rproj
+
+Jakmile si najdete svou preferovanou strukturu svých souborů, dodržujte ji napříč všemi projekty. To vám umožní se rychle zorientovat i v projektech, na kterých jste řadu týdnů nebo dokonce měsíců nepracovali.
+
+Samozřejmě, ne všechny projekty mohou mít úplně identickou strukturu a občas je nutné strukturu složek přizpůsobit konkrétnímu projektu. I projekt, který obsahuje kód k této knize, je organizovaný výrazně jinak! Výše popsané schéma ale z naší zkušenosti představuje solidní základ pro projekty, na kterých sociální vědci zpravidla pracují.
+
+## Pojmenovávání souborů
+
+Pořádek se vyplatí udržovat nejen při organizaci souborů, ale i při jejich pojmenovávání. Nadevše ostatní **by vaše soubory měli mít srozumitelná, krátká jména**. Datové soubory by měli být pojmenované tak, aby bylo ze jména jasné, jaká data obsahují. Například, pro data sesbírána Centrem pro výzkum veřejného mínění v červnu 2019 preferujeme názvy jako `cvvm-cerven-2019.csv`, spíše než `V0619.csv`. Pro oddělení více slov doporučujeme používat buď `-` nebo `_`, naopak se vyhýbejte mezerám. Přestože v dnešní době si většina programů dokáže s mezerami ve jménech souborů poradit, čas od času je možné narazit na situace, kde jsou mezery problematické. Skripty by měli být očíslované v pořadí odrážejícím postup analýzy. Názvy by zpravidla měli obsahovat pouze malá písmena.
+
+::: callout-tip
+## "Version control" aneb konec report-v1-finalni3.docx
+
+Problémem, který je nám všem jistě dobře známý, je jak udržovat pořádek v souborech, které jsou průběžné aktualizovány. Ať už se jedná o textové dokumenty, které prochází korekturami a zpětnou vazbou, nebo skripty které jsou pravidelně aktualizovány, většina lidí se dříve nebo později dostane do situace, kdy zírá do obrazovky a říká si *"Počkat, která verze mého reportu je ta aktuální?"* A nedejbože pokud bychom potřebovali zjistit, čím přesně se od sebe dvě různé verze stejného dokumentu liší.
+
+Jednou možností, jak tomu předejít, je skálopevně dodržet některou pojmenovávací konvenci a poctivě číslovat každou novou verzi všech souborů. V dnešní době už ale existují i lepší řešení. Většina úložišť poskytuje službu zvanou *version control*, tedy automatické sledování provedených změn. Místo toho, abyste po každé změně vytvářeli novou kopii souboru, pracujete pouze s jednou kopií a necháte na počítači, aby zaznamenával celou historii úprav. U každé větší změny můžete do historie zanést krátkou poznámku, v čem se tato verze liší od té předchozí. Version control je dostupná pro většinu úložišť včetně [Google Drive](https://support.google.com/a/users/answer/9308971?hl=en) a [OneDrive](https://support.microsoft.com/en-us/office/restore-a-previous-version-of-a-file-stored-in-onedrive-159cad6d-d76e-4981-88ef-de6e96c93893). Pokud píšete velké množství kódu, doporučujeme využít některé ze specializovaných úložišť jako je [Github](https://github.com).
+:::
+
+## Kódovací styly {#sec-coding-styles}
+
+Kódovací styly (*coding styles*) představují seznam pravidel pro psaní dobře čitelného kódu. Silně **doporučujeme dodržovat jeden kódovací styl**. Dodržovaní vámi vybraného stylu pomůže váš kód udržovat dobře čitelný a přehledný, a to nejen pro vaše budoucí já, ale i pro vaše spolupracovníky.
+
+Jednou z typických věcí, kterou kódovací styly upravují, je pojmenovávání proměnných. Způsobů pojmenovávání proměnných existuje více, mezi ty nejpopulárnější patří následující tři:
+
+*snake_case*je styl, který používá malá písmena a slova odděluje podtržítkem. Například proměnná obsahující měsíční příjem respondenta by ve snake_case stylu vypadalo jako `monthly_income`.
+
+*camelCase* styl pro oddělení slov využívá velkých písmen, zbylá písmena jsou malá. Průměrný měsíční příjem by v tomto stylu byl `monthlyIncome`.
+
+*kebab-case* je styl podobý snake_case, místo podtržítek ale využívá pomlček. Naše proměnná příjmu by v vypadalo jako `monthly-income`.
+
+Kód v této knize se řídí [Tidyverse coding style guide](https://style.tidyverse.org/index.html). To rozhodně není jediný používány styl (např. [Google má svůj vlastní](https://google.github.io/styleguide/Rguide.html)) a rozhodně se nedá říct, že by byl lepší než všechny ostatní. V budoucnu si možná vybudujete svůj vlastní styl, ušitý na míru vašim potřebám. Ze začátku ovšem doporučujeme vybrat si jeden z populárních stylů a dát si záležet na jeho dodržování. Vaše budoucí já i vaši kolegové vám za to poděkují.

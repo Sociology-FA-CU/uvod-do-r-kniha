@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="cs" xml:lang="cs"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.245">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="První výprava do světa R a Tidyverse.">
+
+<title>Úvod do analýzy dat v R - 6&nbsp; Funkce</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./balicky.html" rel="next">
+<link href="./jmena.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Žádný výsledek",
+    "search-matching-documents-text": "Nalezené výsledky",
+    "search-copy-link-title": "Zkopírovat odkaz pro vyhledávání",
+    "search-hide-matches-text": "Skrýt další výsledky",
+    "search-more-match-text": "Další výsledek v tomto dokumentu",
+    "search-more-matches-text": "Žádná shoda v tomto dokumentu",
+    "search-clear-button-title": "Vymazat",
+    "search-detached-cancel-button-title": "Zrušit",
+    "search-submit-button-title": "Odeslat"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Funkce</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Úvod do analýzy dat v R</a> 
+        <div class="sidebar-tools-main">
+    <a href="" title="Download" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-download"></i></a>
+    <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
+        <li>
+          <a class="dropdown-item sidebar-tools-main-item" href="./Úvod-do-analýzy-dat-v-R.pdf">
+            <i class="bi bi-bi-file-pdf pe-1"></i>
+          Download PDF
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item sidebar-tools-main-item" href="./Úvod-do-analýzy-dat-v-R.epub">
+            <i class="bi bi-bi-journal pe-1"></i>
+          Download ePub
+          </a>
+        </li>
+    </ul>
+  <a href="" class="quarto-color-scheme-toggle sidebar-tool" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Předmluva</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./predstaveni.html" class="sidebar-item-text sidebar-link">R, Rstudio, Tidyverse</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./struktura.html" class="sidebar-item-text sidebar-link">Struktura knihy</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Trocha teorie</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./instalace.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Instalace softwaru</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rstudio.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">První pohled na Rstudio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./organizace.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jak si organizovat práci</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./objekty.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Typy objektů</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./jmena.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Jména objektů</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./funkce.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Funkce</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./balicky.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">R balíčky</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Manipulace s dataframy</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./import-export.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Import a export dat</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dataframe.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">První pohled na dataframe</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sloupce.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Práce se sloupci</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./radky.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Práce s řádky</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./siroky-dlouhy-format.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Široký a dlouhý formát</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spojovani-dat.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Spojování dataframů</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Manipulace s proměnnými</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./transformace-promennych.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Transformace proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sumarizace-promennych.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Sumarizace proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mnoho-promennych.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Transformace a sumarizace více proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./faktory.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Práce s faktory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stringy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Práce se stringy</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">Vizualizace dat</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./obsah-grafu.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Struktura grafů</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kategoricke-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Vizualizace kategorických proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./numericke-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Vizualizace numerických proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kombinovane-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Kombinované grafy</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./facety.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Facety</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vzhled-grafu.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Vzhled grafů</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Obsah</h2>
+   
+  <ul>
+  <li><a href="#používání-funkcí" id="toc-používání-funkcí" class="nav-link active" data-scroll-target="#používání-funkcí"><span class="toc-section-number">6.1</span>  Používání funkcí</a></li>
+  <li><a href="#sec-fn-arguments" id="toc-sec-fn-arguments" class="nav-link" data-scroll-target="#sec-fn-arguments"><span class="toc-section-number">6.2</span>  Argumenty funkcí</a></li>
+  <li><a href="#sec-nested-objects" id="toc-sec-nested-objects" class="nav-link" data-scroll-target="#sec-nested-objects"><span class="toc-section-number">6.3</span>  Funkce a vnořené objekty</a></li>
+  <li><a href="#sec-pipes" id="toc-sec-pipes" class="nav-link" data-scroll-target="#sec-pipes"><span class="toc-section-number">6.4</span>  Řetězení funkcí</a></li>
+  <li><a href="#dokumentace-funkcí" id="toc-dokumentace-funkcí" class="nav-link" data-scroll-target="#dokumentace-funkcí"><span class="toc-section-number">6.5</span>  Dokumentace funkcí</a></li>
+  <li><a href="#vytváření-vlastních-funkcí" id="toc-vytváření-vlastních-funkcí" class="nav-link" data-scroll-target="#vytváření-vlastních-funkcí"><span class="toc-section-number">6.6</span>  Vytváření vlastních funkcí</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-factors-chapter" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Funkce</span></span></h1>
+</div>
+
+<div>
+  <div class="description">
+    <p>První výprava do světa R a Tidyverse.</p>
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p>Jedním z centrálních typů objektů, o kterém jsme zatím nemluvili, jsou funkce. Funkce jsou objekty které nám umožňují manipulovat jinými objekty. Poznat funkci je jednoduché, protože jméno každé z nich je následované závorky <code>()</code>. V předchozích kapitolách jsme již funkce dokonce používali, ať už se jednalo o <code>c()</code>, <code>data.frame()</code> nebo <code>install.packages()</code>. Teď se na ně konečně podíváme pořádně.</p>
+<section id="používání-funkcí" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="používání-funkcí"><span class="header-section-number">6.1</span> Používání funkcí</h2>
+<p>Používat funkce je jednoduché. Každá funkce obsahuje argumenty, pomocí kterých funkci upřesňujete, co přesně má vykonat. Tyto argumenty si píší právě do závorek za jménem funkce. Funkce, kterou jsme viděli opakovaně, je například naše staré dobré <code>c()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>name <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Fred"</span>, <span class="st">"Daphne"</span>, <span class="st">"Velma"</span>, <span class="st">"Shaggy"</span>, <span class="st">"Scooby"</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>V tomto případě jsme použili funkci <code>c()</code> pro vytvoření nového vektoru. Této funkci jsme zadali pět argumentů, definující z jakých elementů se má nový vektor skládat. Obdobně bychom na náš nový objekt <code>name</code> mohli použít funkci <code>print()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(name)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Fred"   "Daphne" "Velma"  "Shaggy" "Scooby"</code></pre>
+</div>
+</div>
+<p>V tomto případě jsme funkci <code>print()</code> specifikovali pouze jeden argument, a to který objekt má vytisknout do konzole.</p>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Ukládejte si své výsledky!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Častým zdrojem zmatení u nových uživatelů bývá, že R zdánlivě dělá co mu říkají, ale výsledky nikdy neukládá! Toto nedorozumění je nejsnažnější vysvětlit na praktickém příkladu.</p>
+<p>Co kdybychom chtěli zaokrouhlit čísla v následujícím vektor?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">16.45</span>, <span class="fl">16.52</span>, <span class="fl">15.9</span>, <span class="fl">17.1</span>, <span class="fl">3.234</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Zaokrouhlení čísel je jednoduchá záležitost, pro kterou můžeme využít funkci <code>round()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(age)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 16 17 16 17  3</code></pre>
+</div>
+</div>
+<p>A je zaokrouhleno. Nebo ne? Pokud se podíváme na vektor <code>age</code>, zjistíme že pořád obsahuje původní čísla:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>age</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 16.450 16.520 15.900 17.100  3.234</code></pre>
+</div>
+</div>
+<p>Proč si R odmítá zapamatovat, že jsme čísla zaokrouhlili? Protože jsme mu neřekli, že má výsledek funkce <code>round()</code> uložit do paměti. Vektor se zaokrouhlenými čísly je objekt jako každý jiný a pokud ho chceme využívat v budoucnu, musíme mu přiřadit jméno. Pokud nám nevadí přijít o původní nezaokrouhlená jména, můžeme klidně použít jméno původního vektoru:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>age <span class="ot">&lt;-</span> <span class="fu">round</span>(age)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>age</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 16 17 16 17  3</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-fn-arguments" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="sec-fn-arguments"><span class="header-section-number">6.2</span> Argumenty funkcí</h2>
+<p>Jak jsme zmínili, každá funkce má argumenty, které ovlivňují její fungování. V předchozích příkladech sloužili argumenty primárně pro určení toho, se kterými daty má funkce pracovat. Většina argumentů ale upravuje primárně to, <em>co</em> má funkce s daty dělat. Pro ukázku si vytvořme nový vektor:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">16</span>, <span class="dv">16</span>, <span class="dv">17</span>, <span class="dv">15</span>, <span class="cn">NA</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Jedná se o numerický vektor, jehož poslední hodnota je neznámá (<code>NA</code>). Co kdybychom chtěli spočítat průměr těchto hodnot? K tomu poslouží funkce <code>mean()</code>, pokud bychom ji ale aplikovali na náš vektor, narazili bychom na problém:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(age)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA</code></pre>
+</div>
+</div>
+<p>R nám říká, že průměr těchto čísel je <code>NA</code>, tedy neznámý. Proč? Narážíme tu na jistou pedantnost typickou pro R. R nám svým způsobem říká <em>“Alespoň jedno z čísel v tomto vektoru je neznámé a může teoreticky nabývat jakékoliv hodnoty. Proto i výsledný průměr může nabývat jakékoliv hodnoty, a je tedy sám neznámý”</em>. V tom má R jistě pravdu. Co kdybychom se ale spokojili s tím, že budeme neznámé hodnoty ignorovat a spočítat průměr jen pro známá čísla? Přesně k tomu má funkce <code>mean()</code> argument <code>na.rm</code> (<em>remove NAs</em>). Tento argument může nabývat dvou hodnot <code>TRUE</code> a <code>FALSE</code>. Ve výchozím nastavení je tento argument nastaven na <code>FALSE</code>, což mi ale můžeme jednoduše změnit:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(age, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 16</code></pre>
+</div>
+</div>
+<p>A je to! Pomocí argumentu <code>na.rm</code> jsme změnili fungování funkce <code>mean()</code> tak, aby ignorovalo neznámé hodnoty.</p>
+</section>
+<section id="sec-nested-objects" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="sec-nested-objects"><span class="header-section-number">6.3</span> Funkce a vnořené objekty</h2>
+<p>V předchozí kapitole jsme si řekli, že většina dat je uchovávaných v dataframech. Jeden takový dataframe můžeme vytvořit pomocí:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>gang <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">name   =</span> <span class="fu">c</span>(<span class="st">"Fred"</span>, <span class="st">"Daphne"</span>, <span class="st">"Velma"</span>, <span class="st">"Shaggy"</span>, <span class="st">"Scooby"</span>),</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">age    =</span> <span class="fu">c</span>(<span class="dv">16</span>, <span class="dv">16</span>, <span class="dv">15</span>, <span class="dv">17</span>, <span class="dv">3</span>),</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">is_dog =</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>))</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Co kdybychom chtěli spočítat počet členů členů Scoobyho gangu? Jako první se nabízí možnost:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(name) <span class="co"># Error: object 'name' not found</span></span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To ovšem nebude fungovat, protože R nemůže najít žádný objekt jménem <code>name</code>. Tento objekt je totiž vnořený (<em>nested</em>) uvnitř jiného objektu, <code>gang</code> a R nebude prohledávat všechny existující objekty pokaždé, když mu řekneme, aby aplikovalo některou funkci. Je tedy na nás, abychom R navedli, kde má proměnnou <code>name</code> hledat.</p>
+<p>Toho lze docílit několik způsoby. Tím prvním je pomocí operátoru <code>$</code>. Tímto operátorem můžeme navigovat vnořenými objekty, například jím můžeme vybrat proměnnou <code>name</code> v dataframu <code>gang</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(gang<span class="sc">$</span>name)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+<p>R teď ví, že objekt <code>name</code> by mělo hledat unvitř objektu <code>gang</code>.</p>
+<p>Specifikování vnořených objektu pomocí <code>$</code> je asi nejpoužívanější způsob pokud pracujeme s dataframy, není ale jediný. Alternativní způsob představuje indexovaní pomocí hranatých závorek <code>[]</code>. Ty lze aplikovat několika způsoby. Prvním z nich je skrze jméno vnořeného objektu:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>gang[<span class="st">"name"</span>]</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    name
+1   Fred
+2 Daphne
+3  Velma
+4 Shaggy
+5 Scooby</code></pre>
+</div>
+</div>
+<p>Alternativně můžeme využít pořadí řádků a sloupců v objektu. <code>name</code> je první proměnnou v dataframu <code>gang</code> a můžeme ji tedy vybrat následovně:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>gang[, <span class="dv">1</span>]</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Fred"   "Daphne" "Velma"  "Shaggy" "Scooby"</code></pre>
+</div>
+</div>
+<p>Všimněte si, že závorky v tomto případě obsahují čárku (<code>[, 1]</code>). To proto, že pomocí hranatých závorek můžeme vybírat jak sloupce, tak řádky. Pořadí řádku se z konvence píše na první pozici, sloupce na druhé. Kdybychom se chtěli dozvědět více o Fredovi, mohli bychom použít:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>gang[<span class="dv">1</span>, ]</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  name age is_dog
+1 Fred  16  FALSE</code></pre>
+</div>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Vylučovací metoda
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Indexování je možné využít i pro výběr všech sloupců/řádků kromě zmíněních. Pro vybrání všech sloupců kromě třetího použijeme <code>gang[, -3]</code>.</p>
+</div>
+</div>
+<p>Oboje možnosti je samozřejmě možné kombinovat. Hodnotu prvního řádku a prvního sloupce bychom získali následovně:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>gang[<span class="dv">1</span>,<span class="dv">1</span>]</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Fred"</code></pre>
+</div>
+</div>
+<p>Pokud tedy pracujeme s vnořenými objekty, a to budeme téměř neustále, nesmíme R nikdy zapomenout říct, kde má hledat.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+[[]] je více než []
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Čas od času se můžete setkat s kódem využívajícím dvojité závorky (<code>[[]]</code>), místo jednoduchých (<code>[]</code>). Každá z těchto variant má své využití.</p>
+<p>Všimněme si, jaký typ objektu vrátí následující kód:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>gang[<span class="st">"name"</span>]</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    name
+1   Fred
+2 Daphne
+3  Velma
+4 Shaggy
+5 Scooby</code></pre>
+</div>
+</div>
+<p>Jedná se o dataframe, stejně jako byl původní objekt, pouze byly odstraněny všechny sloupce kromě toho se jménem <code>name</code>. Co naproti tomu dělá následující kód?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>gang[[<span class="st">"name"</span>]]</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Fred"   "Daphne" "Velma"  "Shaggy" "Scooby"</code></pre>
+</div>
+</div>
+<p>Tento kód vrátil stejné hodnoty, ale v jiném formátu. Už se nejedná o (filtrovaný) dataframe, ale o atomický vektor. Rozdíl mezi těmito dvěma způsoby vybírání vnořených objektů je důležitý, protože argumenty funkcí často očekávají data v určitém formátu.</p>
+</div>
+</div>
+</section>
+<section id="sec-pipes" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="sec-pipes"><span class="header-section-number">6.4</span> Řetězení funkcí</h2>
+<p>Všechny příklady, které jsme zatím viděli, aplikovali vždy pouze jednu funkci. Asi ovšem tušíte, že v reálné analýze budeme muset na naše data aplikovat mnohem více funkcí, než se dostaneme ke kýženým výsledkům. To s sebou přináší praktický problém. Jak na sebe efektivně řetězit větší počet funkcí tak, aby byl náš kód stále čitelný? V principu existují tři varianty.</p>
+<p>První možnost je aplikovat funkci jednu po druhé a ukládat mezivýsledky do nových objektů:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>me_awake   <span class="ot">&lt;-</span> <span class="fu">wake_up</span>(me)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>me_clean   <span class="ot">&lt;-</span> <span class="fu">wash</span>(me_awake)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>me_fed     <span class="ot">&lt;-</span> <span class="fu">eat_breakfest</span>(me_clean)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>me_working <span class="ot">&lt;-</span> <span class="fu">go_to_work</span>(me_fed)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Tento postup je analogický tomu, co jsme dělali dosud. Aplikujeme funkci a její výsledek uložíme do nového objektu. Jedná se o vcelku přehledný postup, nevýhodou ovšem je, že vytváříme velké množství objektu, které zabírají místo a znepřehledňují naše prostředí.</p>
+<p>Alternativně je možné na sebe funkce “nabalovat”:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>me_working <span class="ot">&lt;-</span> <span class="fu">go_to_work</span>(<span class="fu">eat_breakfest</span>(<span class="fu">wash</span>(<span class="fu">wake_up</span>(me))))</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Tímto se vyhneme vytváření nových objektů, výsledný kód ovšem není příliš čitelný. Hlavním problém je, že pokud chceme vědět, co tento kód dělá, je nutné ho číst od středu. Jako první je aplikovaná funkce v “jádru”, tedy <code>wake_up()</code>, a poté všechny ostatní směrem k okraji. Funkce <code>go_to_work()</code> je aplikovaná jako poslední a to i přesto, že je na řádku jako první.</p>
+<p>Poslední, námi preferovanou, metodu je využívání takzvaných <em>pipes</em>. Používat budeme <em>pipes</em> z balíčku magrittr, který je součástí Tidyverse. Ty vypadají takto: <code>%&gt;%</code> a aplikuje se následovně:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>me_working <span class="ot">&lt;-</span> me <span class="sc">%&gt;%</span> </span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">wake_up</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">wash</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">eat_breakfest</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">go_to_work</span>()</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><em>Pipes</em> (<code>%&gt;%</code>) vezmou objekt nalevo od nich a vloží ho do funkce napravo. První <em>pipe</em> tedy vezme objekt <code>me</code> a vloží ho do funkce <code>wake_up()</code>. Druhá <em>pipe</em> vezme výsledek funkce <code>wake_up()</code> a vloží ho do funkce <code>wash()</code>. Takto celý řetězec pokračuje dále až po funkci <code>go_to_work()</code>. Výsledek celého řetězce je uložen do objektu <code>me_working</code> tak, jak jsme zvyklý. Protože psát jednotlivé <em>pipes</em> ručně by bylo otravné, existuje pro ně v Rstudiu klávesová zkrátka <code>Shift</code> + <code>Ctrl</code> + <code>M</code> (respektive <code>Shift</code> + <code>Command</code> + <code>M</code> na MacOS).</p>
+<p><em>Pipes</em> jsou preferovaný způsob řetězení funkcí v Tidyverse a budou využívány ve zbytku této knihy. Jejich hlavní výhodou je, že výsledný kód je dobře čitelný, protože je možné ho číst zleva doprava, tak jak jsme zvyklí u normálního textu. Na druhou stranu, někteří lidé argumentují že takto psaný kód zabírá příliš mnoho místa.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Tidyverse vs základní <em>pipes</em>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>Pipes</em> byly v R dlouhou dobu čistě Tidyverse záležitostí. Od verze 4.1. jsou ale podporovány i základní instalací R a je tedy možné využívat tento způsob řetězení funkcí bez nutnosti instalovat další balíčky. Pipes v základním R vypadají a chovají se trochu odlišně od svých Tidyverse příbuzných. Základní verze pipes vypadá tako: <code>|&gt;</code>. Příklad s řetězením funkcí by tedy vypadal následovně:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>me_working <span class="ot">&lt;-</span> me <span class="sc">|&gt;</span> </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">wake_up</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">wash</span>() <span class="sc">|&gt;</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">eat_breakfest</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">go_to_work</span>()</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Kromě odlišného vzhledu se také obě verze chovají trochu jinak. Hlavním rozdílem je, že používají jiný <em>“placeholder”</em> pro specifikaci argumentů. Obě verze ve výchozím nastavení vloží objekt na jejich levé straně do prvního argumentu funkce napravo. Pokud bychom chtěli vložit objekt do jiného než prvního argumentu, je nutné využít právě <em>placeholder.</em> Tidyverse pipe používá jako placeholder tečku. Například, pokud bychom chtěli vložit objekt <code>iris</code> do argumentu <code>data</code>, který je na druhém místě funkce <code>lm()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span> <span class="fu">lm</span>(Sepal.Width <span class="sc">~</span> Species, <span class="at">data =</span> .)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Naproti tomu základní <em>pipe</em> využívá jako placeholder podtržítko:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">|&gt;</span> <span class="fu">lm</span>(Sepal.Width <span class="sc">~</span> Species, <span class="at">data =</span> _)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Kromě placeholderů se obě verze <em>pipes</em> liší i interním fungováním. Ve zkratce řečeno, tidyverse <em>pipe</em> je flexibilnější a umí více věcí, základní <em>pipe</em> je zhruba dvakrát až třikrát rychlejší.</p>
+<p>Pokud byste si chtěli základní verzi <em>pipe</em> vyzkoušet, můžete upravit klávesovou zkratku <code>Shift</code> + <code>Ctrl</code> + <code>M</code> tak, že půjdete do <em>Tools</em> -&gt; <em>Global Options</em> -&gt; <em>Code</em> -&gt; <em>Use native pipe operator.</em></p>
+</div>
+</div>
+</section>
+<section id="dokumentace-funkcí" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="dokumentace-funkcí"><span class="header-section-number">6.5</span> Dokumentace funkcí</h2>
+<p>Po všem tom povídání si teď možná říkate, jak si má člověk zapamatovat, co která funkce dělá, nemluvě o tom, jaké má argumenty. Naštěstí pro nás si toho moc nazpaměť pamatovat nemusíme, protože každá funkce má svou vlastní dokumentaci. Ta obsahuje popis funkce, výčet všech jejich argumentů, detaily o jejím fungování a příklady použití. Dokumentaci pro vybranou funkci můžeme zobrazit pomocí funkce <code>help()</code>, případně <code>?</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(mean)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>?mean</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Obě výše zmíněné funkce mají stejný výsledek, a to otevření dokumentace pro funkci <code>mean()</code>. Dokumentace všech funkcí má stejnou strukturu, složenou z následujících součástí.</p>
+<p>První sekcí je <em>Description</em>, která obsahuje krátký popis funkce, v tomto případě vysvětlení, že funkce <code>mean()</code> počítá aritmetický průměr.</p>
+<p>V sekci <em>Usage</em> je k vidění výchozí nastavení funkce, vidíme například, že argument <code>trim</code> má výchozí hodnotu 0 a argument <code>na.rm</code> je nastavený na FALSE.</p>
+<p>Sekce <em>Arguments</em> nepřekvapivě popisuje jednotlivé argumenty, k čemu slouží a jakých hodnot mohou nabývat.</p>
+<p>Následuje sekce <em>Value</em>, která popisuje výsledek dané funkce, tedy co dostaname, pokud funkci aplikujeme.</p>
+<p>Občas přítomná je také sekce <em>Details,</em> která poskytuje další detaily o fungování funkce. Tato sekce se objevuje hlavně u funkcí pro výpočet statistických modelů a podobně komplikovanějších funkcí.</p>
+<p><em>References</em> je klasickým seznamem literatury. Najdeme zde všechny texty citované v dokumentaci a odkazy na další užitečné práce.</p>
+<p><em>See Also</em> je seznamem příbuzných funkcí, které by uživatele mohli zajímat. Vidíme například, že je nám doporučena funkce <code>weighted.mean()</code> pro výpočet váženého průměru.</p>
+<p><em>Examples</em> je poslední sekcí dokumentace, která obsahuje ukázky použití funkce v praxi.</p>
+</section>
+<section id="vytváření-vlastních-funkcí" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="vytváření-vlastních-funkcí"><span class="header-section-number">6.6</span> Vytváření vlastních funkcí</h2>
+<p>Jedním z největších předností R je, že se při naší práci nemusíme spoléhat pouze na funkce, které pro nás připravili jiné lidé, ale můžeme si vytvořit funkce na míru naším potřebám. Vytvoření nové funkce je velmi jednoduché, pomocí funkce <code>function</code>.</p>
+<p>Funkci, kterou základní instalace R překvapivě postrádá, je výpočet počtu chybějících hodnot v proměnné. Ne, že by se jednalo o obtížný úkol. Lze k tomu využít kombinaci dvou funkcí, <code>is.na()</code> a <code>sum()</code>.</p>
+<p>Funkce <code>is.na()</code> zkontroluje, jestli každý element vektoru chybějící hodnota a vrátí nám nový logický vektor, který bude mít hodnotu <code>TRUE</code> v případě chybějících hodnot a hodnotu <code>FALSE</code> v případě těch platných. Například:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="dv">16</span>, <span class="dv">17</span>, <span class="cn">NA</span>, <span class="dv">3</span>)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(age)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  TRUE FALSE FALSE  TRUE FALSE</code></pre>
+</div>
+</div>
+<p>Jak vidíme, na první a čtvrtý element jsou chybějící hodnoty. Nyní můžeme použít funkci <code>sum()</code>, který při aplikaci na logický vektor vrátí počet <code>TRUE</code> hodnot:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(age))</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2</code></pre>
+</div>
+</div>
+<p>A opravdu, dozvěděli jsme se, že v našem vektoru jsou dvě chybějící hodnoty. Nabízí se ale otázka, jestli by se kombinace funkcí <code>sum(is.na())</code> nedala nějak zjednodušit. Přeci jen, počítat chybějící hodnoty budeme relativně často, a čím méně závorek v našem kódu, tím menší šance, že některou z nich zapomeneme uzavřít.</p>
+<p>Vytvoříme si proto vlastní funkci, která bude počítat chybějící hodnoty za nás. Taková funkce by mohla vypadat třeba takto:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>count_missings <span class="ot">&lt;-</span> <span class="cf">function</span>(var) {</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(<span class="fu">is.na</span>(var))</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Jako první musíme naší funkci vymyslet jméno. V tomto případě použijeme popisné <code>count_missings</code>. Novou funkci vytvoříme pomocí funkce <code>function()</code>. Do kulatých závorek vypíšeme, jaké argumenty by naše nová funkce měla mít. V našem případě bude stačit pouze jediný argument, a to <code>var</code>. Následují spojené závorky a uvnitř to hlavní, tedy popis toho, co má naše nová funkce dělat. V tomto případě spočítá počet chybějících hodnot. Všimněte si, že se zde znovu objevu argument <code>var</code>, který jsme definovali v předchozím kroku.</p>
+<p>A to je vše. Teď už můžeme používat naší novou funkci a ušetřit si trochu psaní:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">count_missings</span>(age)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } 
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Zkopírováno!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./jmena.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Jména objektů</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./balicky.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">R balíčky</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

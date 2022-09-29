@@ -1,0 +1,47 @@
+# První pohled na Rstudio
+
+Rstudio je *Integrated Developer Environment (IDE)*, nástroj pro ulehčení práce s programovacími jazyky. Jeho hlavní prací je pomoci vám s psaním kódu, hledáním chyb, instalací balíčků a mnohým dalším. Tato kapitola slouží jako základní představení Rstudia a některých užitečných funkcí.
+
+## Orientace v Rstudiu
+
+Prvním krokem, který učiníte téměř vždy při zapnutí Rstudia, je otevření nového skriptu. To je možné udělat pomocí klávesové zkratky `Ctrl` + `Shift` + `N` na Windows a Linuxu, případně `Cmd` + `Shift` + `N` na MacOS. A nebo můžete kliknout na *File -\> New File -\> R* *Script* v pravém horním rohu. Vaše Rstudio bude vypadat zhruba takto:
+
+![](images/rstudio-screen.png)
+
+Rstudio je rozděleno do čtyřech oblastí:
+
+**Skript** se nachází v levém horním rohu a je jedním z nejdůležitějších součástí Rstudia. Zde budete psát kód říkající R co má dělat, od importu dat až vytváření statistických modelů. Většinu času strávíte právě v tomto okně.
+
+::: callout-tip
+## Komentování kódu
+
+Jednou z nejužitečnějších vlastností skriptu je možnost komentovat si vlastni kód. Komentář vytvoříte pomocí `#`. R bude vše za tímto znakem ignorovat, čímž se vám otevírá prostor pro vlastní poznámky. Například:
+
+```{r comment-example}
+# Dnes se seznámíme s R
+```
+:::
+
+**Konzoli** najdeme v levém dolním rohu. V konzoli bude R zobrazovat výsledky vašeho kódu, upozornění a chybové hlášky, takže se ji vyplatí pozorně sledovat! I zde můžete zadávat instrukce pro R, ale pouze řádek po řádku, takže budeme preferovat psání kódu ve skriptu.
+
+V pravé vrchní části se nachází okno sloužící hned několika účelům. Tím nejdůležitějším pro začínající analytiky je **Environment**, ve kterém uvidíte importovaná data a další objekty, které během své práce vytvoříte.
+
+Poslední část Rstudia je v pravé spodní části a najdeme v ní hned několik užitečných věcí. Tou první je záložka **Files**, ve které uvidíme obsah vašeho současného *pracovního adresáře* (o tom později). Druhou důležitou záložkou je **Plots**, kde se budou zobrazovat vámi vytvořené grafy. Poslední záložkou je **Help**, obsahující dokumentaci k R a jeho funkcím. Do ní zavítáte pokaždé, pokud si nebudete jistí jak některá z funkcí funguje.
+
+## Nastavení
+
+Přestože Rstudio je možné bez větších problémů používat v jeho základním nastavení, v průběhu času si ho pravděpodobně budete chtít pro větší pohodlí. Většina nastavení Rstudia je dostupná v záložce *Tools -\> Global Options* na vrchní liště. Pokud jste se řídili našemi instrukcemi pro instalaci (viz @sec-installation ), tak už jste do nastavení Rstudia na chvíli zavítali, abyste vypnuli automatické ukládání pracoviště. Pokud jste tak ještě neučinili, silně doporučujeme to udělat teď.
+
+Možnosti nastavení, které Rstudio nabízí, jsou široké a doporučujeme si je v klidu všechny projít. Pro začátek doporučujeme věnovat pozornost třem záložkám, a to **General**, **Appearance** a **Pane Layout**. V záložce General**,** kromě již zmíněného nastavení pro ukládání pracoviště, stojí za pozornost zejména *Default working directory (when not in a project).* Toto je adresář, do kterého bude R ukládat všechny výstupy, pokud neřeknete jinak. Pokud si rádi udržujete na svém počítači pořádek, můžete R přesměrovat do vlastní složky.
+
+V záložce Appearance je možné nastavit velikost a font písma a celkový vzhled Rstudia. Pokud je na vás výchozí písmo příliš malé nebo se vám nelibí výchozí barevné schéma, zde je možné to napravit.
+
+::: callout-tip
+## Víc schémat, víc!
+
+Rstudio nabízí malý výběr barevných schémat (*themes*). Pokud vám není žádné z nich po chuti, je možné si vytvořit vlastní nebo si stáhnout schéma vytvořené jinými uživateli. K tomu je ideální stránka <https://tmtheme-editor.herokuapp.com>. Zde si můžete prohlédnout galerii schémat (gruvbox je naše oblíbené!) nebo si vytvořit vlastní. Jakmile najdete schéma, se kterým jste spokojení, stáhněte si ho a naimportujte ho v záložce Appearence.
+:::
+
+Poslední záložkou, do které mnoho uživatelů zavítá jako do jedné z prvních, je Pane Layout. Zde si můžete upravit rozložení Rstudia. Chcete mít konzoli napravo od skriptu? Nepotřebujete některou ze záložek? Zde si můžete nastavit vše k vaší spokojenosti.
+
+V menu nastavení samozřejmě najdete mnoho dalšího. Uživatelé Pythonu budou jistě potěšeni záložkou stejného jména. Programátoři mohou nastavit své version control nástroje v záložce Git/SVN. Pokud plánujete využivát Rstudio pro psaní reportů, záložky Rmarkdown a Spelling jsou pro vás. Nemusíte se ale stresovat, pokud pro většinu z těchto možností nevidíte v tuto chvíli využití. Postupem času se možná dostanete do situace, kdy se vám vyplatí s těmito možnostmi pohrát. Do té doby bude dobře sloužit výchozí nastavení.

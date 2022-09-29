@@ -1,0 +1,56 @@
+# První pohled na dataframe
+
+Dataframe je zdaleka nejběžnější objekt pro uchovávání dat v R a tato kapitola je proto věnována právě jim. Pracovat budeme s dataframem `countries`:
+
+```{r data-import}
+#| message: false
+
+library(tidyverse) # tidyverse bude od teď standardem naší práce.
+countries <- read_csv("data-raw/countries.csv")
+```
+
+## Pohled na dataframe
+
+Jako první je dobré se ujistit, že data byla importována správně. Dataframe je možné si prohlédnout pomocí `View()` (pozor, s velkým V!):
+
+```{r view}
+#| eval: false
+View(countries)
+```
+
+![Pohled na náš dataframe](images/View_example.PNG){fig-alt="View of our dataframe"}
+
+`View()` zobrazí dataframe v novém interaktivním okně, pomocí kterého lze zkontrolovat, jestli byla data nahrána správně, jestli jsou proměnné správně pojmenované a všechen text se zobrazuje bez problémů. U větších dat může být ovšem funkce být poněkud pomalá. Lepší je proto podívat se pouze na výsek dat. Funkce `head()` umožňuje zobrazit několik prvních řádků dataframu (a analogicky funkce `tail()` zobrazí poslední řádky):
+
+```{r head}
+head(countries, n = 3)
+```
+
+Poslední možností je vytisknout dataframe přímo do konzole, což však s vyjímkou velmi malých dat není příliš přehledné.
+
+## Sumarizace dataframu
+
+Balíček `dplyr` z Tidyverse nabízí o něco kompaktnější funkci pro prohlédnutí našich dat, `glimpse()`:
+
+```{r glimpse}
+glimpse(countries)
+```
+
+Alternativní možností je generická funkce `summary()`:
+
+```{r summary}
+summary(countries)
+```
+
+V některých případech nepotřebujeme prohlížet celý dataframe. Pokud si nejsme jistí, jak se jmenují proměnné v našem dataframu, pomůžeme nám funkce `names()`:
+
+```{r names}
+names(countries)
+```
+
+Celkový počet proměných lze zjistit pomocí funkce `ncol()`, případně `length()`, pro kontrolu počtu řádků potom příbuzná `nrow()`:
+
+```{r ncol-nrow}
+ncol(countries)
+nrow(countries)
+```

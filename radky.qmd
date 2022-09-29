@@ -1,0 +1,131 @@
+# Práce s řádky
+
+```{r import}
+#| echo: false
+#| message: false
+
+library(tidyverse)
+countries <- read_csv("data-raw/countries.csv")
+```
+
+Obdobně jako je funkce `select()` neocenitelným pomocníkem pro práci se sloupci dataframů, její příbuzná `filter()` nám dobře poslouží pro filtrování řádků. Tato kapitola je věnována právě jí, ale také rodině funkcí `slice()` a funkci `arrange()`.
+
+## Filtrování řádků
+
+Pro filtrování řádků je třeba trocha výrokové logiky. Základními logickými operátory v R jsou `==` (EQUAL), `|` (OR) a `&` (AND). Nepřekvapivě, pro HIGHER THAN používám `>=`, naopak pro LOWER THAN slouží `<=`. Negace se provádí pomocí vykřičníku, tedy například NOT EQUAL je `!=`.
+
+Vybaveni těmito znalostmi, filtrování řádků není obtížný úkol. Hlavní funkcí je zde `filter()`:
+
+```{r filter-example}
+filter(countries, postsoviet == "yes" & gdp > 100000)
+```
+
+Podmínky filtrování lze kombinovat, například vyfiltrovat pouze postsovětské země s hrubým domácím produktem větším než 100 000 miliónů euro.
+
+::: callout-tip
+## %in% místo \|
+
+Občas je naším cílem vyfiltrovat řádky obsahující některou z vybraných hodnot kategoriální proměnné, například všechny náboženské skupiny spadající pod křesťanství. Jednou možností je:
+
+```{r filter-multiple-bad}
+#| eval: false
+filter(countries, maj_belief == "catholic" | maj_belief == "orthodox" | maj_belief == "protestantism")
+```
+
+Tento přístup funguje, je ale zbytečně květnatý. Místo něj je možné aplikovat operátor `%in%`, pomocí kterého můžeme vyfiltrovat všechny hodnoty objevující se ve zvoleném vektoru:
+
+```{r filter-multiple-good}
+#| eval: false
+filter(countries, maj_belief %in% c("catholic", "orthodox", "protestantism"))
+```
+
+Oba tyto příkazy vedou ke stejnému výsledku, ten druhý je ale výrazně kompaktnější.
+:::
+
+Jak si jistě dokážete představit, funkce `select()` a `filter()` jsou často využívané dohromady:
+
+```{r filter-select}
+countries %>% 
+  filter(postsoviet == "yes") %>% 
+  select(country, postsoviet, life_exp)
+```
+
+## Řezání dataframů
+
+V některých případech budeme chtít filtrovat na základě pořadí řádků dataframů. K tomu nám poslouží rodina funkcí `slice` z balíčku `dplyr`.
+
+Prvním členem této rodiny je funkce `slice()`. Její aplikace je velmi podobná klasickému indexování pomocí hranatých závorek. Například výběr prvního řádku v dataframu:
+
+```{r slice-simple}
+#| eval: false
+slice(countries, 1)
+```
+
+Je ekvivalentní `countries[1, ]` a vrátí první řádek dataframu. Obdobně podobné jsou i funkce `slice(countries, -1)` a `countries[-1, ]`, které vrátí všechny řádky kromě prvního. Funkce `slice()` je však pouze základem pro řadu dalších užitečných funkcí.
+
+Další dvě funkce, které nám již svým fungováním budou povědomé jsou `slice_head()` a `slice_tail()`. Ty, obdobně jako funkce `head()` a `tail()`, vrátí prvních *n* řádků v dataframů. Na rozdíl od svých příbuzných ze základní instalace R, ovšem `slice` funkce umožňují vybrat nejen absolutní, ale i relativní počet řádků. Například pro vybrání prvních deseti procent dataframu:
+
+```{r slice-head}
+#| eval: false
+slice_head(countries, prop = 0.1)
+```
+
+Pro vybrání absolutního počtu řádku slouží argument `n`.
+
+O něco zajímavější jsou funkce `slice_max()` a `slice_min()`. Ty umožňují vybrat *n* řádků s nejvyšší, respektive nejnižší, hodnou dané proměnné. Pomocí těchto funkcí můžeme například jednoduše zjistit, které tři země v našem dataframu mají nejvyšší naději na dožití:
+
+```{r slice-max}
+slice_max(countries, order_by = life_exp, n = 3) %>% 
+  select(country, life_exp)
+```
+
+a které naopak nejnižší:
+
+```{r slice-min}
+slice_min(countries, order_by = life_exp, n = 3) %>% 
+  select(country, life_exp)
+```
+
+Funkce `slice_max()` a `slice_min()` jsem zde zkombinovaly s funkcí `select()`, abychom vybrali jen relevantní proměnné.
+
+Posledním členem rodiny je funkce `slice_sample()`, která vybere náhodné řádky dataframu. Tato funkce najde uplatnění zejména v simulačních studiích a technikách.
+
+```{r slice-sample}
+#| eval: false
+slice_sample(countries, n = 3)
+```
+
+## Group_by() {#sec-group-by}
+
+V tuto chvíli si možná někteří čtenáři říkají, jaké je využití `slice` funkcí oproti jejich klasickým variantám, jako je `head()` nebo `tail()`. Jednou z jejich velkých předností je možnost kombinovat je s funkcí `group_by()`.
+
+Funkce `group_by()` umožňuje rozdělit dataframe na podskupiny a aplikovat funkce z balíčku `dplyr` na každou z podskupin zvlášť. Podskupiny jsou definované kategorickou proměnnou v dataframu. Tímto způsobem můžeme zjistit nejen které země se těší nejvyšší naději na dožití obecně, ale i to, jak jsou na tom západní a postsovětské země zvlášť:
+
+```{r slice-groupby}
+countries %>% 
+  group_by(postsoviet) %>% 
+  slice_max(order_by = life_exp, n = 3) %>% 
+  select(country, postsoviet, life_exp)
+```
+
+Zatímco mezi západními zeměmi vedou Švýcarsko, Španělsko a Francie, v postsovětské skupině je to Německo, Slovinsko a Česká republika. Třídit je možné i pomocí většího počtu proměnných, například pro třídění podle postsovětské historie a členství v Evropské unii bychom použili `group_by(postsoviet, eu_member)`. Jak jistě tušíte, funkce `group_by()` má mnoho využití a budeme se s ní setkávat opakovaně i následujících kapitolách.
+
+## Pořadí řádků
+
+Posledním typem operace, kterou si v této kapitole představíme, je řazení řádků pomocí funkce `arrange()`. Pořadí zemí v dataframu countries podle naděje na dožití získáme jednoduše:
+
+```{r arrange}
+countries %>% 
+  arrange(life_exp) %>% 
+  select(country, life_exp)
+```
+
+Při bližším pohledu zjistíme, že země jsou seřazený vzestupně. Nejhůře se vede Bulhrasko a Litva s Lotyšskem. Co kdyby nás ale zajímaly země s nejvyšší nadějí na dožití? Pro sestupné řazení zkombinujeme funkci `arrange()` s funkcí `des()`:
+
+```{r arrange-desc}
+countries %>% 
+  arrange(desc(life_exp)) %>% 
+  select(country, life_exp)
+```
+
+Nejvyšší naději na dožití se těší Švýcarsko, se Španělskem v těsném závěsu.

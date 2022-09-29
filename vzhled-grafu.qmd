@@ -1,0 +1,326 @@
+# Vzhled grafů
+
+```{r import}
+#| echo: false
+#| message: false
+
+library(tidyverse)
+countries <- read_csv("data-raw/countries.csv")
+```
+
+Zatímco předchozí kapitoly byly věnované struktuře grafů, v této kapitole se zaměříme na jejich vzhled. Podíváme se detailněji na upravování barev, textu i podoby všech částí grafu. Pomocníky nám kromě `ggplot2` budou také balíček `scales` a `RColorBrewer`. Tyto tři balíčky jsou instalovány společně, `scales` a `RColorBrewer` ovšem nejsou aktivovány pomocí `library(tidyverse)`.
+
+V rámci této kapitoly se budeme opakovaně vracet ke sloupcovému grafu zobrazujícímu četnost kategorií proměnné `di_cat` a pro ulehčení práce si proto připravíme nový dataframe `dem_countries`, obsahující relativní frekvence všech kateogrií.
+
+```{r barplot-setup}
+#| warning: false
+#| fig-asp: 0.5
+
+dem_countries <- countries %>% 
+  count(di_cat) %>% 
+  mutate(freq = n / sum(n),
+         di_cat = fct_relevel(di_cat,
+                               "Full democracy",
+                               "Flawed democracy",
+                               "Hybrid regime"))
+
+ggplot(dem_countries,
+       aes(x = di_cat, y = freq)) +
+  geom_col()
+```
+
+## Barvy
+
+Barvy jsou v R specifikované pomocí hex kódů, tedy kombinace znaku `#` a šesti dalších číslic a písmen. Napříkad černé barvě přísluší kód `#000000`, zatímco bílá `#ffffff`. Kódy barev jsou dostupné na mnoha místech, jakým je třeba stránka <https://www.color-hex.com>. Uživatelé Rstudia mohou také využít balíček `colourpicker`, přidávající šikovný *addin* (rozšíření) Rstudio, pomocí kterého je výběr barev nadmíru snadný.
+
+Nejjednoduší je změnit barev všech sloupců najednou. Předtím, než se do toho pustíme, je ale třeba si ujasnit rozdíl mezi argumenty `color` a `fill`. Většina objektů (*geomů*) pomocí kterých `ggplot2` je složena ze dvou částí: obrysu a výplně. Barvu obrysu kontrolujeme pomocí argumentu `color`, barvu výplně pomocí `fill`. Protože u sloupcových grafů je dominantní výpln sloupců, použijeme pro změnu vzhledu právě argument `fill`, a to přímo uvnitř funkce `geom_col()`:
+
+```{r fill-simple}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(dem_countries,
+       aes(x = di_cat, y = freq)) +
+  geom_col(fill = "#008080")
+```
+
+Komplexnějším úkonem je aplikace palety barev. Základní nabídku palet, kterou přínáší balíček `RColorBrewer`, je možné zobrazit pomocí funkce `display.brewer.all()` (nesmíme ale zapomentou nejdříve balíček aktivovat!):
+
+```{r}
+#| fig-asp: 1.2
+
+library(RColorBrewer)
+
+display.brewer.all()
+```
+
+Palety jsou rozděleny do tří skupin. První skupinou jsou takzvané *sequential* palety, tedy palety vhodné pro vizualizaci stupňující se intenzity. Hodí se zejména pro jednopolární proměnné, kde nula reprezentuje absenci, jako například podíl nezaměstnaných. Druhou skupinou jsou *qualitative* palety, vhodné pro nominální proměnné, jako je převažující náboženská skupina v zemi. Poslední skupinou jsou *diverging* palety, určené pro bipolární proměnné. Tato skupina palet je vhodná pokud nízké hodnoty reprezentují opak vysokých hodnot. Příkladem bipolární proměnné je například škála demokracie-autoritářství.
+
+Pro aplikaci palety musíme nejdřív jednotlivé kategorie na ose X namapovat na barvu výplně (`fill`). Poté ke zbytku kódu přidáme funkci `scale_fill_brewer()`. Ta je součástí širší rodiny funkcí, začínajících slovem `scale_`, které kontrolují vzhled jednotlivých dimenzí. Jelikož v tuto chvíli pracujeme s dimenzí `fill`, používáme skupinu funkcí `scale_fill`. A protože je naším cílem využít paletu z `RColorBrewer`, funkce kterou hledáme je právě `scale_fill_brewer()`:
+
+```{r color-brewer}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(dem_countries,
+       aes(x = di_cat, y = freq, fill = di_cat)) +
+  geom_col() +
+  scale_fill_brewer(palette = "RdYlGn")
+```
+
+Funkce `scale_color_brewer()` má několik užitečných argumentů. Prvním z nich je `direction`, pomocí které je možné kontrolovat orientaci barev. V našem případě by bylo pravděpodobně vhodnější, aby země s rozvinutější mírou demokracie byly označeny zeleně. Toho docílíme pomocí `direction = -1`. Druhým z užitečných argumentů je `na.value`, pomocí které je možné kontrolovat barvu sloupce reprezentující chybějící hodnoty (`NA`). V tuto chvíli ja barva `NA` sloupce stejná jako barva pozadí grafu, což není úplně ideální. Použijeme proto tmavší odstín šedé, s hex kódem `#696868`:
+
+```{r color-brewer-direction}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(dem_countries,
+       aes(x = di_cat, y = freq, fill = di_cat)) +
+  geom_col() +
+  scale_fill_brewer(palette = "RdYlGn", 
+                    direction = -1,
+                    na.value = "#696868")
+```
+
+Pokud nám nevyhovuje žádná z předpřipravených palet, je možné barvy jednotlivých kategorií zadat i ručně, k čemuž využijeme funkce `scale_fill_manual()`:
+
+```{r color-manual}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(dem_countries,
+       aes(x = di_cat, y = freq, fill = di_cat)) +
+  geom_col() +
+  scale_fill_manual(values = c("#00688B", "#009ACD", "#00BFFF", "#7D7D7D"))
+```
+
+Nakonec je dobré zmínit ještě speciální typ barevných palet, takzvané *continuous* palety. Ty slouží k barevné vizualizaci spojitých proměnných. `ggplot2` nabízí dvě *continuous* palety, `gradient` pro unipolární proměnné a `viridis` pro bipolární. Obě je možné aplikovat pomocí funkcí `scale_color_continuous()` nebo `scale_fill_continuous()` podle toho, zda jde o barvu obrysu nebo barvu výplně:
+
+```{r color-continuous}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp, color = poverty_risk)) +
+  geom_point() +
+  scale_color_continuous(type = "viridis")
+
+```
+
+Pokud nám nevyhovuje žádná z palet, je možné zvolit barvy vlastní, a to hned dvěma způsoby. Prvním možností je funkce `scale_color_gradient()` (případně `scale_fill_gradient()`), pomocí které můžeme barvu minima a maxima. Funkce interpoluje barvu zbylých hodnot:
+
+```{r color-gradient}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp, color = poverty_risk)) +
+  geom_point() +
+  scale_color_gradient(low = "#33A02C", high = "#E31A1C")
+```
+
+Druhou možností je funkce `scale_color_gradient2()` (a analogicky `scale_fill_gradient2()`), pomocí které je možné specifikovat tři barvy: minima, maxima a středu. Poté jen stačí specifikovat střední hodnotu barevné škály:
+
+```{r color-gradient2}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp, color = poverty_risk)) +
+  geom_point() +
+  scale_color_gradient2(low = "#33A02C", mid = "#D6D62D", high = "#E31A1C",
+                        midpoint = 0.25)
+```
+
+## Tvar
+
+U některých geomů, například `geom_point()`, je možné určit určit jejich tvar a to pomocí argumentu `shape`. R obsahuje 26 základních tvarů, které je aplikovat pomocí jejich číselných kód. Vychozím tvarem je ten s hodnotou 1:
+
+```{r point-shapes}
+#| warning: false
+#| echo: false
+#| fig-asp: 0.2
+
+as_tibble(matrix(0:25, byrow = T, nrow = 2)) %>% 
+  mutate(x = 1:2) %>% 
+  pivot_longer(-x, names_to = "y") %>% 
+  mutate(y = str_replace(y, "V", ""),
+         y = as.numeric(y) * 0.1 + 1,
+         value = as.factor(value)) %>% 
+  ggplot(aes(x = y, y = x, label = value, shape = value)) +
+  geom_point(show.legend = FALSE, size = 5) +
+  scale_shape_manual(values = 0:25) +
+  geom_text(vjust = -1.1, size = 5) +
+  scale_y_continuous(limits = c(0.5, 2.5)) +
+  theme_void()
+```
+
+Tvar objektů je možné specifikovat pomocí stejných pravidel, jako jejich barvu. Plošně je možné zvolit tvar pomocí argumentu `shape`, v případě škál bychom využili funkce `scale_shape_manual()`:
+
+```{r point-shape-example}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp)) +
+  geom_point(shape = 24)
+```
+
+## Velikost a průhlednost
+
+Průhlednost objektu je možné upravovat argumentem `alpha`, se kterým jsme již letmo setkali v předchozí kapitole (@sec-grouped-histograms). `alpha` nabývá hodnot od 0 (zcela průhledná) do 1 (zcela neprůhledné). Argument `size` poté slouží ke kontrolove velikosti geomů a může nabývat jakkékoliv pozitivní hodnoty:
+
+```{r alpha-size}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp)) +
+  geom_point(alpha = 0.5, size = 3)
+```
+
+## Formátování os
+
+O formátování vertikální a horizontální osy stará rodina funcí `scale_x` a `scale_y`. Pokud je na dané ose numerická proměnná, použijeme funkci `scale_x_continuous()` (resp. `scale_y_continuous()`). Pokud jde o proměnnou kategorickou, využijeme funkcí `scale_x_discrete()` a `scale_y_discrete()`.
+
+U numerických proměnných jsou dvěma nejužívanějšími argumenty `limits` a `breaks`. Prvním z nich lze určit rozpětí osy, a to vektorem obsahujícím spodní a horní limit. Pokud bychom chtěli omezit rozpětí horizontální osy mezi hodnotami 0.5 a 1, použijeme `limits = c(0.5, 1)`. Pro určení pouze jednoho z limitů nahradíme druhou hodnotu `NA`, např. `c(NA, 1)`. Druhým argementem, `breaks`, poté upravíme hodnoty, které se na ose ukazují:
+
+```{r axis-continuous}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp)) +
+  geom_point() +
+  scale_x_continuous(limits = c(0.5, 1)) +
+  scale_y_continuous(breaks = 76:83)
+```
+
+Kromě toho, jaké hodnoty se na osách zobrazí, je možné upravovat i jejich formát. K tomu nám pomůže balíček `scales`, v kombinaci s argumentem `labels`. Tento balíček obsahuje sadu funkcí, jako například `number_format()`, `percent_format()` nebo `date_format()`. Funkcí `number_format()` můžeme přidat prefix (argument `prefix()`), sufix (`sufix`), převést proměnnou na jiné jednotky (`scale`) nebo upravit počet desetinných míst `accuracy` a jejich oddělovač (`decimal.mark`). Funkce `percent_format()` funguje obdobně, automaticky ale také převádí desetinná čísla na procenta:
+
+```{r scales-example}
+#| warning: false
+#| fig-asp: 0.5
+
+library(scales)
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp)) +
+  geom_point() +
+  scale_x_continuous(limits = c(0.5, 1),
+                     labels = percent_format(accuracy = 1, suffix = " %")) +
+  scale_y_continuous(breaks = 76:83,
+                     labels = number_format(suffix = " let"))
+```
+
+V argumentu `labels` je možné použít i další funkce. Pro formátování textu je možné využít například funkcí, se kterými jsme se setkali v kapitole věnované stringům (@sec-string-transformations):
+
+```{r discrete-labels}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(dem_countries,
+       aes(x = di_cat, y = freq)) +
+  geom_col() +
+  scale_x_discrete(labels = str_to_upper)
+
+```
+
+## Nadpisy, názvy a poznámky
+
+Všechny textové popisy grafů je možné ovládat pomocí funkce `labs()`. Pomocí ní můžeme určit nadpis grafu (`title`), podnadpis (`subtitle`), poznámky (`caption`) a názvy všech použitých dimenzí:
+
+```{r labels-plot}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp, color = poverty_risk)) +
+  geom_point() +
+  labs(title = "Do People Live Longer in Developed Countries?",
+       subtitle = "HDI vs Life Expectancy",
+       caption = "Data source: Eurostat 2018",
+       x = "Human Development Index",
+       y = "Life Expectancy at Birth",
+       color = "% in risk\nof poverty")
+```
+
+::: callout-tip
+## Text na více řádcích
+
+Pokud chceme aby text v grafu byl zalomený na více řádků, použijeme zvláštní znak `\n`, například `"% in risk\nof poverty"`.
+:::
+
+## Celková tématika grafu (*themes*)
+
+Poslední sekce této kapitoly je věnovaná celkové tématice grafu (anglicky *theme*). Pomocí funkce `theme` je možné ovládat všechny aspekty grafu, které nebyli popsány výše. `ggplot2` obsahuje sadu předpřipravených tématik, které můžeme aplikovat na každý graf:
+
+```{r themes-examples}
+#| warning: false
+#| fig-asp: 0.5
+#| layout-ncol: 2
+#| echo: false
+
+plot_example <- ggplot(countries,
+                       aes(x = hdi, y = life_exp)) +
+  geom_point()
+
+plot_example + theme_grey() + ggtitle("theme_grey")
+plot_example + theme_bw() + ggtitle("theme_bw")
+plot_example + theme_linedraw() + ggtitle("theme_linedraw")
+plot_example + theme_light() + ggtitle("theme_light")
+plot_example + theme_dark() + ggtitle("theme_dark")
+plot_example + theme_minimal() + ggtitle("theme_minimal")
+plot_example + theme_classic() + ggtitle("theme_classic")
+plot_example + theme_void() + ggtitle("theme_void")
+```
+
+Pro aplikaci vybrané tématiky stačí připojit její funkci ke grafu:
+
+```{r theme-linedraw}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp)) +
+  geom_point() +
+  theme_linedraw()
+```
+
+Kromě předpřipravených tématik je možné také upravovat vzhled grafu manuálně, pomocí funkce `theme()`. Tato funkce má několik desítek argumentu, které nám umožní kontrolovat i ty nejmenší detaily. My si ukážeme pouze ty nejpoužívanější.
+
+Prvním aspektem, který budeme chtít často kontrolovat, je pozice legendy. Toho docílíme pomocí argumentu `legend.position`. Ten může nabývat buď jedné ze čtyř předpřipravených pozic (`top`, `bottom`, `left` a `right`). Alternativně je možné použít dvojici koordinátů, oba koordináty mohou nabývat hodnot mezi hodnotami 0 a 1. Dvojice `c(1,1)` umístí legendu pravého horního rohu, `c(0,0)` do levého horního rohu a `c(0.5, 0.5)` přímo na střed.
+
+Dále je možné upravovat font textu, a to pomocí argumentu `text`. Ten přijímá funkci `element_text()`, pomocí které je možné specifikovat font (`family`), velikost (`size`) nebo zda má být text kurzívou/tučně (`face`). Pokud je naším cílem upravit pouze některý text, je možné využít cílené argumenty jako `title` nebo `axis.text.x`)
+
+Barvuv pozadí grafu je možné ovládat pomocí grafu. Každý graf je rozdělený do dvou částí. *Panel* je vnitřní oblast grafu, ve které se nachází geomy, zatímco *plot* je vnější oblast obsahující popisky a legendu. Vlastnosti obou se dají upravovat nezávisle na sobě pomocí argumentů `panel.backround` a `plot.backround`. Pokud náš graf obsahuje legendu, můžeme její vzhled upravit obdobně pomocí argumentu `legend.backround`.
+
+```{r theme-settings-example}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp, color = poverty_risk)) +
+  geom_point() +
+  theme(legend.position = c(0.9, 0.3),
+        text = element_text(family = "Times New Roman", size = 12),
+        panel.background = element_rect(fill = "#F5DDB1"),
+        plot.background = element_rect(fill = "#F5CE87"),
+        legend.background = element_rect(fill = "#F5CE87"))
+```
+
+::: callout-tip
+## Upravování výchozích tématik
+
+Pokud chceme upravit jednu z výchozích tématik, například `theme_linedraw()`, použijeme obě funkce za sebou:
+
+```{r theme-template-changing}
+#| eval: false
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp, color = poverty_risk)) +
+  geom_point() +
+  theme_linedraw() +
+  theme(legend.position = "bottom")
+```
+:::

@@ -1,0 +1,70 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Úvod do analýzy dat v R"
+  description: | 
+    První výprava do světa R a Tidyverse.
+  author:
+    - name: "Aleš Vomáčka"
+    - name: "Jaromír Mazák"
+  date: 'last-modified'
+  date-format: "D. M. YYYY"
+  cover-image: cover.png
+  downloads: [pdf, epub]
+  chapters:
+    - index.qmd
+    - predstaveni.qmd
+    - struktura.qmd
+    - part: "Trocha teorie"
+      chapters:
+        - instalace.qmd
+        - rstudio.qmd
+        - organizace.qmd
+        - objekty.qmd
+        - jmena.qmd
+        - funkce.qmd
+        - balicky.qmd
+    - part: "Manipulace s dataframy"
+      chapters: 
+        - import-export.qmd
+        - dataframe.qmd
+        - sloupce.qmd
+        - radky.qmd
+        - siroky-dlouhy-format.qmd
+        - spojovani-dat.qmd
+    - part: "Manipulace s proměnnými"
+      chapters: 
+        - transformace-promennych.qmd
+        - sumarizace-promennych.qmd
+        - mnoho-promennych.qmd
+        - faktory.qmd
+        - stringy.qmd
+    - part: "Vizualizace dat"
+      chapters: 
+        - obsah-grafu.qmd
+        - kategoricke-grafy.qmd
+        - numericke-grafy.qmd
+        - kombinovane-grafy.qmd
+        - facety.qmd
+        - vzhled-grafu.qmd
+license: "CC BY-NC"
+citation: true
+
+lang: cs
+
+bibliography: references.bib
+
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: darkly
+  pdf:
+    documentclass: scrreprt
+  epub:
+    epub-cover-image: cover.png
+
+editor: visual
+

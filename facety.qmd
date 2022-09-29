@@ -1,0 +1,64 @@
+# Facety
+
+```{r}
+#| echo: false
+#| message: false
+
+library(tidyverse)
+countries <- read_csv("data-raw/countries.csv")
+```
+
+Užitečným nástrojem pro vizualiazaci více skupin (nebo více proměnných) jsou facety (*facets*), zvané také *small multiples.* Ty umožňují rozdělit jeden graf do sady menších facet.
+
+## Jednorozměrné facety
+
+Rozdělení grafu na facety je přímočaré, stačí k normálnímu grafu připojit funkci `facet_wrap()`. Uvnitř ní je poté nutné specifikovat kategorickou proměnnou, podle které se budou facety dělit. Tato proměnná je zadaná v, na první pohled zvláštním formátu, jelikož ji vždy musí předcházet tilda (`~`). Proč tomu tak je bude jasnější, až začneme vytvářet facety na základě více proměnných:
+
+```{r facet-simple}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp)) +
+  geom_point() +
+  facet_wrap(~postsoviet)
+```
+
+Výsledkem jsou dva menší grafy, jeden pro západní země (nadepsaný `no`) a druhý po postsovětské (`yes`). Ve výchozím nastavení sdílí všechny dílčí grafy stejné rozpětí os. Změnit to můžeme pomocí argumentu `scale`. Pokud bychom chtěli, aby každý z facet měla svou vlastní horizontální osu, použijeme `scale = "free_x"`. Analogicky, pro vlastní vertikální osu je možné aplikovat `scale = "free_y"`. Pokud mají všechny dílčí grafy mít své vlastní osy, využijeme `scale = "free"`:
+
+```{r facet-simple-free}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp)) +
+  geom_point() +
+  facet_wrap(~postsoviet,
+             scales = "free")
+```
+
+## Vícerozměrné facety
+
+Facety je možné vytvářet na základě více než jedné proměnné, a to hned dvěma způsoby. Tím prvním je využít již známou funkcí `facet_wrap()`:
+
+```{r facet-wrap}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp)) +
+  geom_point() +
+  facet_wrap(~postsoviet + maj_belief)
+```
+
+Počet řádků v "tabulce" grafů je možné kontrolovat pomocí argumentu `nrow`, pro počet sloupců poté analogicky `ncol`. Tímto způsobem můžeme vytvořit facetu pro každou kombinaci kategorií obou proměnných. V takto nestruktorovaných facetách může ovšem být obtížné se zorientovat. Lepší variantou proto může být funkce `facet_wrap()`. I ta vytváří facety pro každou kombinaci kategorií, organizuje je ale do tabulky. U této funkce je také nejvíce zřejmé, proč se při vytváření facet využívá tilda (`~`). Jedná se totiž o formuli, pomocí které definujeme vztah mezi proměnnými. V našem případě je výsledná tabulka facet založená na vztahu proměnných `postsoviet` a `maj_belief`:
+
+```{r facet-grid}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp)) +
+  geom_point() +
+  facet_grid(postsoviet~maj_belief)
+```

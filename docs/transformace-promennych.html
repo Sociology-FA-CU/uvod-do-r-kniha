@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="cs" xml:lang="cs"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.245">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="První výprava do světa R a Tidyverse.">
+
+<title>Úvod do analýzy dat v R - 14&nbsp; Transformace proměnných</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./sumarizace-promennych.html" rel="next">
+<link href="./spojovani-dat.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Žádný výsledek",
+    "search-matching-documents-text": "Nalezené výsledky",
+    "search-copy-link-title": "Zkopírovat odkaz pro vyhledávání",
+    "search-hide-matches-text": "Skrýt další výsledky",
+    "search-more-match-text": "Další výsledek v tomto dokumentu",
+    "search-more-matches-text": "Žádná shoda v tomto dokumentu",
+    "search-clear-button-title": "Vymazat",
+    "search-detached-cancel-button-title": "Zrušit",
+    "search-submit-button-title": "Odeslat"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Transformace proměnných</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Úvod do analýzy dat v R</a> 
+        <div class="sidebar-tools-main">
+    <a href="" title="Download" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-download"></i></a>
+    <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
+        <li>
+          <a class="dropdown-item sidebar-tools-main-item" href="./Úvod-do-analýzy-dat-v-R.pdf">
+            <i class="bi bi-bi-file-pdf pe-1"></i>
+          Download PDF
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item sidebar-tools-main-item" href="./Úvod-do-analýzy-dat-v-R.epub">
+            <i class="bi bi-bi-journal pe-1"></i>
+          Download ePub
+          </a>
+        </li>
+    </ul>
+  <a href="" class="quarto-color-scheme-toggle sidebar-tool" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Předmluva</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./predstaveni.html" class="sidebar-item-text sidebar-link">R, Rstudio, Tidyverse</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./struktura.html" class="sidebar-item-text sidebar-link">Struktura knihy</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Trocha teorie</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./instalace.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Instalace softwaru</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rstudio.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">První pohled na Rstudio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./organizace.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jak si organizovat práci</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./objekty.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Typy objektů</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./jmena.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Jména objektů</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./funkce.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Funkce</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./balicky.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">R balíčky</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Manipulace s dataframy</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./import-export.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Import a export dat</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dataframe.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">První pohled na dataframe</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sloupce.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Práce se sloupci</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./radky.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Práce s řádky</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./siroky-dlouhy-format.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Široký a dlouhý formát</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spojovani-dat.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Spojování dataframů</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Manipulace s proměnnými</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./transformace-promennych.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Transformace proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sumarizace-promennych.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Sumarizace proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mnoho-promennych.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Transformace a sumarizace více proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./faktory.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Práce s faktory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stringy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Práce se stringy</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">Vizualizace dat</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./obsah-grafu.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Struktura grafů</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kategoricke-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Vizualizace kategorických proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./numericke-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Vizualizace numerických proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kombinovane-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Kombinované grafy</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./facety.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Facety</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vzhled-grafu.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Vzhled grafů</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Obsah</h2>
+   
+  <ul>
+  <li><a href="#jednoduché-transformace" id="toc-jednoduché-transformace" class="nav-link active" data-scroll-target="#jednoduché-transformace"><span class="toc-section-number">14.1</span>  Jednoduché transformace</a></li>
+  <li><a href="#transformace-po-skupinách" id="toc-transformace-po-skupinách" class="nav-link" data-scroll-target="#transformace-po-skupinách"><span class="toc-section-number">14.2</span>  Transformace po skupinách</a></li>
+  <li><a href="#řádkové-operace" id="toc-řádkové-operace" class="nav-link" data-scroll-target="#řádkové-operace"><span class="toc-section-number">14.3</span>  Řádkové operace</a></li>
+  <li><a href="#podmíněné-transformace" id="toc-podmíněné-transformace" class="nav-link" data-scroll-target="#podmíněné-transformace"><span class="toc-section-number">14.4</span>  Podmíněné transformace</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Transformace proměnných</span></h1>
+</div>
+
+<div>
+  <div class="description">
+    <p>První výprava do světa R a Tidyverse.</p>
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<p>Transformace proměnných patří mezi nejběžnější operace při práci s daty. Od standardizace proměnných, přes jejich čištění, až po vytváření proměnných nových, obsah následující kapitoly budou denní chléb každého analytika.</p>
+<p>Hlavním tahounem je zde funkce <code>mutate()</code> z balíčku <code>dplyr</code>. Přestože transformace proměnných lze provádět i bez ní, má tato funkce několik předností.</p>
+<section id="jednoduché-transformace" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="jednoduché-transformace"><span class="header-section-number">14.1</span> Jednoduché transformace</h2>
+<p>Funkce <code>mutate()</code> přijímá jako svůj první argument dataframe, dalšími argumenty jsou poté jednotlivé transformace:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gdp_milliards =</span> gdp <span class="sc">/</span> <span class="dv">1000</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">poverty_risk  =</span> poverty_risk <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, gdp, gdp_milliards, poverty_risk)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 38 × 4
+   country       gdp gdp_milliards poverty_risk
+   &lt;chr&gt;       &lt;dbl&gt;         &lt;dbl&gt;        &lt;dbl&gt;
+ 1 Belgium   450506.         451.          20.3
+ 2 Bulgaria   55182.          55.2         38.9
+ 3 Czechia   207772.         208.          12.2
+ 4 Denmark   298276.         298.          17.2
+ 5 Germany  3386000         3386           19  
+ 6 Estonia    25657.          25.7         23.4
+ 7 Ireland   324038.         324.          22.7
+ 8 Greece    184714.         185.          34.8
+ 9 Spain    1208248         1208.          26.6
+10 France   2353090         2353.          17.1
+# … with 28 more rows
+# ℹ Use `print(n = ...)` to see more rows</code></pre>
+</div>
+</div>
+<p>Zde je vidět nejen aplikace funkce <code>mutate()</code>, ale i její hlavní primární výhoda. Protože jejím výsledkem je dataframe s provedenými transformacemi, je možné na ní navázat dalšími funkcemi, jako je <code>select()</code> nebo <code>filter()</code>. Novým proměnným také můžeme jednoduše přiřadit jméno (viz <a href="jmena.html"><span>Kapitola&nbsp;5</span></a>). Pokud uložíme výsledek transformace pod novým jménem, bude vytvořena nová proměnná (v našem případě <code>gdp_milliards</code>). Pokud použijeme jméno již existující proměnné, bude přepsána hodnotami (<code>poverty_risk</code>).</p>
+<p>Jednou z analýz, která se v datasetu nabízí, je srovnání ekonomické produktivity zemí, a jednou z nejpopulárnějších metrik ekonomické produktivity je HDP. Čtenáři se znalostmi ekonomie ale již jistě tuší problém. HDP se silně odvíjí od počtu obyvatel a není tedy úplně smysluplné porovnávat obří Německo s maličkým Českem. Pro serióznější analýzu by proto bylo lepší využít standardizovanější míru, jakou je například HDP na hlavu. Tuto proměnnou náš dataset neobsahuje, nemusíme ale smutnit. Máme k dispozici jak HDP, tak počet obyvatel a od kýženého výsledku nás děli jedna matematická operace.</p>
+<p>Pro rychlé srovnání zemí by také bylo vhodné převést data do standardizovaných jednotek. Takovou jednotkou jsou mimo jiné <em>z skóry</em>, získatelné odečtením průměru proměnné od každé naměřené hodnoty a vydělením rozdílu směrodatnou odchylkou, tedy <span class="math inline">\(z_i = \frac{x_i - \bar{x}}{sd(x)}\)</span> . Protože se jedná o populární formu standardizace, R pro ni nabízí funkci <code>scale()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gdp_pc =</span> gdp <span class="sc">/</span> population,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">gdp_pc_scaled =</span> <span class="fu">scale</span>(gdp_pc)) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, gdp_pc, gdp_pc_scaled)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 38 × 3
+   country   gdp_pc gdp_pc_scaled[,1]
+   &lt;chr&gt;      &lt;dbl&gt;             &lt;dbl&gt;
+ 1 Belgium  0.0395              0.357
+ 2 Bulgaria 0.00783            -1.06 
+ 3 Czechia  0.0196             -0.534
+ 4 Denmark  0.0516              0.897
+ 5 Germany  0.0409              0.419
+ 6 Estonia  0.0194             -0.540
+ 7 Ireland  0.0671              1.59 
+ 8 Greece   0.0172             -0.640
+ 9 Spain    0.0259             -0.252
+10 France   0.0352              0.162
+# … with 28 more rows
+# ℹ Use `print(n = ...)` to see more rows</code></pre>
+</div>
+</div>
+<p>Z transformované proměnné <code>gdp_pc_scaled</code> je vidět, že z skór České republiky je -0.53, naše HDP na hlavu se tedy nachází zhruba půl směrodatné odchylky pod průměrem. Naopak Irsko se těší HDP na hlavu o 1.5 směrodatné odchylky vyšší, než je průměr všech zemí v datasetu.</p>
+</section>
+<section id="transformace-po-skupinách" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="transformace-po-skupinách"><span class="header-section-number">14.2</span> Transformace po skupinách</h2>
+<p>Ve výše zmíněných příkladech byly transformace aplikovány na vybrané proměnné jako celek. Co když ale není naším cílem transformovat všechny hodnoty stejným způsobem?</p>
+<p>Pro detailnější analýzu ekonomické produktivity zemí může být zajímavé zohlednit jejich politickou historii. Jak si například Česká republika vede ve srovnání s ostatními <em>postsovětskými</em> zeměmi? Pro zodpovězení této otázky je nutné aplikovat funkcí <code>scale()</code> na každou skupinu proměnné <code>postsoviet</code> zvlášť. Naštěstí pro nás, tato operace nemůže být jednoduší, a to díky funkci <code>group_by()</code>, se kterou jsme se již setkali při řezání dataframů (<a href="radky.html#sec-group-by"><span>Sekce&nbsp;11.3</span></a>):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(postsoviet) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gdp_pc =</span> gdp <span class="sc">/</span> population,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">gdp_pc_scaled =</span> <span class="fu">scale</span>(gdp_pc)) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, postsoviet, gdp_pc, gdp_pc_scaled)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 38 × 4
+   country  postsoviet  gdp_pc gdp_pc_scaled[,1]
+   &lt;chr&gt;    &lt;chr&gt;        &lt;dbl&gt;             &lt;dbl&gt;
+ 1 Belgium  no         0.0395             -0.245
+ 2 Bulgaria yes        0.00783            -0.781
+ 3 Czechia  yes        0.0196              0.522
+ 4 Denmark  no         0.0516              0.329
+ 5 Germany  yes        0.0409              2.89 
+ 6 Estonia  yes        0.0194              0.507
+ 7 Ireland  no         0.0671              1.07 
+ 8 Greece   no         0.0172             -1.31 
+ 9 Spain    no         0.0259             -0.894
+10 France   no         0.0352             -0.453
+# … with 28 more rows
+# ℹ Use `print(n = ...)` to see more rows</code></pre>
+</div>
+</div>
+<p>Přestože tento dataframe na první pohled vypadá velmi podobně jako ten předchozí, hodnoty proměnné <code>gdp_pc_scaled</code> jsou odlišné. Česká republika má nyní hodnotu 0.52. Nachází se tedy zhruba půl směrodatné odchylky nad průměrem ostatních <em>postsovětských</em> zemí. Naopak z skór Irska se snížil na 1.1, protože ve srovnání s ostatními <em>západními</em> zeměmi je jeho HDP na hlavu pouze jednu směrodatnou odchylku nad průměrem.</p>
+<p>Tohoto srovnání jsme dosáhli právě tím, že jsme před aplikací funkce <code>mutate()</code> rozdělili dataframe pomocí <code>group_by()</code> a všechny následující operace tedy budou prováděny pro západní a postsovětské funkce zvlášť.</p>
+<div class="callout-important callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Po použití vypněte
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Jakmile jednou aplikujete funkci <code>group_by()</code>, bude aktivní ve všech následujících krocích. To může vést ke zmatkům, zpravidla proto, že na ni zapomenete a aplikujete funkce na každou skupinu zvlášť, aniž byste si to uvědomovali. Proto pokaždé, když skončíte s transformací dat nezapomeňte seskupování ukončit pomocí <code>ungroup()</code>.</p>
+</div>
+</div>
+</section>
+<section id="řádkové-operace" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="řádkové-operace"><span class="header-section-number">14.3</span> Řádkové operace</h2>
+<p>Přesuňme se teď od ekonomické produktivitě k palčivějším tématům. Jedním z ekonomicko-sociálních problémů, se kterými se musí každá země vypořádat, jsou obyvatelé ohrožení chudobou (proměnná <code>poverty_risk</code>) a obyvatelé v materiální deprivaci (<code>material_dep</code>). Naneštěstí pro nás nemáme k dispozici podíl obyvatel ohrožených alespoň jedním z těchto rizik, můžeme ale získat alespoň konzervativní odhad. Maximální možný podíl lidí ohrožených chudobou <em>nebo</em> v materiální deprivaci je možné získat jednoduše součtem obou hodnot pro každou zemi.</p>
+<p>Tento krapet kostrbatý problém nám poslouží pro demonstraci řádkových (<em>rowwise</em>) transformací. R ve svém výchozím nastavení aplikuje funkce po sloupcích (<em>columnwise</em>). To s sebou přináší poněkud zákeřnou komplikaci při snaze sečíst dvě hodnoty na stejném řádku dataframu. Pokud chceme aplikovat funkci po řádcích, nikoliv po sloupcích, je nutné využít funkce <code>rowwise()</code>. Ta funguje velmi obdobně jako <code>group_by()</code>, a to včetně jejího “vypnutí” pomocí <code>ungroup()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">poverty_or_dep =</span> <span class="fu">sum</span>(poverty_risk, material_dep, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, poverty_or_dep)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 38 × 2
+   country  poverty_or_dep
+   &lt;chr&gt;             &lt;dbl&gt;
+ 1 Belgium           0.316
+ 2 Bulgaria          0.827
+ 3 Czechia           0.22 
+ 4 Denmark           0.24 
+ 5 Germany           0.281
+ 6 Estonia           0.35 
+ 7 Ireland           0.375
+ 8 Greece            0.708
+ 9 Spain             0.394
+10 France            0.282
+# … with 28 more rows
+# ℹ Use `print(n = ...)` to see more rows</code></pre>
+</div>
+</div>
+<p>Pomocí funkce <code>rowwise()</code> jsme získali součet podílu lidí ohrožených chudobou a lidí v materiální deprivaci pro každou ze zemí. Jak je vidět, alespoň do jedné z těchto kategorií v České republice spadá maximální 22 % obyvatel.</p>
+</section>
+<section id="podmíněné-transformace" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="podmíněné-transformace"><span class="header-section-number">14.4</span> Podmíněné transformace</h2>
+<p>Jednou z myšlenkových operací, ve které počítače vynikají, je rigidní <em>“pokud je splněna podmínka, udělej X”.</em> Pojďme toho využít.</p>
+<p>V předchozí sekci jsme porovnávali země na základě standardizovaného HDP na hlavu. Co kdybychom tuto analýzy chtěli vzít o krok dále a vytvořit novou kategoriální proměnnou, jejíž hodnota bude <code>Above average</code> pro země s nadprůměrným HDP na hlavu, a <code>Below average</code> pro země podprůměrné.</p>
+<p>K tomu nám dobře poslouží funkce <code>if_else()</code>, která má tři povinné argumenty. Tím prvním je podmínka, jejímž výsledkem musí být buď hodnota “pravda” (<code>TRUE</code>) nebo “nepravda” (<code>FALSE</code>). Druhým argumentem je operace, která bude provedena, pokud je zmíněná podmínka splněna, třetím argumentem poté nepřekvapivě operace provedené v případě nesplnění podmínky. Aplikace pro náš konkrétní případ by vypadala následovně:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gdp_pc_scaled =</span> <span class="fu">scale</span>(gdp <span class="sc">/</span> population),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">gdp_pc_cat =</span> <span class="fu">if_else</span>(gdp_pc_scaled <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">true =</span> <span class="st">"Above average"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                              <span class="at">false =</span> <span class="st">"Below average"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, gdp_pc_scaled, gdp_pc_cat)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 38 × 3
+   country  gdp_pc_scaled[,1] gdp_pc_cat   
+   &lt;chr&gt;                &lt;dbl&gt; &lt;chr&gt;        
+ 1 Belgium              0.357 Above average
+ 2 Bulgaria            -1.06  Below average
+ 3 Czechia             -0.534 Below average
+ 4 Denmark              0.897 Above average
+ 5 Germany              0.419 Above average
+ 6 Estonia             -0.540 Below average
+ 7 Ireland              1.59  Above average
+ 8 Greece              -0.640 Below average
+ 9 Spain               -0.252 Below average
+10 France               0.162 Above average
+# … with 28 more rows
+# ℹ Use `print(n = ...)` to see more rows</code></pre>
+</div>
+</div>
+<p>Co kdybychom ale chtěli, aby výsledkem operace byly více než dvě hodnoty? Možná nám přijde, že klasifikovat země pouze jako nadprůměrné a podprůměrné je příliš redukcionistické (populární to výčitka mezi sociology). Země bychom místo toho raději rozdělili do čtyř kategorií:</p>
+<ul>
+<li><p><code>below average</code> pro země se z skóre nižším než -1</p></li>
+<li><p><code>slightly below average</code> pro země v intervalu -1 až 0</p></li>
+<li><p><code>slightly above average</code> analogicky pro země mezi 0 a 1</p></li>
+<li><p><code>above average</code> pro ty se z skórem vyšším, než 1.</p></li>
+</ul>
+<p>Jednou z možností je využít řadu na sebe navazujících <code>if_else</code> funkcí. Tento postup by <em>technicky</em> fungoval, povede ale k mnoha slzám a frustracím přímo úměrným množství funkcí, které je třeba správně zřetězit. Elegantnějším řešením je využít funkci <code>case_when()</code>, která byla vytvořena právě pro tento případ:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gdp_pc =</span> <span class="fu">scale</span>(gdp <span class="sc">/</span> population),</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">gdp_pc_cat =</span> <span class="fu">case_when</span>(gdp_pc <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">~</span> <span class="st">"Below average"</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                                gdp_pc <span class="sc">&lt;=</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">"Slightly below average"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                                gdp_pc <span class="sc">&lt;=</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Slightly above average"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                                gdp_pc  <span class="sc">&gt;</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Above average"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                                <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Unknown"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, gdp_pc, gdp_pc_cat)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 38 × 3
+   country  gdp_pc[,1] gdp_pc_cat            
+   &lt;chr&gt;         &lt;dbl&gt; &lt;chr&gt;                 
+ 1 Belgium       0.357 Slightly above average
+ 2 Bulgaria     -1.06  Below average         
+ 3 Czechia      -0.534 Slightly below average
+ 4 Denmark       0.897 Slightly above average
+ 5 Germany       0.419 Slightly above average
+ 6 Estonia      -0.540 Slightly below average
+ 7 Ireland       1.59  Above average         
+ 8 Greece       -0.640 Slightly below average
+ 9 Spain        -0.252 Slightly below average
+10 France        0.162 Slightly above average
+# … with 28 more rows
+# ℹ Use `print(n = ...)` to see more rows</code></pre>
+</div>
+</div>
+<p>Funkce <code>case_when()</code> má oproti dosavadním funkcí atypickou syntax. Každá z logických podmínek je kondezovaná do formule <code>podminka ~ vysledek</code>. První řádek v této funkci, <code>gdp_pc &lt; -1 ~ "Below average"</code>, tedy říká <em>“pokud je hodnota proměnné gdp_pc menší než -1, vrať hodnotu <code>Below average</code>”</em>. Pokud tato podmínka splněná není, funkce zkontroluje podmínku následující. Podmínky jsou ověřovány jedna po druhé, přičemž podmínky na vyšších místech jsou ověřeny dříve. Speciální podmínkou je <code>TRUE ~ vysledek</code>, která je je vždy splněna. To se hodí pokud jsou v datech přítomny hodnoty, které nesplňují žádnou z předchozích podmínek. Kdy se může stát, že hodnota nesplňuje žádnou z našich podmínek? Například, pokud se jedná o hodnotu chybějící:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gdp_pc =</span> <span class="fu">scale</span>(gdp <span class="sc">/</span> population),</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">gdp_pc_cat =</span> <span class="fu">case_when</span>(gdp_pc <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">~</span> <span class="st">"Below average"</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                                gdp_pc <span class="sc">&lt;=</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">"Slightly below average"</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>                                gdp_pc <span class="sc">&lt;=</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Slightly above average"</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>                                gdp_pc  <span class="sc">&gt;</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Above average"</span>,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>                                <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Unknown"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, gdp_pc, gdp_pc_cat) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(gdp_pc))</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 3
+  country                gdp_pc[,1] gdp_pc_cat
+  &lt;chr&gt;                       &lt;dbl&gt; &lt;chr&gt;     
+1 Liechtenstein                  NA Unknown   
+2 Montenegro                     NA Unknown   
+3 Turkey                         NA Unknown   
+4 Bosnia and Herzegovina         NA Unknown   </code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } 
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Zkopírováno!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./spojovani-dat.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Spojování dataframů</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./sumarizace-promennych.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Sumarizace proměnných</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

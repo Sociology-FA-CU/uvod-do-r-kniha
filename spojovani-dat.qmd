@@ -1,0 +1,100 @@
+# Spojování dataframů
+
+```{r data-packages}
+#| echo: false
+#| message: false
+
+library(tidyverse)
+library(DT)
+
+breed_ranks  <- read_csv("data-raw/dog-ranks.csv")
+breed_traits <- read_csv("data-raw/dog-traits.csv")
+```
+
+V ideálním světě by všechna data potřebná pro naši analýzu byla připravena v jednom úhledném datasetu. Praxe je ovšem mnohem krutější a nutí nás si data čistit svépomocí. Jednou z častých nutností je spojovat větší počet dílčích datasetů dohromady, k čemuž nám poslouží sada funkcí `*_join()`.
+
+## Spojovací funkce
+
+Spojovat dva datasety lze více způsoby, všechny ale vyžadují klíč, tedy proměnou, která je přítomná v obou datframech a pomocí které budou propojeny jednotlivé řádky.
+
+![\*\_join() funkce](images/df-joins.png)
+
+Funkcí pro spojení dvou dataframů nabízí Tidyverse více. První z nich, `left_join()`, připojí k prvnímu specifikovanému dataframu všechny řádky druhého dataframu se shodnou hodnotou klíče. Řádky, které se nachází pouze v druhém dataframu, ale ne v prvním, jsou ztraceny. Analogickou funkcí je poté `right_join()`, která zachová pouze řádky s hodnotami klíče, nacházejícím se v druhém dataframu. `inner_join()` je nejpřísnější z funkcí a při spojení dataframů zachová pouze řádky s hodnotami nacházejícími se v obou datasetech. Naopak funkce `full_join()` je nejliberálnější a zachová při spojení všechna data.
+
+Pro ukázku spojovacích funkcí opustíme dataset `countries` a místo toho se podíváme do zvířecí říše, konkrétně na data z American Kennel Club. Jedná se o dva dasety, které jsou dostupné v rámci [Tidytuesday](https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-02-01/readme.md). Importovat je lze přímo ze repozitáře projektu:
+
+```{r dog-data}
+#| eval: false
+
+breed_traits <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-02-01/breed_traits.csv')
+breed_ranks <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-02-01/breed_rank.csv')
+```
+
+První z těchto datasetů obsahuje hodnocení o vlastnostech psích plemen jak byly hodnoceny členy klubu. Vlastností tu najdeme celou řadu, od délky kožichu po přátelskost nebo slintavost. Druhý dataset obsahuje informace o popularitě plemen za posledních zhruba 10 let, plus pár popisných odkazů:
+
+```{r trais-glimpse}
+names(breed_traits)
+names(breed_ranks)
+```
+
+Všimněme si, že oba datasety obsahují proměnnou `Breed`, tedy plemeno psa. To bude naším klíčem, tedy proměnou, pomocí které spojíme oba dataframy dohromady. Důvodem, proč nejsou oba datasety spojené už od začátku, je že ne všechna plemena obsažená v `breed_traits` se umístila v ročním hodnocení, a chybí tedy v `breed_ranks`. Při spojování dat je tedy na nás, jak se touto komplikací vypořádáme.
+
+První možností je vzít dataframe `breed_traits` a přilepit k němu `breed_ranks`, pomocí funkce `left_join()`. Výsledkem bude dataframe, který obsahuje všechny informace z `breed_traits` a pokud se některé plemeno neumístilo v žebříčku z `bree_ranks`, bude mít v proměnných hodnocení chybějící hodnotu:
+
+```{r left-join}
+#| eval: false
+
+left_join(breed_traits, breed_ranks, by = "Breed")
+```
+
+```{r left-join-dt}
+#| echo: false
+
+left_join(breed_traits, breed_ranks, by = "Breed") %>%
+  head(10)
+```
+
+Všimněme si, že například němečtí ovčáci nebyli hodnoceni a u proměnných `2013 Rank` až `2019 Rank` tedy mají chybějící hodnotu. Naopak pro buldoky jsou k dispozici k dispozici všechna data.
+
+Alternativou k `left_join()` je funkce `right_join()`. Ta provede velmi podobnou operaci, jako jsme viděli výše, výchozím dataframem zde ale bude `breed_ranks`.
+
+```{r right-join}
+#| eval: false
+
+right_join(breed_traits, breed_ranks, by = "Breed")
+```
+
+```{r right-join-dt}
+#| echo: false
+
+right_join(breed_traits, breed_ranks, by = "Breed") %>%
+  head(10)
+```
+
+V tomto případě již plemena jako zlatý retrívr nebo německý ovčák ve výsledném dataframu nenajdeme vůbec, protože nejsou obsažena v dataframu `breed_ranks`.
+
+::: callout-tip
+## Jak napravo, tak nalevo
+
+Výsledek funkce `left_join(breed_traits, breed_ranks)` je ekvivalentní funkci `right_join(breed_ranks, breed_traits)`.
+:::
+
+Pro zachování pouze plemen, která jsou obsažena v obou dataframech, lze aplikovat funkci `inner_join()`. Výsledný dataframe bude mít mnohem méně řádků, než ty předchozí, pouze 49, protože většina plemen není v dataframu `breed_ranks`:
+
+```{r inner-join}
+#| eval: false
+
+inner_join(breed_traits, breed_ranks, by = "Breed")
+```
+
+Poslední verzí je permisivní `outer_joint()`, která spojí oba dataframy a zachová přitom všechny řádky:
+
+```{r full-join}
+#| eval: false
+
+full_join(breed_traits, breed_ranks, by = "Breed")
+```
+
+## Kterou spojovací funkci použít?
+
+Každá z výše zmíněných funkcí se hodí pro jinou situaci. Která je ta pravá? Pokud je hlavním cílem naší práce analýza charakteristik jednotlivých plemen, bude pro nás nejužitečnější `left_join(breed_traits, breed_ranks)`. Na druhou stranu, pokud by pro naši analýzu bylo stěžejní roční hodnocení, uplatili bychom spíše `right_join(breed_traits, breed_ranks)`, protože plemena, který nebyla hodnocena, pro nás nejsou zajímavá. Pro analýzu vztahů mezi charakteristikami a hodnocením pro nás budou užitečná pouze plemena, pro která máme k dispozici všechny informace, a ty bychom získali pomocí `inner_join(breed_traits, breed_ranks)`. Nakonec, pokud by naším cílem bylo jen datasety spojit, aniž bychom přišli o jakkýkoliv data, například pro jejich uskladnění, využili bychom `full_join(breed_traits, breed_ranks)`.

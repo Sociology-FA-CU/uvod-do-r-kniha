@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="cs" xml:lang="cs"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.245">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="První výprava do světa R a Tidyverse.">
+
+<title>Úvod do analýzy dat v R - 3&nbsp; Jak si organizovat práci</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./objekty.html" rel="next">
+<link href="./rstudio.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Žádný výsledek",
+    "search-matching-documents-text": "Nalezené výsledky",
+    "search-copy-link-title": "Zkopírovat odkaz pro vyhledávání",
+    "search-hide-matches-text": "Skrýt další výsledky",
+    "search-more-match-text": "Další výsledek v tomto dokumentu",
+    "search-more-matches-text": "Žádná shoda v tomto dokumentu",
+    "search-clear-button-title": "Vymazat",
+    "search-detached-cancel-button-title": "Zrušit",
+    "search-submit-button-title": "Odeslat"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jak si organizovat práci</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Úvod do analýzy dat v R</a> 
+        <div class="sidebar-tools-main">
+    <a href="" title="Download" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-download"></i></a>
+    <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
+        <li>
+          <a class="dropdown-item sidebar-tools-main-item" href="./Úvod-do-analýzy-dat-v-R.pdf">
+            <i class="bi bi-bi-file-pdf pe-1"></i>
+          Download PDF
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item sidebar-tools-main-item" href="./Úvod-do-analýzy-dat-v-R.epub">
+            <i class="bi bi-bi-journal pe-1"></i>
+          Download ePub
+          </a>
+        </li>
+    </ul>
+  <a href="" class="quarto-color-scheme-toggle sidebar-tool" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Předmluva</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./predstaveni.html" class="sidebar-item-text sidebar-link">R, Rstudio, Tidyverse</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./struktura.html" class="sidebar-item-text sidebar-link">Struktura knihy</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Trocha teorie</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./instalace.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Instalace softwaru</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rstudio.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">První pohled na Rstudio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./organizace.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jak si organizovat práci</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./objekty.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Typy objektů</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./jmena.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Jména objektů</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./funkce.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Funkce</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./balicky.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">R balíčky</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Manipulace s dataframy</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./import-export.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Import a export dat</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dataframe.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">První pohled na dataframe</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sloupce.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Práce se sloupci</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./radky.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Práce s řádky</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./siroky-dlouhy-format.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Široký a dlouhý formát</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spojovani-dat.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Spojování dataframů</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Manipulace s proměnnými</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./transformace-promennych.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Transformace proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sumarizace-promennych.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Sumarizace proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mnoho-promennych.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Transformace a sumarizace více proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./faktory.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Práce s faktory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stringy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Práce se stringy</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">Vizualizace dat</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./obsah-grafu.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Struktura grafů</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kategoricke-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Vizualizace kategorických proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./numericke-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Vizualizace numerických proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kombinovane-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Kombinované grafy</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./facety.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Facety</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vzhled-grafu.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Vzhled grafů</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Obsah</h2>
+   
+  <ul>
+  <li><a href="#sec-rstudio-projects" id="toc-sec-rstudio-projects" class="nav-link active" data-scroll-target="#sec-rstudio-projects"><span class="toc-section-number">3.1</span>  Rstudio projekty</a></li>
+  <li><a href="#organizace-projektů" id="toc-organizace-projektů" class="nav-link" data-scroll-target="#organizace-projektů"><span class="toc-section-number">3.2</span>  Organizace projektů</a></li>
+  <li><a href="#pojmenovávání-souborů" id="toc-pojmenovávání-souborů" class="nav-link" data-scroll-target="#pojmenovávání-souborů"><span class="toc-section-number">3.3</span>  Pojmenovávání souborů</a></li>
+  <li><a href="#sec-coding-styles" id="toc-sec-coding-styles" class="nav-link" data-scroll-target="#sec-coding-styles"><span class="toc-section-number">3.4</span>  Kódovací styly</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jak si organizovat práci</span></h1>
+</div>
+
+<div>
+  <div class="description">
+    <p>První výprava do světa R a Tidyverse.</p>
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p>Pokud byste se zeptali, co dělá datového analytika dobrým analytikem, většina lidí by vám asi odpověděla, že je to dobrá znalost statistických technik. Další by možná řekli, že je to schopnost psát počítačový kód nebo vytvářet poutavé grafy. A všechny tyto věci opravdu jsou extrémně důležité. Neméně důležitou, zato však často opomíjenou schopností, je ale také schopnost efektivně organizovat svoji vlastní práci. Ta se týká všeho, od organizace souborů v počítači, až po pojmenovávání proměnných. Předtím než se vrhneme do R samotného, si tedy řekneme několik organizačních tipů.</p>
+<section id="sec-rstudio-projects" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="sec-rstudio-projects"><span class="header-section-number">3.1</span> Rstudio projekty</h2>
+<p>První tip se týká organizace souborů, se kterými pracujeme. Ty mohou být cokoliv od datasetů, dotazníků a codebooků až po vytvořené grafy a reporty. Naše první rada je zde jednoduchá: <strong>Každý projekt, na kterém pracujete, by měl mít svou vlastní složku</strong>. To se může zdát triviální, znepokojivě velké množství lidí si ovšem osvojilo zvyk ukládat všechny své soubory v jedné obří složce. Ve výsledku to vede pouze ke zmatenému hledání, který z souborů pojmenovaný <em>data-kopie3.csv</em> obsahuje data, která hledáme.</p>
+<p>Pokud používáte Rstudio, můžeme organizaci souborů usnadnit ještě o něco více. <strong>Každý projekt by měl mít svůj vlastní Rstudio projekt</strong>. Rstudio projekt je v podstatě jen složka, obsahující soubor s koncovkou <em>.Rproj.</em> To se může zdát triviální, tyto projekty jsou ale extrémně užitečné, protože umožňují Rstudiu automaticky nastavit pracovní adresář (s ním se setkáme při importu dat), ukládat historii vaší práce pro každý pracovní projekt zvlášť a mnoho dalšího. Jedná se tedy o skvělý nástroj, jak si udržet pořádek, zvláště pokud pracujete na několika projektech najednou.</p>
+<p>Nový Rstudio projekt vytvoříte kliknutím na <em>File -&gt; New Project…</em> v levém horním rohu. V otevřeném menu zvolte <em>New Directory -&gt; New Project</em> a vyberte si název a adresu, kde má být projekt vytvořen. Pokud už máte složku, ze které byste chtěli vytvořit Rstudio projekt, stačí zvolit <em>Existing Directory</em>. Po vytvoření se nový Rstudio projekt automaticky otevře. Pokud byste Rstudio projekt zavřeli, můžete ho znovu otevřít v pravém horním rohu kliknutím na malou modrou ikonu R, za kterou následuje buď <em>Project: (None)</em>, případně název současně otevřeného projektu. Na tomto místě můžete také přepínat mezi projekty nebo je zavřít.</p>
+</section>
+<section id="organizace-projektů" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="organizace-projektů"><span class="header-section-number">3.2</span> Organizace projektů</h2>
+<p>Teď, když je vaše práce organizovaná do (Rstudio) projektů, můžeme se zaměřit na to, jak organizovat jednotlivé soubory. <strong>Udržujte přehlednou a konzistentní strukturu napříč všemi projekty</strong>.</p>
+<p>Všechny vaše soubory by v rámci jednoho projektu měli být roztříděny do srozumitelně pojmenovaných podsložek. Konkrétní struktura projektu závisí na osobních preferencích a povaze práce, nám se obecně osvědčilo následující schéma:</p>
+<pre><code>project/
+|-data-raw/
+|-data-cleaned/
+|-scripts/
+|-documentation/
+|-outputs/
+|-project.Rproj</code></pre>
+<p>Složka projektu by měla obsahovat alespoň následující podsložky a soubory. V podsložce <em>data-raw</em> jsou uchována data se kterými pracujeme, a to v takové podobě, v jaké se k nám dostala. Tato syrová data nikdy nepřepisujeme! Slouží jako poslední záchrana, pokud by bylo nutné provést všechny analýzy znovu od začátku. Naproti tomu, složka <em>data-cleaned</em> je pro již zpracovaná data. Nachází se zde vyčištěná data ze složky <em>data-raw</em>, připravená k další analýze. Data v té složce můžeme přepisovat, protože v případě potřeby je můžeme vždy znovuvytvořit pomocí našich skriptů. Skripty samotné bydlí …(dramatická pauza)… ve složce <em>scripts.</em> Zde asi není nutní mnoho vysvětlovat. Ve slože <em>documentation</em> je uchována dokumentace k projektu. Zpravidla se jedná o PDF verze dotazníků, popis sběru dat, codebooky a podobně. Poslední složkou je <em>output</em>, do které ukládáme všechny naše výstupy, ať už se jedná o dílčí grafy nebo celé reporty. V kořenovém adresáři se nachází pouze soubor .Rproj (který Rstudiu říká, že tato složka je Rstudio projekt).</p>
+<p>Na konci kurzu Úvodu do R by složka vašeho Rstudio projektu mohla vypadat zhruba nějak takto:</p>
+<pre><code>uvod-do-r/
+|-data-raw/
+  |-countries.csv
+  |-cvvm-cerven-2019.csv
+|-data-cleaned/
+  |-countries-clean.csv
+|-scripts/
+  |-01-import-export.R
+  |-02-data-manipulation.R
+  |-03-data-visualization.R
+  |-04-final-homework.R
+|-documentation/
+  |-cvvm-codebook.pdf
+|-outputs/
+  |-vomacka-intro-r-homework.docx
+|-uvod-do-r.Rproj</code></pre>
+<p>Jakmile si najdete svou preferovanou strukturu svých souborů, dodržujte ji napříč všemi projekty. To vám umožní se rychle zorientovat i v projektech, na kterých jste řadu týdnů nebo dokonce měsíců nepracovali.</p>
+<p>Samozřejmě, ne všechny projekty mohou mít úplně identickou strukturu a občas je nutné strukturu složek přizpůsobit konkrétnímu projektu. I projekt, který obsahuje kód k této knize, je organizovaný výrazně jinak! Výše popsané schéma ale z naší zkušenosti představuje solidní základ pro projekty, na kterých sociální vědci zpravidla pracují.</p>
+</section>
+<section id="pojmenovávání-souborů" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="pojmenovávání-souborů"><span class="header-section-number">3.3</span> Pojmenovávání souborů</h2>
+<p>Pořádek se vyplatí udržovat nejen při organizaci souborů, ale i při jejich pojmenovávání. Nadevše ostatní <strong>by vaše soubory měli mít srozumitelná, krátká jména</strong>. Datové soubory by měli být pojmenované tak, aby bylo ze jména jasné, jaká data obsahují. Například, pro data sesbírána Centrem pro výzkum veřejného mínění v červnu 2019 preferujeme názvy jako <code>cvvm-cerven-2019.csv</code>, spíše než <code>V0619.csv</code>. Pro oddělení více slov doporučujeme používat buď <code>-</code> nebo <code>_</code>, naopak se vyhýbejte mezerám. Přestože v dnešní době si většina programů dokáže s mezerami ve jménech souborů poradit, čas od času je možné narazit na situace, kde jsou mezery problematické. Skripty by měli být očíslované v pořadí odrážejícím postup analýzy. Názvy by zpravidla měli obsahovat pouze malá písmena.</p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+“Version control” aneb konec report-v1-finalni3.docx
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Problémem, který je nám všem jistě dobře známý, je jak udržovat pořádek v souborech, které jsou průběžné aktualizovány. Ať už se jedná o textové dokumenty, které prochází korekturami a zpětnou vazbou, nebo skripty které jsou pravidelně aktualizovány, většina lidí se dříve nebo později dostane do situace, kdy zírá do obrazovky a říká si <em>“Počkat, která verze mého reportu je ta aktuální?”</em> A nedejbože pokud bychom potřebovali zjistit, čím přesně se od sebe dvě různé verze stejného dokumentu liší.</p>
+<p>Jednou možností, jak tomu předejít, je skálopevně dodržet některou pojmenovávací konvenci a poctivě číslovat každou novou verzi všech souborů. V dnešní době už ale existují i lepší řešení. Většina úložišť poskytuje službu zvanou <em>version control</em>, tedy automatické sledování provedených změn. Místo toho, abyste po každé změně vytvářeli novou kopii souboru, pracujete pouze s jednou kopií a necháte na počítači, aby zaznamenával celou historii úprav. U každé větší změny můžete do historie zanést krátkou poznámku, v čem se tato verze liší od té předchozí. Version control je dostupná pro většinu úložišť včetně <a href="https://support.google.com/a/users/answer/9308971?hl=en">Google Drive</a> a <a href="https://support.microsoft.com/en-us/office/restore-a-previous-version-of-a-file-stored-in-onedrive-159cad6d-d76e-4981-88ef-de6e96c93893">OneDrive</a>. Pokud píšete velké množství kódu, doporučujeme využít některé ze specializovaných úložišť jako je <a href="https://github.com">Github</a>.</p>
+</div>
+</div>
+</section>
+<section id="sec-coding-styles" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="sec-coding-styles"><span class="header-section-number">3.4</span> Kódovací styly</h2>
+<p>Kódovací styly (<em>coding styles</em>) představují seznam pravidel pro psaní dobře čitelného kódu. Silně <strong>doporučujeme dodržovat jeden kódovací styl</strong>. Dodržovaní vámi vybraného stylu pomůže váš kód udržovat dobře čitelný a přehledný, a to nejen pro vaše budoucí já, ale i pro vaše spolupracovníky.</p>
+<p>Jednou z typických věcí, kterou kódovací styly upravují, je pojmenovávání proměnných. Způsobů pojmenovávání proměnných existuje více, mezi ty nejpopulárnější patří následující tři:</p>
+<p><em>snake_case</em>je styl, který používá malá písmena a slova odděluje podtržítkem. Například proměnná obsahující měsíční příjem respondenta by ve snake_case stylu vypadalo jako <code>monthly_income</code>.</p>
+<p><em>camelCase</em> styl pro oddělení slov využívá velkých písmen, zbylá písmena jsou malá. Průměrný měsíční příjem by v tomto stylu byl <code>monthlyIncome</code>.</p>
+<p><em>kebab-case</em> je styl podobý snake_case, místo podtržítek ale využívá pomlček. Naše proměnná příjmu by v vypadalo jako <code>monthly-income</code>.</p>
+<p>Kód v této knize se řídí <a href="https://style.tidyverse.org/index.html">Tidyverse coding style guide</a>. To rozhodně není jediný používány styl (např. <a href="https://google.github.io/styleguide/Rguide.html">Google má svůj vlastní</a>) a rozhodně se nedá říct, že by byl lepší než všechny ostatní. V budoucnu si možná vybudujete svůj vlastní styl, ušitý na míru vašim potřebám. Ze začátku ovšem doporučujeme vybrat si jeden z populárních stylů a dát si záležet na jeho dodržování. Vaše budoucí já i vaši kolegové vám za to poděkují.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } 
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Zkopírováno!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./rstudio.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">První pohled na Rstudio</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./objekty.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Typy objektů</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

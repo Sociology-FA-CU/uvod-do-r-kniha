@@ -1,0 +1,136 @@
+# Import a export dat
+
+Předtím, než můžeme vytvářet dechberoucí grafy a komplexní modely, je nutné nejdříve naše data dostat do R. Tato kapitola bude věnovaná importu a exportu dat v nejběžnějších formátech, k čemuž využijeme balíčky `readr` a `haven`, oba součástí Tidyverse.
+
+## Pracovní adresář
+
+Předtím, než se pustíme do importu dat samotného, se musíme seznámit s konceptem pracovního adresáře (*working directory*). Pracovní adresář je výchozí složka na vašem počítači, ze kterého bude R importovat a exportovat všechny soubory, pokud mu neřeknete jinak. Cestu k vašemu současnému pracovnímu adresáři zjistíte pomocí funkce `getwd` (*get working directory*):
+
+```{r getwd}
+getwd()
+```
+
+V našem případě je pracovním adresářem složka `/Users/ales/Documents/phd/teaching/uvod-do-r-kniha`. Pokud bychom po R chtěli naimportovat nějaký datový soubor, R ho bude hledat v této složce. Stejně tak, pokud bych exportoval vytvořený graf, bude uložen do této složky. Na koncept pracovního adresáře je dobré si zvyknout rychle, protože mnoho problémů, které začínající uživatelé mají během importu dat, je způsobeno buď odkazováním na špatnou složku nebo neznalostí jejich pracovního adresáře.
+
+::: callout-tip
+## Ať se o to postará Rstudio
+
+Jednou z velkých předností Rstudio projektů (viz @sec-rstudio-projects ) je automatické nastavení pracovního adresáře do kmenové složky vašeho projektu při startu. To zaručuje, že pracovní adresář bude vždy poblíž vašich dat, což výrazně ulehčuje jejich import.
+:::
+
+Výchozí pracovní adresář (mimo Rstudio projekt) je možné nastavit v *Tools* -\> *Global Options* -\> *General*. Pracovní adresář je také možné nastavit ručně pomocí funkce `setwd()`, tuto možnost ale silně nedoporučujeme. Problém spočívá v tom, že jakákoliv adresa na vašem počítači je platná jen pro váš počítač. Pokud byste složku s vaším projektem přesunuli na jiné místo nebo poslali kolegovi, bylo by nutné měnit všechny pracovní adresáře ručně. Mnohem lepší je spoléhat na automatické nastavení pomocí Rstudio projektů.
+
+## Import dat
+
+### Comma seperated values
+
+Zdaleka nejčastějším typem souborů, se kterými se pravděpodobně setkáte, jsou takzvané *comma separated values (CSV)* soubory. Ty se dají poznat jednoduše podle koncovky `.csv`. Data tohoto typu můžeme naimportovat do R pomocí funkce `read_csv()` z balíčku `readr`, která je také součástí balíčku `tidyverse`.
+
+Možnosti, jak říct R, kde má soubor hledat, jsou dvě. Tou preferovanou je využít relativní cesty (*relative path*). Relativní cesta začíná ve vašem pracovní adresáři a můžeme jít specifikovat následovně:
+
+```{r import-relative}
+#| eval: false
+library(tidyverse) # nezapomeňte na nahrání balíčku!
+
+countries <- read_csv("data-raw/countries.csv")
+```
+
+Tento příkaz říká R, aby se v pracovním adresáři podívalo do složky `data-raw` a v ní hledalo soubor `countries.csv`. Nalezený soubor potom naimportuje jako dataframe a pojmenuje `countries`.
+
+Alternativně je možné specifikovat úplnou cestu k souboru (*full path*):
+
+```{r import-full}
+#| eval: false
+countries <- read_csv("/Users/ales/Documents/phd/teaching/uvod-do-r-kniha/data-raw/countries.csv")
+```
+
+Oproti předchozímu příkladu je plná cesta mnohem delší. Silně doporučujeme plné cesty *nevyužívat*, a to ze stejného důvodu, ze kterého byste neměli ručně nastavovat pracovní adresáře. Výše uvedená cesta bude fungovat pouze na jednom konkrétním počítači a pouze dokud zůstane složka s projektem na stejném místě. Používáním plných cest si zaděláváte na problém ve chvíli, kdy budete přesouvat svoji práci z jednoho počítače na druhý.
+
+::: callout-note
+## read_csv versus read.csv
+
+Pro import dat do R není nezbytně nutné využívat balíček `readr`, potažmo `tidyverse`. Základní instalace R obsahuje funkci `read.csv()`, pomocí které byste mohli data importovat stejným způsobem. My ale preferujeme `read_csv()`, protože je rychlejší a dává nám větší kontrolu nad tím, jak jsou data importována.
+:::
+
+Data lze stejným způsobem stahovat i z internetu:
+
+```{r import-net}
+#| eval: false
+countries <- read_csv("https://raw.githubusercontent.com/Sociology-FA-CU/Uvod_do_analyzy_dat_v_R/master/data/countries.csv")
+```
+
+Bohužel, ne všechna data uložená ve formátu `.csv` jsou opravdu hodnoty oddělené čárkami. Přestože tyto atypické formáty mohou vzniknout více způsoby, primárním zdrojem problémů je většinou Microsoft Excel. Ten je distribuován v řadě regionálních verzí, z nichž každá se chová trochu jinak. Konkrétně verze pro střední Evropu využívá pro oddělování hodnot středníky (`;`), protože středoevropské země historicky využívají čárku pro oddělení desetinných míst. To vede k řadě otravných problému při importu a exportu dat, zvláště v mezinárodních týmech.
+
+V případě, že se setkáte s datovým souborem, který nepoužívá klasické oddělovače, máte dvě možnosti. Tou první je pomocí argumentů funkce `read_csv()` ručně upravit, které hodnoty mají být viděni jako oddělovače sloupců a které jako oddělovače desetinných míst. Například:
+
+```{r import-excel}
+#| eval: false
+countries <- read_csv("data-raw/countries.csv",
+                      locale = locale(grouping_mark = ";",
+                                      decimal_mark = ","))
+```
+
+Protože problémy s importem dat produkovaných ve střední Evropě jsou extrémně časté, balíček `readr` obsahuje funkci `read_csv2()`, která plní stejný účel jako kód výše. Druhou možností je tedy ulehčit si psaní a využít ji:
+
+```{r import-excel2}
+#| eval: false
+countries <- read_csv2("data-raw/countries.csv")
+```
+
+::: callout-warning
+## Peklo jménem locale encoding
+
+Kromě problému s oddělovači se při práci s neanglickým textem setkáte pravděpodobně ještě s jedním problémem: nesprávným zobrazením českých znaků (resp. znaků, které nejsou obsaženy v anglosaské abecedě). Uchovávání textu ve výpočetní technice je komplexním problémem, pro který existuje velké množství standardů. Autoři většiny operačních systémů, včetně Linuxu a MacOS, se dnes již shodli na využívání univerzálního standardu zvaného UTF-8. Ne tak ovšem Microsoft a Windows využívá několik desítek standardů v závislosti na regionální verzi operačního systému. To vede k problémům při analýze dat, jelikož data vytvořená na jedné regionální verzi Windows se nemusí zobrazit správně na jiné regionální verzi (nebo jiném operačním systému). Pokud k tomu dojde, je nutné specifikovat standard kódování textu (*locale encoding*) manuálně. V českém prostředí se nejčastěji setkáme s encodingem `Windows-1252`, import dat by tedy vypadal následovně
+
+```{r encoding-example}
+#| eval: false
+countries <- read_csv("data-raw/countries.csv",
+                      locale = locale(encoding = "Windows-1252"))
+```
+
+Dalšími populárními verzemi je `Windows-1250`, případně již zmiňovaný `UTF-8`. Pokud žádná z těchto možností nepovede ke správnému importu dat, bůh vám pomáhej. Seznam existujících standardů je dostupný na [Wikipedii](https://en.wikipedia.org/wiki/Windows_code_page).
+:::
+
+### RDS
+
+Formát `.rds` je specifický pro R. Na rozdíl od `.csv` souborů, `.rds` formát uchovává také metadata, jako je například pořadí kategorií ve faktoru nebo atributy proměnných v dataframu. Import těchto souborů je velmi podobný importu tomu, co jsme již viděli:
+
+```{r import-rds}
+#| eval: false
+countries <- read_rds("data-raw/countries.rds")
+```
+
+`.rds` soubory nemusí obsahovat pouze jednoduchá tabulková data, ale i složitější objekty, jako jsou listy. Hodí se proto například pro ukládání vytvořených statistických modelů.
+
+### SPSS a Stata
+
+Poměrně velké množství sociálněvědních dat je uloženo ve formátech vlastních SPSS a Stata, jelikož tyto programy dlouhou dobu dominovali v akademickém prostředí. Základní instalace R neobsahuje funkce, pomocí kterých bychom mohli data v tomto formátu naimportovat, naštěstí ale pro tento účel existuje několik šikovných balíčků. Jedním z nich je balíček `haven`. Pro import dat vytvořených v SPSS:
+
+```{r import-spss}
+#| eval: false
+countries <- read_spss("data-raw/countries.sav") # funkce z balíčku haven
+```
+
+Analogicky, pro import dat ze programu Stata:
+
+```{r import-stata}
+#| eval: false
+countries <- read_stata("data-raw/countries.dta")
+```
+
+## Export dat
+
+Export dat probíhá velmi podobně, jako jejich import. Zatímco importovací funkce začínají slovesem `read_`, exportovací naopak `write_`. Například pro export ve formátu `.csv` do do složky `data-clean` v našem pracovním adresáři:
+
+```{r export-csv}
+#| eval: false
+write_csv(x = countries, file = "data-clean/countries.csv")
+```
+
+Všimněte si, že při exportu dat nepřiřazujeme výsledku funkce žádné jméno, protože nevytváříme nový objekt uvnitř R. Místo toho pomocí argumentu `x` specifikujeme, které objekt chceme exportovat, a pomocí argumentu `file` poté kam a pod jakým jménem. Analogicky bychom mohli využít funkce `write_rds()`, `write_sav` (pro export do SPSS formátu) a `write_dta()` (pro export od Stata).
+
+::: callout-caution
+## Pozor na lomítka
+
+Pokud používáte Windows, dejte si pozor na lomítka v cestách k souborům. R očekává, že budete používat *forward-slash* (`/`), tedy například `project/data-raw/countries.csv`. Naopak Windows používá v cestách *back-slash* (`\`) a cesta by tedy vypadal následovně `project\data-raw\countries.csv`. Při práci v R je nutné používat `/` pokud cestu kopírujete odjinud, je nutné lomítka ručně opravit. Uživatelé ostatních operačních systémů se patáliemi s lomítky nemusí trápit.
+:::

@@ -1,0 +1,57 @@
+# R balíčky
+
+Přestože základní instalace R teoreticky obsahuje vše, co potřebujeme pro datovou analýzu, v praxi se nám vyplatí stáhnout si rozšiřující balíčky, které pro nás připravili ostatní členové a členky R komunity. Koneckonců, proč se trápit psaním našich vlastních funkcí, což často vyžaduje netriviální programátorské a statistické znalosti, když můžeme využít léty ověřený balíček od některého z uznávaných autorů. V této kapitole si ukážeme základy instalace a udržování nových balíčku.
+
+## Instalace balíčků
+
+Většina balíčků pro R je dostupná v repozitáři zvaném [Comprehensive R Archive Network](https://cran.r-project.org) (CRAN). CRAN je spravován centrálním vývojářským týmem R a všechny balíčky v něm podstupují přísnou technickou kontrolu. Ta zajišťuje, že všechny balíčky fungují na všech mainstramových operačních systémech, mají kompletní dokumentaci a neobsahují žádný škodlivý kód (ovšem pozor na to, že CRAN neručí za věcnou správnost funkcí! To, jestli vám statistické a další funkce dají správný výsledek, je zodpovědností jednotlivých autorů). Instalace balíčků z CRAN je jednoduché, stačí použít funkci `install.packages()`:
+
+```{r pkgs-install}
+#| eval: false
+
+install.packages("tidyverse")
+```
+
+Všimněte si, že název balíčku, který chceme nainstalovat, v tomto případě `tidyverse`, musí být v úvozovkách. Tatot funkce také automaticky stáhne všechny prerekvizity potřebná pro zvolený balíček.
+
+Funkci `install.packages()` je možné použít také k aktualizaci balíčků. Pokaždé, když ji použijete, bude stažena nejnovější dostupná verze zvoleného balíčku. Seznam nainstalovaných balíčkl, pro které jsou dostupné aktuálnější verze, můžeme získat pomocí funkce `old.packages()` (bez jakkýchkoliv argumentů). Pokud máte zastaralých balíčků více, můžete je aktualizovat všechny najednou pomocí funkce `update.packages()`.
+
+## Nahrání balíčku
+
+Poté co je balíček nainstalován, je před jeho použitím třeba ještě nahrát ("zapnout"). R nenahrává všechny nainstalované balíčky, aby zbytečně neplýtvalo paměti. Nahrát balíček je nutné pokaždé, když restartujete R. Nahrání samotné je jednoduchý proces pomocí funkce `library()`:
+
+```{r pkgs-library}
+#| eval: false
+
+library(tidyverse)
+```
+
+Všimněte si, že u funkce `library()` už název balíčku nemusí být v uvozovkách (ale může, pokud preferujete konzistenci).
+
+::: callout-note
+## *install.packages* versus *library*
+
+Začínající uživatele si občas nejsou jistí rozdílem mezi funkcemi `install.packages()` a `library()`, potažmo mezi instalací a nahráním balíčku. Instalace balíčku je proces zahrnující stažení balíčku z internetu a jeho následné nahrání. To je nutné udělat pouze jednou a balíček od té chvíle bude na vašem počítači. Nahráním balíček aktivujete, což vám umožní přístup k jeho funkcím. Nahrávat balíčky je nutné pokaždé, když spustíte R.
+:::
+
+Pokud se během analýzy rozhodnete, že již balíček nepotřebujete, můžete ho vypnout pomocí funkce `detach()`. Tím přijdete o funkce v něm obsažené, až do chvíle, kdy znovu použijete funkci `library()`. Pokud chcete balíček odinstalovat úplně, použijte funkci `remove.packages()`. Ovšem pozor! Tato funkce smaže daný balíček z vašeho počítače. Pokud si své rozhodnutí v budoucnu rozmyslíte, budete si muset balíček znovu stáhnout a nainstalovat.
+
+## Konflikty mezi balíčky
+
+Protože jsou balíčky pro R vytvářeny nezávisle na sobě velkým množstvím lidí, dostanou se čas od času do vzájemného konfliktu. Nejčastějším konfliktem je, že dva různí autoři použijí pro své funkce stejný název. Příkladem může být balíček `dplyr`, součást Tidyverse, který obsahuje funkci `filter()`. Funkce `filter()` je už ale obsažená v balíčku `stats`, který je součástí základní instalace. Pokud k situaci je tato dojde, R bude preferovat funkci pocházející z balíčku, který byl nahrán později (v tom případě tedy `dplyr`). Pokud bychom chtěli využít funkci `fitler()` z balíčku `stats`, he nutné specifikovat v jakého balíčku (v odborném žargonu *namespace*) ji má R hledat, čehož docílíme pomocí `::` v tomto formátu:
+
+```{r conflict-stats}
+#| eval: false
+
+stats::filter()
+```
+
+Analogicky, pokud bychom chtěli použít verzi z dplyr, použili bychom `dplyr::filter()`.
+
+## Kde hledat balíčky
+
+Už jsme zmínili, že většinu balíčků, které budete potřebovat, je možné získat z CRAN. Kromě něj ale existují i další repozitáře, na kterých vývojáři sdílí svou práci.
+
+Tím nejpolárnějším je dnes [Github](https://github.com/topics/r). Tato stránka je populární nejen u uživatelů R, ale i všech ostatních jazyků. dalšími populárními možnostmi jsou [R-forge](https://r-forge.r-project.org) a, zvláště u kolegů z biologie a chemie, [Bioconductor](https://www.bioconductor.org).
+
+Tyto repozitáře se od CRAN liší ve dvou ohledech. Tím prvním je, že balíčky nejsou zdaleka tak přísně kontrolovány, co se týče kvality. To na jednu stranu urychluje proces publikace, na druhou stranu musí být koncoví uživatelé opatrnější ohledně toho, co instalují na svůj počítač. Druhým aspektem je, že instalace z těchto repozitářů zpravidla vyžaduje více kroků, než jen využití `install.packages()`. Doporučujeme konzultovat dokumentaci k balíčkům v těchto repozitářích. Proces instalace ovšem není o tolik náročnější.

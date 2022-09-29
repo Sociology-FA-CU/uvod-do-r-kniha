@@ -1,0 +1,84 @@
+# Práce se sloupci
+
+```{r import}
+#| echo: false
+#| message: false
+
+library(tidyverse)
+countries <- read_csv("data-raw/countries.csv")
+```
+
+První dimenzí dataframu jsou sloupce, reprezentující zpravidla naše proměnné. Pro práci se sloupci nabízí Tidyverse šikovnou funkci `select()` a pár jejích příbuzných. V této kapitole si ukážeme, jak efektivně vybírat sloupce v dataframu, přejmenovávat je a řadit podle našich přání.
+
+## Výběr sloupců
+
+Předmětem analýzy v mnoha případech není celý dataframe, ale pouze jeho výsek. Základní aplikace již zmíněné funkce `select()` je přímočará. Prvním argumentem je dataframe, který chceme filtrovat, zbylými sloupce, které chceme zachovat:
+
+```{r select-example}
+select(countries, country, life_exp, postsoviet)
+```
+
+Pokud by naším cílem bylo se některého sloupce zbavit, využijeme mínusu (`-`), podobně jako u indexování (viz. @sec-nested-objects ). Pro vyřazení více sloupců využijeme již dobře známou funkci `c()`:
+
+```{r select-negative}
+select(countries, -c(country, life_exp, postsoviet))
+```
+
+## Pomocné funkce {#sec-helpers}
+
+Ručně vypisovat všechny proměnné, které chceme vybrat, je u větších dataframů zdlouhavá činnost. Naštěstí pro nás obsahuje balíček `dplyr` řadu pomocných funkcí (*selection helpers*).
+
+Nejzákladnější pomocnou funkcí je `:`, která vybere všechny sloupce v rozpětí. Například, pro vybrání `country`, `area` a všech proměnných mezi nimi:
+
+```{r helpers-colon}
+#| eval: false
+select(countries, country:area)
+```
+
+Pokud chceme vybrat všechny proměnné v dataframu, nemusíme využívat `:`, stačí využít funkci `everything()`. Možnost vybrat úplně všechny proměnné se nemusí zdát na první pohled užitečná, nachází ale často využití při převodu dat mezi širokým a dlouhým formátem (viz. níže).
+
+Sadou užitečných pomocných funkcí jsou `starts_with()`, `ends_with()` a `contains()`. Funkce `starts_with()` vybere všechny sloupce začínající stejnými znaky, `ends_with()` naopak všechny sloupce končící stejně. `contains()` identifikuje sloupce, jejichž název obsahuje specifikovaný řetězec znaků. Například pro vybrání všech proměnných, jejichž název obsahuje podtržítko:
+
+```{r helpers-contains}
+#| eval: false
+select(countries, contains("_"))
+```
+
+Poslední pomocnou funkcí, kterou si zde ukážeme, je `where()`. Pomocí ní lze vybrat všechny sloupce splňující danou logickou podmínku. Pro vybrání všech numerických proměnných:
+
+```{r helpers-where}
+#| eval: false
+select(countries, where(is.numeric))
+```
+
+Analogicky by bylo možné aplikovat funkce `is.character`, `is.factor` nebo `is.logical`. Tyto funkce jsou uvnitř `where()` použity bez závorek.
+
+Dokumentace k pomocným funkcím je dostupná pomocí `help("tidyr_tidy_select")`.
+
+## Přejmenovávání proměnných
+
+Ne vždy budeme spokojeni s tím, jak jsou naše proměnné pojmenované. Způsobů, jak proměnnou přejmenovat je řada, preferovanou metodou v v rámci Tidyverse je využít funkci `rename()`. Její aplikace je jednoduchá, nové jméno je vždy specifikované ve formátu `nove_jmeno = stare_jmeno`. Pokud by se nám například nelíbilo jméno proměnné `uni_prc`, můžeme ho změnit na výstižnější `university_educated`. Tady poprvé narážíme na řetězení funcí pomocí *pipes*, představených v kapitole věnované funkcím (@sec-pipes):
+
+```{r rename-simple}
+countries %>% 
+  rename(university_educated = uni_prc) %>% 
+  select(country, university_educated)
+```
+
+Dataframe `countries` již není obsažen ve funkci `filter()`, ale je do ní poslán skrze *pipe* (`%>%`). Vzpomeňme si, že *pipe* vezme objekt na její levé straně a vloží ho do prvního argumentu funkce napravo.
+
+O něco komplexnější funkcí je `rename_with()`. Ta umožňuje přejmenovávat proměnné funkce programátorsky. Co kdybychom například chtěli převést názvy proměnných ze *snake_case* na *kebab-case*? Jediné, co pro to musíme udělat je změnit podtržítka v názvech proměnných na pomlčky. Jednou možností by bylo ručně přepsat názvy všech proměnných. Efektivnější variantou je využít funkce `rename_with()` v kombinaci s funkcí `str_replace()`:
+
+```{r rename-with}
+countries %>% 
+  rename_with(str_replace, pattern = "_", replacement = "-") %>% 
+  select(country, contains("-"))
+```
+
+## Pořadí proměnných
+
+Pořadí proměnných v dataframu je možné upravovat pomocí funkce `relocate()`. Tu je možné využít pro jednotlivé proměnné i v kombinaci s pomocnými funkcemi. Pomocí argumentů `.before` a `.after` je možné určit novu pozici nových sloupců. Pokud bychom chtěli oddělit numerické proměnné od kategoriálních, využijeme následující kombinací funkcí:
+
+```{r relocate}
+relocate(countries, where(is.numeric), .after = last_col())
+```

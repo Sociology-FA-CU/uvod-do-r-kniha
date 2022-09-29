@@ -1,0 +1,134 @@
+# Transformace proměnných
+
+```{r data-packages}
+#| echo: false
+#| message: false
+
+library(tidyverse)
+countries <- read_csv("data-raw/countries.csv")
+```
+
+Transformace proměnných patří mezi nejběžnější operace při práci s daty. Od standardizace proměnných, přes jejich čištění, až po vytváření proměnných nových, obsah následující kapitoly budou denní chléb každého analytika.
+
+Hlavním tahounem je zde funkce `mutate()` z balíčku `dplyr`. Přestože transformace proměnných lze provádět i bez ní, má tato funkce několik předností.
+
+## Jednoduché transformace
+
+Funkce `mutate()` přijímá jako svůj první argument dataframe, dalšími argumenty jsou poté jednotlivé transformace:
+
+```{r mutate-example}
+countries %>% 
+  mutate(gdp_milliards = gdp / 1000,
+         poverty_risk  = poverty_risk * 100) %>% 
+  select(country, gdp, gdp_milliards, poverty_risk)
+```
+
+Zde je vidět nejen aplikace funkce `mutate()`, ale i její hlavní primární výhoda. Protože jejím výsledkem je dataframe s provedenými transformacemi, je možné na ní navázat dalšími funkcemi, jako je `select()` nebo `filter()`. Novým proměnným také můžeme jednoduše přiřadit jméno (viz @sec-names). Pokud uložíme výsledek transformace pod novým jménem, bude vytvořena nová proměnná (v našem případě `gdp_milliards`). Pokud použijeme jméno již existující proměnné, bude přepsána hodnotami (`poverty_risk`).
+
+Jednou z analýz, která se v datasetu nabízí, je srovnání ekonomické produktivity zemí, a jednou z nejpopulárnějších metrik ekonomické produktivity je HDP. Čtenáři se znalostmi ekonomie ale již jistě tuší problém. HDP se silně odvíjí od počtu obyvatel a není tedy úplně smysluplné porovnávat obří Německo s maličkým Českem. Pro serióznější analýzu by proto bylo lepší využít standardizovanější míru, jakou je například HDP na hlavu. Tuto proměnnou náš dataset neobsahuje, nemusíme ale smutnit. Máme k dispozici jak HDP, tak počet obyvatel a od kýženého výsledku nás děli jedna matematická operace.
+
+Pro rychlé srovnání zemí by také bylo vhodné převést data do standardizovaných jednotek. Takovou jednotkou jsou mimo jiné *z skóry*, získatelné odečtením průměru proměnné od každé naměřené hodnoty a vydělením rozdílu směrodatnou odchylkou, tedy $z_i = \frac{x_i - \bar{x}}{sd(x)}$ . Protože se jedná o populární formu standardizace, R pro ni nabízí funkci `scale()`:
+
+```{r mutate-scale}
+countries %>% 
+  mutate(gdp_pc = gdp / population,
+         gdp_pc_scaled = scale(gdp_pc)) %>% 
+  select(country, gdp_pc, gdp_pc_scaled)
+```
+
+Z transformované proměnné `gdp_pc_scaled` je vidět, že z skór České republiky je -0.53, naše HDP na hlavu se tedy nachází zhruba půl směrodatné odchylky pod průměrem. Naopak Irsko se těší HDP na hlavu o 1.5 směrodatné odchylky vyšší, než je průměr všech zemí v datasetu.
+
+## Transformace po skupinách
+
+Ve výše zmíněných příkladech byly transformace aplikovány na vybrané proměnné jako celek. Co když ale není naším cílem transformovat všechny hodnoty stejným způsobem?
+
+Pro detailnější analýzu ekonomické produktivity zemí může být zajímavé zohlednit jejich politickou historii. Jak si například Česká republika vede ve srovnání s ostatními *postsovětskými* zeměmi? Pro zodpovězení této otázky je nutné aplikovat funkcí `scale()` na každou skupinu proměnné `postsoviet` zvlášť. Naštěstí pro nás, tato operace nemůže být jednoduší, a to díky funkci `group_by()`, se kterou jsme se již setkali při řezání dataframů (@sec-group-by):
+
+```{r mutate-group-by}
+countries %>% 
+  group_by(postsoviet) %>% 
+  mutate(gdp_pc = gdp / population,
+         gdp_pc_scaled = scale(gdp_pc)) %>% 
+  ungroup() %>% 
+  select(country, postsoviet, gdp_pc, gdp_pc_scaled)
+```
+
+Přestože tento dataframe na první pohled vypadá velmi podobně jako ten předchozí, hodnoty proměnné `gdp_pc_scaled` jsou odlišné. Česká republika má nyní hodnotu 0.52. Nachází se tedy zhruba půl směrodatné odchylky nad průměrem ostatních *postsovětských* zemí. Naopak z skór Irska se snížil na 1.1, protože ve srovnání s ostatními *západními* zeměmi je jeho HDP na hlavu pouze jednu směrodatnou odchylku nad průměrem.
+
+Tohoto srovnání jsme dosáhli právě tím, že jsme před aplikací funkce `mutate()` rozdělili dataframe pomocí `group_by()` a všechny následující operace tedy budou prováděny pro západní a postsovětské funkce zvlášť.
+
+::: callout-important
+## Po použití vypněte
+
+Jakmile jednou aplikujete funkci `group_by()`, bude aktivní ve všech následujících krocích. To může vést ke zmatkům, zpravidla proto, že na ni zapomenete a aplikujete funkce na každou skupinu zvlášť, aniž byste si to uvědomovali. Proto pokaždé, když skončíte s transformací dat nezapomeňte seskupování ukončit pomocí `ungroup()`.
+:::
+
+## Řádkové operace
+
+Přesuňme se teď od ekonomické produktivitě k palčivějším tématům. Jedním z ekonomicko-sociálních problémů, se kterými se musí každá země vypořádat, jsou obyvatelé ohrožení chudobou (proměnná `poverty_risk`) a obyvatelé v materiální deprivaci (`material_dep`). Naneštěstí pro nás nemáme k dispozici podíl obyvatel ohrožených alespoň jedním z těchto rizik, můžeme ale získat alespoň konzervativní odhad. Maximální možný podíl lidí ohrožených chudobou *nebo* v materiální deprivaci je možné získat jednoduše součtem obou hodnot pro každou zemi.
+
+Tento krapet kostrbatý problém nám poslouží pro demonstraci řádkových (*rowwise*) transformací. R ve svém výchozím nastavení aplikuje funkce po sloupcích (*columnwise*). To s sebou přináší poněkud zákeřnou komplikaci při snaze sečíst dvě hodnoty na stejném řádku dataframu. Pokud chceme aplikovat funkci po řádcích, nikoliv po sloupcích, je nutné využít funkce `rowwise()`. Ta funguje velmi obdobně jako `group_by()`, a to včetně jejího "vypnutí" pomocí `ungroup()`:
+
+```{r mutate-rowwise}
+countries %>% 
+  rowwise() %>% 
+  mutate(poverty_or_dep = sum(poverty_risk, material_dep, na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  select(country, poverty_or_dep)
+```
+
+Pomocí funkce `rowwise()` jsme získali součet podílu lidí ohrožených chudobou a lidí v materiální deprivaci pro každou ze zemí. Jak je vidět, alespoň do jedné z těchto kategorií v České republice spadá maximální 22 % obyvatel.
+
+## Podmíněné transformace
+
+Jednou z myšlenkových operací, ve které počítače vynikají, je rigidní *"pokud je splněna podmínka, udělej X".* Pojďme toho využít.
+
+V předchozí sekci jsme porovnávali země na základě standardizovaného HDP na hlavu. Co kdybychom tuto analýzy chtěli vzít o krok dále a vytvořit novou kategoriální proměnnou, jejíž hodnota bude `Above average` pro země s nadprůměrným HDP na hlavu, a `Below average` pro země podprůměrné.
+
+K tomu nám dobře poslouží funkce `if_else()`, která má tři povinné argumenty. Tím prvním je podmínka, jejímž výsledkem musí být buď hodnota "pravda" (`TRUE`) nebo "nepravda" (`FALSE`). Druhým argumentem je operace, která bude provedena, pokud je zmíněná podmínka splněna, třetím argumentem poté nepřekvapivě operace provedené v případě nesplnění podmínky. Aplikace pro náš konkrétní případ by vypadala následovně:
+
+```{r if-else}
+countries %>% 
+  mutate(gdp_pc_scaled = scale(gdp / population),
+         gdp_pc_cat = if_else(gdp_pc_scaled > 0,
+                              true = "Above average",
+                              false = "Below average")) %>% 
+  select(country, gdp_pc_scaled, gdp_pc_cat)
+```
+
+Co kdybychom ale chtěli, aby výsledkem operace byly více než dvě hodnoty? Možná nám přijde, že klasifikovat země pouze jako nadprůměrné a podprůměrné je příliš redukcionistické (populární to výčitka mezi sociology). Země bychom místo toho raději rozdělili do čtyř kategorií:
+
+-   `below average` pro země se z skóre nižším než -1
+
+-   `slightly below average` pro země v intervalu -1 až 0
+
+-   `slightly above average` analogicky pro země mezi 0 a 1
+
+-   `above average` pro ty se z skórem vyšším, než 1.
+
+Jednou z možností je využít řadu na sebe navazujících `if_else` funkcí. Tento postup by *technicky* fungoval, povede ale k mnoha slzám a frustracím přímo úměrným množství funkcí, které je třeba správně zřetězit. Elegantnějším řešením je využít funkci `case_when()`, která byla vytvořena právě pro tento případ:
+
+```{r case-when}
+countries %>% 
+  mutate(gdp_pc = scale(gdp / population),
+         gdp_pc_cat = case_when(gdp_pc < -1 ~ "Below average",
+                                gdp_pc <= 0 ~ "Slightly below average",
+                                gdp_pc <= 1 ~ "Slightly above average",
+                                gdp_pc  > 1 ~ "Above average",
+                                TRUE ~ "Unknown")) %>% 
+  select(country, gdp_pc, gdp_pc_cat)
+```
+
+Funkce `case_when()` má oproti dosavadním funkcí atypickou syntax. Každá z logických podmínek je kondezovaná do formule `podminka ~ vysledek`. První řádek v této funkci, `gdp_pc < -1 ~ "Below average"`, tedy říká *"pokud je hodnota proměnné gdp_pc menší než -1, vrať hodnotu `Below average`"*. Pokud tato podmínka splněná není, funkce zkontroluje podmínku následující. Podmínky jsou ověřovány jedna po druhé, přičemž podmínky na vyšších místech jsou ověřeny dříve. Speciální podmínkou je `TRUE ~ vysledek`, která je je vždy splněna. To se hodí pokud jsou v datech přítomny hodnoty, které nesplňují žádnou z předchozích podmínek. Kdy se může stát, že hodnota nesplňuje žádnou z našich podmínek? Například, pokud se jedná o hodnotu chybějící:
+
+```{r case-when-missing}
+countries %>% 
+  mutate(gdp_pc = scale(gdp / population),
+         gdp_pc_cat = case_when(gdp_pc < -1 ~ "Below average",
+                                gdp_pc <= 0 ~ "Slightly below average",
+                                gdp_pc <= 1 ~ "Slightly above average",
+                                gdp_pc  > 1 ~ "Above average",
+                                TRUE ~ "Unknown")) %>% 
+  select(country, gdp_pc, gdp_pc_cat) %>% 
+  filter(is.na(gdp_pc))
+```

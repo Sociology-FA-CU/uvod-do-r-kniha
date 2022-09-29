@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="cs" xml:lang="cs"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.245">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="První výprava do světa R a Tidyverse.">
+
+<title>Úvod do analýzy dat v R - 4&nbsp; Typy objektů</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./jmena.html" rel="next">
+<link href="./organizace.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Žádný výsledek",
+    "search-matching-documents-text": "Nalezené výsledky",
+    "search-copy-link-title": "Zkopírovat odkaz pro vyhledávání",
+    "search-hide-matches-text": "Skrýt další výsledky",
+    "search-more-match-text": "Další výsledek v tomto dokumentu",
+    "search-more-matches-text": "Žádná shoda v tomto dokumentu",
+    "search-clear-button-title": "Vymazat",
+    "search-detached-cancel-button-title": "Zrušit",
+    "search-submit-button-title": "Odeslat"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Typy objektů</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Úvod do analýzy dat v R</a> 
+        <div class="sidebar-tools-main">
+    <a href="" title="Download" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-download"></i></a>
+    <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
+        <li>
+          <a class="dropdown-item sidebar-tools-main-item" href="./Úvod-do-analýzy-dat-v-R.pdf">
+            <i class="bi bi-bi-file-pdf pe-1"></i>
+          Download PDF
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item sidebar-tools-main-item" href="./Úvod-do-analýzy-dat-v-R.epub">
+            <i class="bi bi-bi-journal pe-1"></i>
+          Download ePub
+          </a>
+        </li>
+    </ul>
+  <a href="" class="quarto-color-scheme-toggle sidebar-tool" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Předmluva</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./predstaveni.html" class="sidebar-item-text sidebar-link">R, Rstudio, Tidyverse</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./struktura.html" class="sidebar-item-text sidebar-link">Struktura knihy</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Trocha teorie</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./instalace.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Instalace softwaru</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rstudio.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">První pohled na Rstudio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./organizace.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jak si organizovat práci</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./objekty.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Typy objektů</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./jmena.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Jména objektů</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./funkce.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Funkce</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./balicky.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">R balíčky</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Manipulace s dataframy</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./import-export.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Import a export dat</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dataframe.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">První pohled na dataframe</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sloupce.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Práce se sloupci</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./radky.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Práce s řádky</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./siroky-dlouhy-format.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Široký a dlouhý formát</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spojovani-dat.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Spojování dataframů</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Manipulace s proměnnými</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./transformace-promennych.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Transformace proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sumarizace-promennych.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Sumarizace proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mnoho-promennych.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Transformace a sumarizace více proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./faktory.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Práce s faktory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stringy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Práce se stringy</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">Vizualizace dat</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./obsah-grafu.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Struktura grafů</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kategoricke-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Vizualizace kategorických proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./numericke-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Vizualizace numerických proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kombinovane-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Kombinované grafy</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./facety.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Facety</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vzhled-grafu.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Vzhled grafů</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Obsah</h2>
+   
+  <ul>
+  <li><a href="#atomové-vektory" id="toc-atomové-vektory" class="nav-link active" data-scroll-target="#atomové-vektory"><span class="toc-section-number">4.1</span>  Atomové vektory</a></li>
+  <li><a href="#sec-factors" id="toc-sec-factors" class="nav-link" data-scroll-target="#sec-factors"><span class="toc-section-number">4.2</span>  Faktory</a></li>
+  <li><a href="#matice-a-tabulky" id="toc-matice-a-tabulky" class="nav-link" data-scroll-target="#matice-a-tabulky"><span class="toc-section-number">4.3</span>  Matice a tabulky</a></li>
+  <li><a href="#listy" id="toc-listy" class="nav-link" data-scroll-target="#listy"><span class="toc-section-number">4.4</span>  Listy</a></li>
+  <li><a href="#dataframy" id="toc-dataframy" class="nav-link" data-scroll-target="#dataframy"><span class="toc-section-number">4.5</span>  Dataframy</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-objects" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Typy objektů</span></span></h1>
+</div>
+
+<div>
+  <div class="description">
+    <p>První výprava do světa R a Tidyverse.</p>
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p>Jednou z velkých životních pravd je, že vše v R je objekt. Některé objekty jsou velmi jednoduché, jiné mají komplexní strukturu. Každý objekt s má své využití a všechna data, se kterými budeme pracovat, budou uložena v některém z nich. Vyplatí se proto mít alespoň základní přehled o tom, s jakými typy objekty se v R můžeme setkat.</p>
+<section id="atomové-vektory" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="atomové-vektory"><span class="header-section-number">4.1</span> Atomové vektory</h2>
+<p>Nejzákladnějšími objekty je takzvané atomické vektory (<em>atomic vectors</em>). Atomické vektory jsou základním stavebním kamenem R a všechny ostatní objekty, se kterými se setkáme, z nich vychází. Každý vektor je složen z určitého počtu elementů, tedy dílčích částí. Atomový vektor s jedním elementem představuje základní jednotku informace. Příkladem takového vektoru je:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="st">"Fred"</span></span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Fred"</code></pre>
+</div>
+</div>
+<p>Výše zmíněný je takzvaný <em>character</em> vektor, obsahující jeden element, <code>Fred</code>. Vektory ale mohou obsahovat i více elementů:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="st">"Fred"</span>, <span class="st">"Daphne"</span>, <span class="st">"Velma"</span>, <span class="st">"Shaggy"</span>, <span class="st">"Scooby"</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Fred"   "Daphne" "Velma"  "Shaggy" "Scooby"</code></pre>
+</div>
+</div>
+<p>Na rozdíl od předchozího příkladu, tento vektor obsahuje pět elementů. Všimněte si, že elementy jsou spojeny do jednoho vektoru pomocí funkce <code>c()</code> (zkratka pro <em>combine</em>). R zná čtyři typy atomových vektorů:</p>
+<table class="table">
+<caption>Typy atomových vektorů</caption>
+<colgroup>
+<col style="width: 20%">
+<col style="width: 58%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Typ</th>
+<th>Popis</th>
+<th>Příklady</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>character</td>
+<td>Písmena a další znaky. Poznáte je podle toho, že elementy jsou “obaleny” úvozkovami (<code>"</code> nebo <code>'</code>).</td>
+<td><code>"Fred"</code>, <code>"?"</code>, <code>"1"</code></td>
+</tr>
+<tr class="even">
+<td>integer</td>
+<td>Celá čísla. Spolu s typem <em>double</em> tvoří skupinu numerických (<em>numeric</em>) vektorů.</td>
+<td><code>-1</code>, <code>316</code>, <code>17</code></td>
+</tr>
+<tr class="odd">
+<td>double</td>
+<td>Desetinná čísla. Zkratka pro <em>double precision floating point format</em>. Spolu s typem <em>integer</em> tvoří skupinu numerických (<em>numeric</em>) vektorů.</td>
+<td><code>1.32</code>, <code>0.1</code>, <code>-9.0</code></td>
+</tr>
+<tr class="even">
+<td>logical</td>
+<td>Binární vektor, který může nabývat pouze dvou hodnota: pravda (<em>TRUE</em>) a nepravda (<em>FALSE</em>).</td>
+<td><code>TRUE</code>, <code>FALSE</code></td>
+</tr>
+</tbody>
+</table>
+<p>(Technicky existují ještě dva další typy atomových vektorů, <em>raw</em> a <em>complex</em>, s těmi se ovšem běžný uživatel nikdy nesetká, takže je přeskočíme.)</p>
+<div class="callout-caution callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+1 není “1”
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Při práci s R je třeba si dát pozor na to, že ne vše, co vypadá jako číslo, nutně číslo je. R vám s radostí spočítá průměr vektoru <code>c(1,2,3)</code>, pokud byste se pokusili spočítat průměr vektoru <code>c("1", "2", "3")</code>, narazíte na problém a chybovou hlášku. Proč? Protože zatímco první vektor je typu <em>numeric</em> (konkrétně <em>integer</em>), druhý vektor je typu <em>character</em>. R tedy druhý vektor vidí v podstatě jako písmena a pro písmena se průměr spočítat přeci nedá!</p>
+</div>
+</div>
+<p>Pro atomové vektory platí, že jejich elementy musí být stejného typu. Není tedy možné vytvořit atomový vektor, který by byl kombinací znaků a čísel (<code>c(18, "Fred")</code>. Pokud se to pokusíte, R vás buď zastaví nebo převede všechny elementy do stejného typu (<code>c("18", "Fred")</code>). Na toto automatické převádění elementů typů si dávejte pozor, jedná se o častý zdroj chyb a problémů.</p>
+<p>Kromě běžných hodnot, kterých mohou elementy nabývat, existují tři speciální hodnoty, se kterými se budeme setkávat. Těmi jsou <code>NA</code> a <code>NULL</code> a<code>NaN</code>. <code>NA</code> představuje chybějící hodnotu ve statistickém smyslu slova. Setkáme se s ní pokud respondenti odmítnou odpovědět na některou z otázek v dotazníkovém šetření nebo pokud R nemá dostatek informací pro výpočet nějaké veličiny. Jedná se tedy o hodnotu existující, ale nám neznámou. Naproti tomu <code>NULL</code> reprezentuje absenci platné hodnoty. Setkáme se s ní v situaci, kdy žádné pozorování v datasetu neodpovídá námi specifikovaným filtrům. Hodnota <code>NaN</code> je zkratkou pro <em>“Not a Number”</em>. Pokud se s ní setkáte, znamená to zpravidla, že jste se dopočítali někam, kam jste nechtěli.</p>
+</section>
+<section id="sec-factors" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="sec-factors"><span class="header-section-number">4.2</span> Faktory</h2>
+<p>Komplikovanějším typem vektoru jsou takzvané faktory. Jedná se v podstatě <em>integer</em> vektory, jejichž hodnotám bylo přiřazeno slovní označení (<em>label</em>):</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] Agree    Neutral  Disagree
+Levels: Agree Disagree Neutral</code></pre>
+</div>
+</div>
+<p>Přestože se faktory na první pohled tváří jako běžné <em>character</em> vektory, každé kategorii byla přiřazena číselná hodnota. V našem případě <code>"Agree" = 1</code>, <code>"Disagree = 2</code>, <code>"Neutral = 3"</code> (všimněte si, že číselné hodnoty byly přiřazeny podle abecedního pořadí slovních označení). Toho mnoho R funkcí využívá při statistických výpočtech, v rámci kterých je třeba zakódovat kategorické proměnné do číselných hodnot. S faktory se proto v datové analýze setkáme velmi často, ať už se bude jednat o odpovědi na likertovské položky v dotazníkových šetřeních, název bydliště nebo třeba název prodaného produktu.</p>
+<p>Další důležitou vlastností faktoru je, že mohou nabývat pouze hodnot, které byly definovány při jejich vytvoření:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">factor</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="st">"Agree"</span>, <span class="st">"Neutral"</span>, <span class="st">"Disagree"</span>, <span class="st">"Don't know"</span>),</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Agree"</span>, <span class="st">"Neutral"</span>, <span class="st">"Disagree"</span>))</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] Agree    Neutral  Disagree &lt;NA&gt;    
+Levels: Agree Neutral Disagree</code></pre>
+</div>
+</div>
+<p>Přestože se v “datech” se vyskytují čtyři různé hodnoty, hodnota <code>"Don't know"</code> byla po vytvoření faktoru převedena na <code>NA</code>. Důvodem je, že jsme při vytváření našeho faktoru uvedli pouze tři platné hodnoty: <code>"Agree"</code>, <code>"Neutral"</code>, <code>"Disagree"</code> a žádná další nebude naším faktorem akceptována. Tato vlastnost se hodí zejména v situacích, kdy víme, jakých hodnot může proměnná nabývat, například u likertovských položek, a všechny ostatní naměřené hodnoty jsou nutně chybné.</p>
+<p>Nakonec ještě zmiňme, že kromě klasických faktorů existují také takzvané <em>ordered factors</em>. Historicky se jednalo o faktory, které nemají pevně dané pouze to, jakých hodnot mohou elementy nabývat, ale i v jakém pořadím mají být seřazeny. Většina současných funkcí mezi klasickými a <em>ordered</em> faktory nerozlišuje, takže se jimi zpravidla nemusíte trápit.</p>
+<p>Klasický faktor lze vytvořit funkcí <code>factor()</code>, ordered faktor poté pomocí funkce <code>ordered()</code>.</p>
+</section>
+<section id="matice-a-tabulky" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="matice-a-tabulky"><span class="header-section-number">4.3</span> Matice a tabulky</h2>
+<p>Do této chvíle jsme viděli pouze jednorozměrné vektory, jako je například řada jmen v <em>character</em> vektoru. V datové analýze se ale budeme běžně setkávat i s vícerozměrnými objekty, z nichž tím nejzákladnějším je matice (<em>matrix</em>). Jedná se o starou známou matici, kterou si můžete pamatovat z hodin matematiky:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    1    2    3
+[2,]    4    5    6
+[3,]    7    8    9</code></pre>
+</div>
+</div>
+<p>V příkladu výše vidíme dvourozměrnou matici s devíti elementy. Matice mohou mít i více dimenzí a v takovém případě jim říkáme <em>arrays.</em></p>
+<p>Matice jsou samozřejmě extrémně důležité pro jakoukoliv manipulaci s daty. Pokud si již ovšem z hodin lineární algebry mnoho nepamatujete, nemusíte panikařit. Mnoho funkcí sice matice interně využívá, jejich uživatelé to ovšem často ani nepostřehnout. Matematické operace jsou v R značně abstrahované a většina běžných datových analytiků proto s maticemi interaguje minimálně. Pokud byste je někdy potřebovali vytvořit, poslouží vám k tomu funkce <code>matrix()</code> a <code>array()</code>.</p>
+<p>Typem objektu, se kterým se setkáte o něco častěji, je tabulka (<em>table</em>). Tabulky jsou také maticemi, jejichž dimenzím byla přiřazena slovní označení. Nejčastěji se s tabulkami setkáme při agregací vektorů. Příkladem tabulky je například</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Dislike    Like 
+      7      13 </code></pre>
+</div>
+</div>
+<p>Tato tabulka je výsledkem funkce <code>table()</code>, aplikované na atomový <em>character</em> vektor obsahující sedmkrát hodnotu <code>Dislike</code> a třináctkrát hodnotu <code>Like</code>. Studenti sociálních věd také jistě budou znát kontingenční tabulky, tedy frekvenční tabulky pro dvě nebo více proměnných:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>         Preference
+Transport Dislike Like
+     Bike       4    6
+     Bus        5    5
+     Car        4    6</code></pre>
+</div>
+</div>
+<p>Jak matice, tak tabulky, mohou nepřekvapivě obsahovat pouze numerické elementy.</p>
+</section>
+<section id="listy" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="listy"><span class="header-section-number">4.4</span> Listy</h2>
+<p>Všechny předchozí typy objektů mohli uchovávat pouze elementy stejného typu. Realita je ovšem komplikovanější a je na nás, abychom se jí přizpůsobili.</p>
+<p>Základním typem objektu pro uchovávání elementů různého typu je list:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] 1
+
+[[2]]
+[1] "Fred"
+
+[[3]]
+[1] TRUE</code></pre>
+</div>
+</div>
+<p>Listy mohou uchovávat objekty různých typů, v podstatě bez jakýchkoliv omezení. List může dokonce obsahovat jiný list! Poradí si dokonce i s objekty různé délky:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] "Fred"   "Daphne" "Velma"  "Shaggy" "Scooby"
+
+[[2]]
+[1]  42.0   1.3 666.0
+
+[[3]]
+[1]  TRUE FALSE
+
+[[4]]
+[[4]][[1]]
+[1] "Car"
+
+[[4]][[2]]
+[1] "Bus"
+
+[[4]][[3]]
+[1] "Bike"</code></pre>
+</div>
+</div>
+<p>Díky své flexibilitě se listy využívají primárně pokud chceme uchovávat velmi různorodá data na jednom místě. Většina výstupů statistických analýz bude právě ve formě listu. List je možné vytvořit funkcí <code>list()</code>.</p>
+</section>
+<section id="dataframy" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="dataframy"><span class="header-section-number">4.5</span> Dataframy</h2>
+<p>To nejlepší jsme si nechali nakonec. Zdaleka nejužitečnějším typem objektu pro datového analytika je <em>dataframe:</em></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>      V1 V2    V3
+1   Fred 16 FALSE
+2 Daphne 16 FALSE
+3  Velma 15 FALSE
+4 Shaggy 17 FALSE
+5 Scooby  3  TRUE</code></pre>
+</div>
+</div>
+<p>Dataframy slouží stejnému účelu jako spreadsheety v jiných softwarech. Je v nich uchovávaná drtivá většina všech dat a pracuje s nimi většina funkcí, se kterými se v této knize setkáme. U běžného dataframu platí, že každý sloupec představuje jednu proměnnou a každý řádek jedno pozorování (např. respondenta).</p>
+<p>Zvláštní vlastností dataframů je, že všechny jeho elementy musí být stejně dlouhé. Jinak řečeno, pro každou proměnnou musíme mít stejný počet pozorování. Co když tomu tak není? V takovém případě vstupuje do hry hodnota <code>NA</code>, zmíněná dříve, která kóduje chybějící hodnoty. Například v následujícím dataframu máme ve druhém sloupci jen čtyři hodnoty, plus jednu <code>NA</code>:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>      V1 V2    V3
+1   Fred 16 FALSE
+2 Daphne 16 FALSE
+3  Velma 15 FALSE
+4 Shaggy NA FALSE
+5 Scooby  3  TRUE</code></pre>
+</div>
+</div>
+<p>Jak jsme již zmínili, naprostá většina naší práce bude probíhat v dataframech. Konkrétně budeme využívat speciální typ dataframu, zvaný <em>tibble</em>. <em>Tibble</em> je druh dataframu pocházející z Tidyverse, a většinou se chová identicky jako jeho základní varianta. Hlavním rozdílem je o něco hezčí vzhled.</p>
+<p>Klasický dataframe je možný vytvořit funkcí <code>data.frame()</code>, tibble poté pomocí funkce <code>tibble()</code>.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } 
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Zkopírováno!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./organizace.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jak si organizovat práci</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./jmena.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Jména objektů</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -1,0 +1,75 @@
+# Jména objektů {#sec-names}
+
+## Přiřazování jmen
+
+V předchozí kapitole jsme si představili nejdůležitější typy objektů. Řekli jsme si také, jak můžeme objekty vytvářet. *Character* vektor bychom například vytvořili takto:
+
+```{r vector-example}
+c("Fred", "Daphne", "Velma", "Shaggy", "Scooby")
+```
+
+S takto vytvořeným vektorem se nám ale nebude dobře pracovat. To proto, že R ho vytvoří, vytiskne do konzole a promptně zapomene. Pokud si chceme data odložit na později, je nutné objektu, ve kterém jsou uložena, přiřadit jméno. Přiřazování jmen je velmi jednoduché:
+
+```{r vector-name-example}
+name <- c("Fred", "Daphne", "Velma", "Shaggy", "Scooby")
+```
+
+V tomto případě jsme našemu vektoru přiřadili jméno `name`. Obsah vektoru nebyl vytisknut v konzoli. Místo toho ho R uložilo do paměti a pokud používáte Rstudio, můžete ho vidět v pravém horním rohu v záložce Environment. K přiřazování jmen se využívá operátor `<-`, který nejsnadněji vytvoříte pomocí klávesové `Alt` + `-` (resp. `option` + `-` na MacOS). Alternativně můžete použít `=`, výsledek bude stejný:
+
+```{r vector-name-alternative}
+name = c("Fred", "Daphne", "Velma", "Shaggy", "Scooby")
+```
+
+Jakmile má objekt přiřazené jméno, můžeme na něj v budoucnu odkazovat. Pokud bychom chtěli zjistit kolik elementů náš vektor má, můžeme použít funkci `length()`:
+
+```{r name-call-example}
+length(name)
+```
+
+Jak je vidět, objekt `name` obsahuje pět elementů.
+
+::: callout-note
+## "\<-" nebo "=" ?
+
+Někteří čtenáři si teď možná nejsou jistí, který z operátorů by měli používat pro pojmenovávání objektů, `<-` nebo `=`? Krátce řečeno, na vaší volbě nezáleží.
+
+Pro delší odpověď je třeba znát trochu historie. R původně vzniklo na základě jazyka jménem S, který pro pojmenovávání objektů používal právě `<-`. Tento operátor převzalo i R, primárně pro zpětnou kompatibilitu. Od doby, kdy lidé ještě používali S, již dnes uběhlo skoro 20 let a zpětná kompatibilita s tímto jazykem není moc důležitá. Naopak přibylo uživatelů, kteří kromě R používají i jazyky jako Python a Javascript, využívající `=` operátor. Tito uživatelé přirozeně tíhnou k využívání `=` ve všech situacích.
+
+Technicky vzato existuje velmi malé množství případů, kdy na rozdílu mezi `<-` a `=` záleží. Operátor `<-` má výší prioritu než `=`, což znamená, že pokud se R dostane do situace, kdy neví, který z nich vyhodnotit dřív, vybere si `<-`. V praxi k takovým situacím ale dochází naprosto minimálně. Zájemci o více detailů viz <https://stackoverflow.com/a/51564252>.
+:::
+
+Jména můžeme stejným přiřazovat i elementům uvnitř složitějších objektů než jsou vektory, jako jsou listy a dataframy. Pokud bychom chtěli vytvořit dataframe a pojmenovat jednotlivé sloupce (proměnné), udělali bychom to následovně:
+
+```{r naming-dataframe}
+gang <- data.frame(name   = c("Fred", "Daphne", "Velma", "Shaggy", "Scooby"),
+                   age    = c(16, 16, 15, 17, 3),
+                   is_dog = c(FALSE, FALSE, FALSE, FALSE, TRUE))
+```
+
+Náš nový dataframe můžeme zobrazit v konzoli pomocí funkce `print()`:
+
+```{r call-dataframe}
+print(gang)
+```
+
+Nejenže můžeme pracovat s naším dataframem pomocí jeho jména (`name`), ale každý sloupec dataframu má jméno, které jsme muß přiřadili. O tom, jak pracovat s jednotlivými sloupci, si povíme v příští kapitole.
+
+::: callout-tip
+## Jména elementů
+
+Méně používaná, ale občas užitečná, je možnost pojmenovávat jednotlivé elementy vektoru. Například:
+
+```{r naming-elements}
+c(Fred = 16, Daphne = 16, Velma = 15, Shaggy = 17, Scooby = 3)
+```
+
+To se hodí zejména v například případech, kdy chceme mít informaci o to, co jednotlivé hodnoty znamenají, ale nechceme pro ně vytvářet novou proměnnou v dataframu.
+:::
+
+## Pravidla pojmenovávání
+
+Přestože R nabízí značnou volnost v tom, jak své objekty pojmenujete, je nutné dodržovat alespoň některá pravidla. Jména musí začínat buď písmenem nebo tečkou. Pokud začínají tečkou, druhý znak nesmí být číslice (například `.2scale` tedy není použitelné jméno). Jména také mohou obsahovat pouze písmena, číslice, tečky nebo podtržítka (`_`). Žádné *\$*, *\~* a podobně.
+
+Následující slova také nemůžou být jmény objektů: `if`, `else`, `repeat`, `while`, `function`, `for`, `in`, `next`, `break`, `TRUE`, `FALSE`, `NULL`, `Inf`, `NaN`, `NA`, `NA_integer_`, `NA_real_`, `NA_complex_`, `NA_character_` a `…`. Těmto výrazům se říká rezervovaná slova a jsou využívaná pro vnitřní fungování R. Už jsme se například setkali s výrazem `NA`, který je rezervován pro vyjádření chybějících hodnot.
+
+Kromě těchto pravidel, které musíte dodržovat ať se vám to líbí nebo ne, také silně doporučujeme, aby jména vašich objektů byla krátká, ale srozumitelná. Věk respondentů dotazníkového šetření by měl být ideálně uložen v proměnné `age`, spíše než `I2` nebo `age_of_respondents`. Řiďte se také jednou z jmenovacích konvencí popsaných v kapitole [Jak si organizovat práci](organizace.qmd). My osobně preferujeme *snake_case*, tedy všechna písmena malá a slova oddělená podtržítkem.

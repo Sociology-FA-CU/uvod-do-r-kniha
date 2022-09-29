@@ -1,0 +1,167 @@
+# Transformace a sumarizace více proměnných
+
+```{r import}
+#| echo: false
+#| message: false
+
+library(tidyverse)
+countries <- read_csv("data-raw/countries.csv")
+```
+
+V předchozích dvou kapitolách jsme si představili, jak transformovat a sumarizovat proměnné. Vždy jsme však pracovali maximálně s jednou nebo dvěma proměnnými najednou. V praxi ovšem nejsou neobvyklé situace, ve kterých je nutné aplikovat určitou funkci na desítky, ne-li stovky proměnných najednou. Naštěstí pro nás, Tidyverse pro tyto příložitosti nabízí funkci `across()`.
+
+## Transformace většího množství proměnných {#sec-across-mutate}
+
+Dataset `countries` obsahuje několik kategoriálních proměnných, mezi nimi `postsoviet`, `eu_member`, `maj_belief` a `di_cat`. Všechny tyto proměnné jsou typu *character*, pro analýzu by ovšem bylo lepší je převést na typ *factor* (pro typy objektů viz @sec-objects).
+
+Jednou možností je aplikovat funkci `as.factor()` na každou proměnnou zvlášť:
+
+```{r multiple-basic}
+countries %>% 
+  mutate(postsoviet = as.factor(postsoviet),
+         eu_member  = as.factor(eu_member),
+         maj_belief = as.factor(maj_belief),
+         di_cat     = as.factor(di_cat)) %>% 
+  select(postsoviet, eu_member, maj_belief, di_cat) %>% 
+  head(5)
+```
+
+Tímto kódem dosáhneme našeho cíle, nejedná se však o nejelegantnější řešení, jelikož opakovaně aplikujeme stejnou funkci na každou z proměnných zvlášť. To nejen náš kód prodlužuje, ale zároveň zvyšuje šanci, že na některém řádku uděláme chybu. Alternativou je funkce `across()`:
+
+```{r multiple-across}
+countries %>% 
+  mutate(across(.cols = c(postsoviet, eu_member, maj_belief, di_cat),
+                .fns  = as.factor)) %>% 
+  select(postsoviet, eu_member, maj_belief, di_cat) %>% 
+  head(5)
+```
+
+Funkce `across()` má dva nezbytné argumenty. Prvním z nich je `.col`, pomocí kterého specifikujeme proměnné, na které chceme naši funkci aplikovat. Argument `.fns` poté specifikuje funkci samotnou. Výsledek je stejný jako v předchozím případě, náš kód je ale kompaktnější.
+
+Tímto ovšem výhody funkce `across()` nekončí. Proměnné je v ní možné specifikovat nejen tím, že je vyjmenuje jednu po druhé, ale i pomocí pomocných funkcí, se kterými jsme se již setkali v kapitole věnované výběrů sloupců (@sec-helpers).
+
+Pokud bychom například chtěli zaokrouhlit všechny numerické proměnné v datasetu na dvě desetinná místa, není nutné jejich názvy vypisovat ručně. Stačí využít kombinace funkcí `where()` a `is.numeric()`:
+
+```{r across-helpers}
+countries %>% 
+  mutate(across(.cols = where(is.numeric),
+                .fns  = round, 2)) %>% 
+  select(where(is.numeric)) %>% 
+  head(5)
+```
+
+V rámci `across()` je také možné specifikovat argumenty pro aplikovanou funkci. Výše jsem určili, že numerické proměnné mají být zaoukrouhlené na dvě desetinná místa pomocí `.fns = round, 2`, kde `2` je argument funkce `round()`. Alternativně bychom mohli využít takzvanou tilda notaci (*tilde notation*):
+
+```{r across-tilde}
+countries %>% 
+  mutate(across(.cols = where(is.numeric),
+                .fns  = ~round(., 2))) %>% 
+  select(where(is.numeric)) %>% 
+  head(5)
+```
+
+Na rozdíl od předchozího příkladu, funkci `round()` zde předchazí tilda (`~`) a prvním argumentem je `.`. Tato tečka (`.`) slouží jako *placeholder* pro proměnné dosazované do funkce `round()`. Jinak řečeno, funkce `across()` postupně dosadí každou proměnnou specifikovanou pomocí argumentu `.cols` na místo placeholderu `.`. Tilda notace je o něco komplexnější, než předchozí způsob, je ale o mnoho flexibilnější, protože nám umožňuje kontrolovat, do kterého argumentu budou námi proměnné dosazeny.
+
+## Sumarizace většího množsví proměnných
+
+Funkci `across()` je možné aplikovat v rámci `summarise()` identicky jako v případě `mutate()`. Toho využijeme primárně pro výpočet deskriptivních statistik. Stejně jako v předchozích kapitál, i zde můžeme můžeme funkce navazovat na sebe:
+
+```{r across-summarise}
+countries %>% 
+  summarise(across(.cols = where(is.numeric),
+                   .fns  = mean, na.rm = TRUE)) %>% 
+  mutate(across(.cols = everything(),
+                .fns = round, 2))
+```
+
+Všimněme si, že při výpočtu průměru numerických proměnných bylo nutné odstranit chybějící proměnné pomocí `na.rm = TRUE` (s tímto argumentem jsme se již setkali, viz @sec-fn-arguments). Všechny získané průměry jsme poté zaokrouhlili pomocí `mutate()`.
+
+Výsledkem jsou data v širokém formátu (@sec-wide-long). Pro čitelnost bude lepší je převést do formátu dlouhého:
+
+```{r across-pivot}
+countries %>% 
+  summarise(across(.cols = where(is.numeric),
+                   .fns  = mean, na.rm = TRUE)) %>% 
+  mutate(across(.cols = everything(),
+                .fns = round, 2)) %>% 
+  pivot_longer(cols = everything(),
+               names_to = "variable",
+               values_to = "mean")  
+```
+
+## Analýza po skupinách
+
+Stejně v předchozích kapitolách, i zde můžeme aplikovat funkci `group_by()` pro skupinovou sumarizaci (a transformaci) dat:
+
+```{r across-groupby}
+countries %>% 
+  group_by(eu_member) %>% 
+  summarise(across(.cols = where(is.numeric),
+                   .fns  = mean, na.rm = TRUE)) %>% 
+  mutate(across(.cols = -eu_member,
+                .fns = round, 2))
+```
+
+Výsledkem je dataframe, který sumarizuje numerické proměnné pro západní a postsovětské země zvlášť. Všimněme si, že při zaokrouhlování je nutné funkci `round()` aplikovat na všechny proměnné s vyjímkou proměnné `eu_member`.
+
+Stejně jako v předchozí sekci, i zde je pro čitelnost lepší převést data do dlouhého formátu. Výsledkem bude dataset vhodný pro vizualizaci nebo statistické modelování:
+
+```{r across-groupby-longer}
+countries %>% 
+  group_by(eu_member) %>% 
+  summarise(across(.cols = where(is.numeric),
+                   .fns  = mean, na.rm = TRUE)) %>% 
+  mutate(across(.cols = -eu_member,
+                .fns = round, 2)) %>% 
+  pivot_longer(cols = -eu_member,
+               names_to = "variable",
+               values_to = "mean")
+```
+
+Na rozdíl od počítače, lidským čtenářům tento formát zpravdila nepřijde příliš přirozený. Ideálně proto data převedeme zpět do širšího formátu, abychom mohli jednoduše porovnat, která skupina zemí si vede lépe:
+
+```{r across-groupby-wider}
+countries %>% 
+  group_by(eu_member) %>% 
+  summarise(across(.cols = where(is.numeric),
+                   .fns  = mean, na.rm = TRUE)) %>% 
+  mutate(across(.cols = -eu_member,
+                .fns = round, 2)) %>% 
+  pivot_longer(cols = -eu_member,
+               names_to = "variable",
+               values_to = "mean") %>% 
+  pivot_wider(names_from = eu_member,
+              values_from = mean) %>% 
+  mutate(difference = no - yes)
+```
+
+## Sumarizace více proměnných bez použití `across()`
+
+Přestože je kombinace funkcí `summarise()` a `across()` velmi užitečná, výsledný dataset není vždy ve formátu, se kterým je jednoduché dále pracovat, zvláště pokud aplikujeme více než jednu funkci najednou. Existuje ovšem trik, využívající převedu mezi širokým a dlouhým formátem, kterým si můžeme práci ulehčit.
+
+Naším cílem může být spočítat průměr, směrodatnou odchylku, maximum a minimum všech numerickách proměnných. Jednou variantou je aplikovat funkci `across()` a specifikovat více funkcí pomocí `lst()`. Tato funkce umožňuje aplikovat několik funkcí v rámci jednoho `across()` Výsledek ovšem není příliš vzhledný:
+
+```{r}
+countries %>% 
+  summarise(across(.cols = where(is.numeric),
+                   .fns  = lst(mean, sd, min, max), na.rm = TRUE))
+```
+
+Výsledek není nepoužitelný, abychom se ovšem dostali k čitelné tabulce, museli bychom několikrát využít převodu mezi širokým a dlouhým formátem.
+
+Alternativním způsobem je vybrat proměnné, se kterými chceme pracovat, převést data do dlouhého formátu a poté již aplikovat klasickou funkci `summarise()`. Nakonec jen výsledky zaokrouhlíme:
+
+```{r summarise-multiple-alt}
+countries %>% 
+  select(where(is.numeric)) %>% 
+  pivot_longer(everything()) %>% 
+  group_by(name) %>% 
+  summarise(mean = mean(value, na.rm = TRUE),
+            sd   = sd(value, na.rm = TRUE),
+            min  = min(value, na.rm = TRUE),
+            max  = max(value, na.rm = TRUE)) %>% 
+  mutate(across(.cols = where(is.numeric),
+                .fns = round, 2))
+```
+
+Hlavní výhodou této metody je, kromě podle našeho názoru větší přehlednosti, že umožňuje specifikovat argumenty pro každou statistickou funkci zvlášť.

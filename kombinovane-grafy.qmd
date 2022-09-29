@@ -1,0 +1,108 @@
+# Kombinované grafy
+
+```{r import}
+#| echo: false
+#| message: false
+
+library(tidyverse)
+countries <- read_csv("data-raw/countries.csv")
+```
+
+Nejdříve jsme si ukázali jak na vizualizaci kategoriální proměnných. Poté jak na vizualizace numerických proměnných. Teď už nás čeká jen jejich kombinace. Princip vytváření kombinovaných grafu je stejný, jako u grafů jednoduších, je ale nutné upozornit na pár chytáků.
+
+## Boxploty
+
+Pro vytvoření boxplotu pro větší počet skupin stačí přidat kategorickou proměnnou na jednu z os:
+
+```{r boxplot-multiple}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = postsoviet, y = life_exp)) +
+  geom_boxplot()
+```
+
+## Bodové grafy
+
+V případě, že jsou obě osy grafu obsazeny numerickými proměnnými, jako je to například v případě bodových grafů, musí být kategorické proměnné namapované na jiné dimenze. Nejčastějším kandidátem je barva:
+
+```{r scatter-color}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp, color = postsoviet)) +
+  geom_point() 
+```
+
+Co kdybychom chtěli ale do grafu zapojit více proměnných? V takovém případě můžeme využít dimenzí tvaru (`shape`) a velikosti (`size`). Získáme tak (poněkud překombinovaný) graf zobrazující až pět proměnných:
+
+```{r scatter-color-shape-size}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp, color = postsoviet,
+           shape = eu_member, size = gdp)) +
+  geom_point() 
+```
+
+Poznámku si zaslouží bodové grafy obsahující regresní přímky (nebo křivky) vytvořené pomocí `geom_smooth()`. Ve výchozím nastavení bude do grafu přidána přímka pro každou kategorii:
+
+```{r scatter-smooth-group}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp, color = postsoviet)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+Pokud bychom chtěli jednu přímku pro celý graf, je nutné přidat, argument `group = 1`, pomocí kterého řekneme grafu, že pro potřeby výpočtu vlastností přímky patří všechna pozorování do jedné skupiny:
+
+```{r scatter-smooth-group-one}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp, color = postsoviet, group = 1)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+## Histogramy a grafy hustoty {#sec-grouped-histograms}
+
+Zapojení kategorických proměnných do histogramů probíhá obdobně, jako u bodových grafu, a využijeme k tomu dimenzi barvy.
+
+```{r histogram-color}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = life_exp, fill = postsoviet)) +
+  geom_histogram()
+```
+
+U grafů hustoty je situace o něco komplikovanější, protože rozdělení se mohou překrývat. V grafu níže tak nevidíme dvě západní země s nízkou nadějí na dožití:
+
+```{r density-color}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = life_exp, fill = postsoviet)) +
+  geom_density()
+```
+
+Řešením je zvýšit průhlednost rozdělení, čehož docílíme pomocí argumentu `alpha`. Ten může nabývat hodnot od 0 do 1, kde 0 je naprosto průhledná a 1 je naprosto neprůhledná:
+
+```{r density-color-alpha}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = life_exp, fill = postsoviet)) +
+  geom_density(alpha = 0.5)
+```

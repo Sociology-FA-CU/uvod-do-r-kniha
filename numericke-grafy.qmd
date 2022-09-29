@@ -1,0 +1,132 @@
+# Vizualizace numerických proměnných
+
+```{r import}
+#| echo: false
+#| message: false
+
+library(tidyverse)
+countries <- read_csv("data-raw/countries.csv")
+```
+
+V předchozí kapitole jsme si ukázali nejčastější způsoby vizualizace kategorických proměnných, v této se pustíme do proměnných numerických.
+
+## Vizualizace jedné proměnné
+
+Numerické proměnné jsou zpravidla vizualizovány pomocí histogramu, tedy sloupcové grafu, který zobrazuje frekvenci jednotlivých hodnot shluknutých do menšího počtu kategorií (v angličtěně zvaných *bins*). Vytvoření histogramu je přímočaré:
+
+```{r geom-histogram}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = life_exp)) +
+  geom_histogram()
+```
+
+Počet kategorií je možné kontrolovat pomocí jednoho ze dvou argument. Prvním z nich je `bins`, pomocí kterého je možné kontrolovat celký počet kategorií. Například, pro 15 kategorií zvolíme následující:
+
+```{r geom-histogram-bins}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = life_exp)) +
+  geom_histogram(bins = 15)
+```
+
+Druhým argumentem je `binwidth`, pomocí kterého je možné specifikovat šířku jednotlivých kategorií. Pokud chceme, aby kategorie měli šířku jednoho (v našem případě) roku, použijeme následující kód:
+
+```{r geom-histogram-binwidth}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = life_exp)) +
+  geom_histogram(binwidth = 1)
+```
+
+::: callout-tip
+Někteří lidé preferují, když jsou jednotlivé kategorie (*bins*) vizuálně oddělené. Toho můžeme docílit tak, že nastavíme barvu manuálně:
+
+```{r histogram-color}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = life_exp)) +
+  geom_histogram(binwidth = 1, color = "white")
+
+```
+:::
+
+Alternativou k histogramu je graf hustoty (*density plot*). Ty na rozdíl od histogramů nekategorizují vizualizovanou proměnnou, místo toho odhadují podobu spojitého rozdělení, kterou proměnná nabývá:
+
+```{r geom-density}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = life_exp)) +
+  geom_density()
+```
+
+Míru "vyhlazení" (*smoothing*) grafu hustoty je možné kontrolovat pomocí argument `bw` (*bandwidth* zkráceně). Nižší hodnoty povedou k menšímu vyhlazení. Někteří také mohou preferovat, pokud je plocha pod křivkou hustoty vybarvené, čehož lze docílit pomocí argumentu `fill`:
+
+```{r}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = life_exp)) +
+  geom_density(bw = 0.25, fill = "grey50")
+```
+
+Poslední možností je boxplot, který zobrazuje vybrané kvartily proměnné. Hranice krabice "krabice" zobrazují první a třetí kvartil, úsečka uvnitř krabice reprezentuje medián a "fousky" grafu reprezentují mezikvartilové rozpětí vynásobené konstantou (zpravidla 1,5):
+
+```{r geom-boxplot}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = life_exp)) +
+  geom_boxplot()
+```
+
+Z grafu výše je možné vyčíst, že medián naděje na dožití našich zemí je 81 let. První kvartil je zhruba 76,8 let a třetí kvartil je zhruba 81,5 let. Fousky grafy, které zpravidla reprezentují hranice pro odlehlá pozorování mají hodnoty 74,8 a 83,2 let.
+
+## Vizualizace více proměnných
+
+Vztah dvou numerických proměnných je typicky zobrazen pomocí bodového grafu, známého také jako *scatterplot*. Pro vytvoření bodového grafu stačí přiřadit jednu proměnnou na osu X a druhou na osu Y. Poté jen zobrazíme data pomocí funkce `geom_point()`:
+
+```{r geom-point}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp)) +
+  geom_point()
+```
+
+Pro lepší přehled může být užitečné přidat křivku vyjadřující vztah mezi proměnnými. Balíček `ggplot2` na to poskytuje užitečnou funkci zvanou `geom_smooth()`. Ve výchozím nastavení tato funkce zobrazí křivku reprezentující takzvanou *localy estimated scatterplot smoothing (loess)* regresi, neparametrickou techniku pro popis vztahů mezi numerickými proměnnými, včetně 95 % intervalů spolehlivosti:
+
+```{r geom-point-loess}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp)) +
+  geom_point() +
+  geom_smooth()
+```
+
+Kromě *loess* regrese můžeme aplikovat také klasickou lineární regresi, pomocí argumentu `method = "lm"` . Také se můžeme zbavit intervalů spolehlivosti pomocí `se = FALSE`:
+
+```{r geom-point-lm}
+#| warning: false
+#| fig-asp: 0.5
+
+ggplot(countries,
+       aes(x = hdi, y = life_exp)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```

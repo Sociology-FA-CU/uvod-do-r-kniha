@@ -1,0 +1,79 @@
+# Široký a dlouhý formát {#sec-wide-long}
+
+```{r data-packages}
+#| echo: false
+#| message: false
+
+library(tidyverse)
+library(gt)
+countries <- read_csv("data-raw/countries.csv")
+```
+
+Důležitými pojmy v analýze jsou široký (*wide*) a dlouhý (*long*) formát uchovávání dat. Naštěstí pro nás se nejedná o nic složitého, jde pouze o způsob orientace dataframů. V širokém formátu jsou uchovány horizontálně, zatímco v dlouhém formátu jsou data orientovány vertikálně. Obsah dataframu se nemění, jediným rozdílem je forma:
+
+```{r long-format}
+#| echo: false
+#| layout-ncol: 2
+#| tbl-cap: "Široký vs Dlouhý formát"
+
+countries %>% 
+  filter(country %in% c("Czechia", "Germany", "Norway")) %>% 
+  select(country, gdp, life_exp, poverty_risk) %>% 
+  gt() %>% 
+  tab_header(title = "Široký formát")
+
+countries %>% 
+  filter(country %in% c("Czechia", "Germany", "Norway")) %>% 
+  select(country, gdp, life_exp, poverty_risk) %>% 
+  pivot_longer(-country) %>% 
+  gt() %>% 
+  tab_header(title = "Dlouhý formát")
+```
+
+Zpravidla je široký formát intuitivnější pro lidi, zatímco ten dlouhý se lépe čte počítačům. V praxi proto budeme převádět data mezi formáty často a poslouží nám k tomu dvojice funkcí z balíčku `tidyr`: `pivot_wider()` a `pivot_longer()`.
+
+## Z širokého do dlouhého formátu
+
+Vraťme se k datasetu `countries`. V rámci analýzy nás může zajímat, jaká je nejvyšší pozorovaná hodnota každé z numerických proměnné. Jako bonus bychom také rádi věděli, které zemi tato hodnota patří.
+
+Možností, jak se dostat ke kýženému výsledku, je více. Jedna z těch elegantnějších zahrnuje převedení dataframu do dlouhého formátu. Začneme tím, že z dataframu vybereme proměnnou `country` a všechny numerické proměnné, k čemuž poslouží funkce `select()`. Poté bude následovat funkce `pivot_longer()`. Tato funkce má jeden povinný argument, a to `cols`, pomocí kterého specifikujeme, které proměnné chceme převést do širokého formátu. Není nutné vybrat všechny existující proměnné, naopak pro naše potřeby je lepší nechat proměnnou `countries` v původní podobě. Kromě `cols`, jsou dalšími dvěma užitečnými argumenty `names_to` a `values_to`, pomocí kterých lze specifikovat názvy nově vytvořených sloupců. První z argumentů určí název sloupce obsahují názvy původních proměnných, druhý poté název sloupce, ve kterém budou uchovány naměřené hodnoty.
+
+```{r pivot-longer-step1}
+countries %>% 
+  select(country, where(is.numeric)) %>% 
+  pivot_longer(cols = -country,
+               names_to = "variable",
+               values_to = "max_value")
+```
+
+Tento kód provede výše popsané. Pomocí kombinace funkcí `select()` a pomocné funkce `where()` (viz. @sec-helpers) vybereme proměnné. Funkce `pivot_longer()` se postará o zbytek. Argumentem `cols` určime, že převedeny do dlouhého formátu mají být všechny proměnné kromě `country` a nově vytvořené proměnné se mají jmenovat `variable` a `max_value`. Výsledkem je dataframe s menším počtem sloupců, zato výrazně větším počtem řádků. Každý řádek reprezentuje hodnotu jedné proměnné v jedné zemi.
+
+Teď už zbývá jen vybrat pro každou z původních proměnných nejvyšší naměřenou hodnotu. Toho docílíme pomocí nám již známých funkcí `group_by()` a `slice_max()`. A to je vše! Z výsledného dataframu lze vyčíst že nejvyššímu pozorovanému Indexu lidského rozvoje (gdp) se těší Norsko, nebo že nejvyšší podíl lidí ohrožených chudobou je 41,6 % a trpí jím Severní Makedonie.
+
+```{r pivot-longer-step2}
+countries %>% 
+  select(country, where(is.numeric)) %>% 
+  pivot_longer(cols = -country,
+               names_to = "variable",
+               values_to = "max_value") %>% 
+  group_by(variable) %>% 
+  slice_max(max_value)
+```
+
+## Z dlouhého do širokého formátu
+
+Jak již asi tušíte, opakem `pivot_longer()` je funkce `pivot_wider()`, pomocí které je možné řádky "roztáhnout" do sloupců. Tato funkce má dva povinné argumenty, a to `names_from` a `values_from`. První z těchto argumentů převede hodnoty ve vybraném sloupci na názvy nových sloupců. Druhý argument poté nové sloupce zaplní hodnotami ze zvolené proměnné.
+
+Poněkud umělým, ale názorným příkladem může být, pokud by naším cílem bylo vytvořit dataframe obsahující minimální hodnotu ohrožení chudobou podle převažujícího náboženského vyznání. Tento dataframů by měl být dobře srozumitelný pro naše čtenáře, a měl by proto mít podobu kontingenční tabulky.
+
+Začneme podobně, jako v předchozím cvičení. Nejdříve vybereme všechny relevantní proměnné, tedy převažující náboženské vyznání (`maj_belief`), členství v Evropské unii (`eu_member`) a HDP (`gdp`). Poté kombinací funkcí `group_by()` a `slice_min()` získáme nejnižší pozorované hodnoty ohrožení chudobou pro každou kombinaci převažujícího vyznání a členství v EU. Nakonec už zbývá pouze využít funkce `pivot_wider()` pro převedení proměnné `maj_belief()` do sloupců a zaplnění nově vzniklých sloupců pomocí hodnot z `poverty_risk`. A máme hotovo
+
+```{r pivot-wider-example}
+countries %>% 
+  select(maj_belief, eu_member, poverty_risk) %>% 
+  group_by(maj_belief, eu_member) %>%
+  slice_min(poverty_risk) %>% 
+  pivot_wider(names_from = maj_belief, values_from = poverty_risk)
+```
+
+Všimněme si, že některé buňky jsou prázdné, protože naše data neobsahují všechny kombinace náboženského vyznání a členství v Evropské unii.
