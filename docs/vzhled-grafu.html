@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="cs" xml:lang="cs"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.245">
+<meta name="generator" content="quarto-1.2.269">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -377,16 +377,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 class="title d-none d-lg-block"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Vzhled grafů</span></h1>
 </div>
 
-<div>
-  <div class="description">
-    <p>První výprava do světa R a Tidyverse.</p>
-  </div>
-</div>
 
 
 <div class="quarto-title-meta">
 
     
+  
     
   </div>
   
@@ -652,6 +648,7 @@ Text na více řádcích
 <p>Prvním aspektem, který budeme chtít často kontrolovat, je pozice legendy. Toho docílíme pomocí argumentu <code>legend.position</code>. Ten může nabývat buď jedné ze čtyř předpřipravených pozic (<code>top</code>, <code>bottom</code>, <code>left</code> a <code>right</code>). Alternativně je možné použít dvojici koordinátů, oba koordináty mohou nabývat hodnot mezi hodnotami 0 a 1. Dvojice <code>c(1,1)</code> umístí legendu pravého horního rohu, <code>c(0,0)</code> do levého horního rohu a <code>c(0.5, 0.5)</code> přímo na střed.</p>
 <p>Dále je možné upravovat font textu, a to pomocí argumentu <code>text</code>. Ten přijímá funkci <code>element_text()</code>, pomocí které je možné specifikovat font (<code>family</code>), velikost (<code>size</code>) nebo zda má být text kurzívou/tučně (<code>face</code>). Pokud je naším cílem upravit pouze některý text, je možné využít cílené argumenty jako <code>title</code> nebo <code>axis.text.x</code>)</p>
 <p>Barvuv pozadí grafu je možné ovládat pomocí grafu. Každý graf je rozdělený do dvou částí. <em>Panel</em> je vnitřní oblast grafu, ve které se nachází geomy, zatímco <em>plot</em> je vnější oblast obsahující popisky a legendu. Vlastnosti obou se dají upravovat nezávisle na sobě pomocí argumentů <code>panel.backround</code> a <code>plot.backround</code>. Pokud náš graf obsahuje legendu, můžeme její vzhled upravit obdobně pomocí argumentu <code>legend.backround</code>.</p>
+<p>Návodné čáry grafu kontroluje skupina argumentů <code>panel.grid</code>. Čáry se rozlišují na primární (<code>panel.grid.major</code>) a sekundární (<code>panel.grid.minor</code>). Upravovat také můžeme pouze návodné čáry pro specifickou osu pomocí <code>panel.grid.major.x</code> a <code>panel.grid.major.x</code> (resp. <code>panel.grid.major.y</code> a <code>panel.grid.minor.y</code>). Vzhled čar je možné upravit pomocí funkce <code>element_line()</code>. Pro odebrání čáry, nebo jakéhokoliv jiného elementu grafu, je možné využít funkce <code>element_blank()</code>.</p>
 <div class="cell" data-fig.asp="0.5">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(countries,</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> hdi, <span class="at">y =</span> life_exp, <span class="at">color =</span> poverty_risk)) <span class="sc">+</span></span>
@@ -660,7 +657,9 @@ Text na více řádcích
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">"Times New Roman"</span>, <span class="at">size =</span> <span class="dv">12</span>),</span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#F5DDB1"</span>),</span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#F5CE87"</span>),</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#F5CE87"</span>))</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#F5CE87"</span>),</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major =</span> <span class="fu">element_line</span>(<span class="at">linetype =</span> <span class="st">"dashed"</span>),</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="vzhled-grafu_files/figure-html/theme-settings-example-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -822,7 +821,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   // Switch to dark mode if need be
   if (hasAlternateSentinel()) {
     toggleColorMode(true);
-  } 
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -844,7 +845,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Zkopírováno!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Zkopírováno!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -880,24 +898,42 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>

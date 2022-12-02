@@ -1,0 +1,19 @@
+# Export grafů
+
+```{r setup}
+#| message: false
+
+library(tidyverse) # tidyverse bude od teď standardem naší práce.
+countries <- read_csv("data-raw/countries.csv")
+```
+
+Poté, co jsme si vypiplali náš graf do nejmenšího detailu, ho zbývá pouze vyexportovat z pro další užití. K ukládání grafů vytvořených pomocí balíčku `ggplot2` nám poslouží funkce `ggsave()`. J
+
+```{r plot-example}
+#| fig-asp: 0.5
+#| warning: false
+
+hdi_life_plot <- ggplot(countries,
+                        aes(x = hdi, y = life_exp)) +
+                 geom_point()
+```

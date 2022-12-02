@@ -295,6 +295,8 @@ Dále je možné upravovat font textu, a to pomocí argumentu `text`. Ten přij�
 
 Barvuv pozadí grafu je možné ovládat pomocí grafu. Každý graf je rozdělený do dvou částí. *Panel* je vnitřní oblast grafu, ve které se nachází geomy, zatímco *plot* je vnější oblast obsahující popisky a legendu. Vlastnosti obou se dají upravovat nezávisle na sobě pomocí argumentů `panel.backround` a `plot.backround`. Pokud náš graf obsahuje legendu, můžeme její vzhled upravit obdobně pomocí argumentu `legend.backround`.
 
+Návodné čáry grafu kontroluje skupina argumentů `panel.grid`. Čáry se rozlišují na primární (`panel.grid.major`) a sekundární (`panel.grid.minor`). Upravovat také můžeme pouze návodné čáry pro specifickou osu pomocí `panel.grid.major.x` a `panel.grid.major.x` (resp. `panel.grid.major.y` a `panel.grid.minor.y`). Vzhled čar je možné upravit pomocí funkce `element_line()`. Pro odebrání čáry, nebo jakéhokoliv jiného elementu grafu, je možné využít funkce `element_blank()`.
+
 ```{r theme-settings-example}
 #| warning: false
 #| fig-asp: 0.5
@@ -306,7 +308,9 @@ ggplot(countries,
         text = element_text(family = "Times New Roman", size = 12),
         panel.background = element_rect(fill = "#F5DDB1"),
         plot.background = element_rect(fill = "#F5CE87"),
-        legend.background = element_rect(fill = "#F5CE87"))
+        legend.background = element_rect(fill = "#F5CE87"),
+        panel.grid.major = element_line(linetype = "dashed"),
+        panel.grid.minor = element_blank())
 ```
 
 ::: callout-tip
