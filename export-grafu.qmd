@@ -2,12 +2,13 @@
 
 ```{r setup}
 #| message: false
+#| echo: false
 
-library(tidyverse) # tidyverse bude od teď standardem naší práce.
+library(tidyverse)
 countries <- read_csv("data-raw/countries.csv")
 ```
 
-Poté, co jsme si vypiplali náš graf do nejmenšího detailu, ho zbývá pouze vyexportovat z pro další užití. K ukládání grafů vytvořených pomocí balíčku `ggplot2` nám poslouží funkce `ggsave()`. J
+Poté, co jsme si vypiplali náš graf do nejmenšího detailu ho zbývá pouze vyexportovat z R pro další užití. V této kapitole si ukážeme, jak naše grafy exportoved ve správných rozměrech a formátu. Jako příklad nám poslouží následující graf, zobrazjící vztah mezi indexem lidského rozvoje a nadějí na dožití:
 
 ```{r plot-example}
 #| fig-asp: 0.5
@@ -16,4 +17,35 @@ Poté, co jsme si vypiplali náš graf do nejmenšího detailu, ho zbývá pouze
 hdi_life_plot <- ggplot(countries,
                         aes(x = hdi, y = life_exp)) +
                  geom_point()
+
+hdi_life_plot
 ```
+
+## Export pomocí `ggsave()`
+
+Grafy vytvořené pomocí balíčku `ggplot2` je možné uložit pomocí funkce `ggsave()`. Hlavními argumenty této funkce jsou `plot` a `filename`. Pomocí prvního z argumentů určíme, jaký graf chceme exportovat, pomocí druhého název souboru (včetně koncovky). Pokud bychom chtěli uložit graf do jiné složky, než je náš pracovní adresář, využijeme argument `path`. Dále je možné určit rozměry grafu, pomocí argumentů `width` a `height`. Jednotky, ve kterých jsou rozměry grafu definovány, upravujeme pomocí argumentu `unit`. Na výběr máme centimetry (`"cm"`), milimetry (`"mm"`), palce (`"in"`) a pixely (`"px"`). Formát exportovaného obrázku je možné nastavit pomocí `device`, na výběr máme jak formáty rasterové grafiky (např. `png` a `jpeg`), tak vektorové (`svg` nebo `wmf`). V případě, že exportujeme graf jako rasterový obrázek, je nutné ještě zvolit vhodné rozlišení, čehož docílíme pomocí argumentu `dpi`. *"Dots per Inch"* je (dnes možná lehce archaická) míra, udávající počet kapek inkoust na jeden palce při tisku obrázku. Pro tisk na papír rozměru A4 se zpravidla využívá `dpi = 300`, pro obrazovky s vysokým rozlišením (retina) poté `dpi = 600`.
+
+Následující příkaz uloží graf `hdi_life_plot` jako soubor `hdi_life_plot.png` do složky `plots`. Graf bude exportován v png formátu, s rozměry 14x10 centimetrů. Protože plánujeme graf vložit do textového dokumentu, nastavíme rozlišení na 300 DPI.
+
+```{r gsave}
+#| eval: false
+
+ggsave(plot = hdi_life_plot,
+       filename = "hdi_life_plot.png",
+       path = "plots",
+       device = "png",
+       units = "cm",
+       width = 14,
+       height = 10,
+       dpi = 300)
+```
+
+## Rasterová versus vektorová grafika
+
+Jedním z důležitých rozhodnotí při exportu grafů je volba formátu, ve kterém budou uloženy. Obecně máme dvě volby: rasterové a vektorové obrázky.
+
+Rasterové obrázky jsou složeny z velkého množství malých čtverečků, které dohromady skládají celkový obraz. Jedná se o typ obrázku, který používá například fotoaparát vašeho mbilního telefonu. Výhodou rasterové grafiky je schopnost uchovávat komplexní obrázky v malých souborech. Naopak nevýhodou je, že rozlišení i rozměry rasterových obrázku jsou pevně dané. Pokud bychom rasterový obrázek příliš přiblížili, dojde ke ztrátě detailu. Změna rozměrů zase obrázek může zdeformovat.
+
+Vektorové obrázky jsou souborem matematických funkcí, které vykreslují celkový obraz. S vektorou grafikou se setkáte nejčastěji v profesionálním grafickém softwaru, ať už v kontextu grafického designu nebo tisku. Výhodou vektorové grafiky je, že možné dynamicky upravovat rozměry grafu. Obrázky je také možné upravovat i po jejich exportu a budou také vždy perfektně ostré, protože jejich rozlišení je vypočítáváno dynamicky. Nevýhodou je relativně velké množství úložného prostoru, které vyžadují.
+
+V praxi se nejčastěji setkáte s rasterovými obrázky, pokud budete vytvářet grafy vlastní potřebu (např. do školní práce nebo malého reportu). Naopak pokud spolupracujete s grafikem, jehož prací je vypiplat vaše výstupy k dokonalosti, exportem grafů do vektorové grafiky dotyčnému usnadníte mnoho práce.

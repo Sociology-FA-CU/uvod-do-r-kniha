@@ -49,6 +49,7 @@ book:
         - kombinovane-grafy.qmd
         - facety.qmd
         - vzhled-grafu.qmd
+        - export-grafu.qmd
 license: "CC BY-NC"
 citation: true
 

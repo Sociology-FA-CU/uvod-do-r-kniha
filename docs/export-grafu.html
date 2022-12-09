@@ -361,7 +361,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Obsah</h2>
+   
+  <ul>
+  <li><a href="#export-pomocí-ggsave" id="toc-export-pomocí-ggsave" class="nav-link active" data-scroll-target="#export-pomocí-ggsave"><span class="toc-section-number">25.1</span>  Export pomocí <code>ggsave()</code></a></li>
+  <li><a href="#rasterová-versus-vektorová-grafika" id="toc-rasterová-versus-vektorová-grafika" class="nav-link" data-scroll-target="#rasterová-versus-vektorová-grafika"><span class="toc-section-number">25.2</span>  Rasterová versus vektorová grafika</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -384,17 +391,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># tidyverse bude od teď standardem naší práce.</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>countries <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data-raw/countries.csv"</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 </div>
-<p>Poté, co jsme si vypiplali náš graf do nejmenšího detailu, ho zbývá pouze vyexportovat z pro další užití. K ukládání grafů vytvořených pomocí balíčku <code>ggplot2</code> nám poslouží funkce <code>ggsave()</code>. J</p>
+<p>Poté, co jsme si vypiplali náš graf do nejmenšího detailu ho zbývá pouze vyexportovat z R pro další užití. V této kapitole si ukážeme, jak naše grafy exportoved ve správných rozměrech a formátu. Jako příklad nám poslouží následující graf, zobrazjící vztah mezi indexem lidského rozvoje a nadějí na dožití:</p>
 <div class="cell" data-fig.asp="0.5">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>hdi_life_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(countries,</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">aes</span>(<span class="at">x =</span> hdi, <span class="at">y =</span> life_exp)) <span class="sc">+</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">geom_point</span>()</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>hdi_life_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(countries,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">aes</span>(<span class="at">x =</span> hdi, <span class="at">y =</span> life_exp)) <span class="sc">+</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">geom_point</span>()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>hdi_life_plot</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="export-grafu_files/figure-html/plot-example-1.png" class="img-fluid" width="672"></p>
 </div>
+</div>
+<section id="export-pomocí-ggsave" class="level2" data-number="25.1">
+<h2 data-number="25.1" class="anchored" data-anchor-id="export-pomocí-ggsave"><span class="header-section-number">25.1</span> Export pomocí <code>ggsave()</code></h2>
+<p>Grafy vytvořené pomocí balíčku <code>ggplot2</code> je možné uložit pomocí funkce <code>ggsave()</code>. Hlavními argumenty této funkce jsou <code>plot</code> a <code>filename</code>. Pomocí prvního z argumentů určíme, jaký graf chceme exportovat, pomocí druhého název souboru (včetně koncovky). Pokud bychom chtěli uložit graf do jiné složky, než je náš pracovní adresář, využijeme argument <code>path</code>. Dále je možné určit rozměry grafu, pomocí argumentů <code>width</code> a <code>height</code>. Jednotky, ve kterých jsou rozměry grafu definovány, upravujeme pomocí argumentu <code>unit</code>. Na výběr máme centimetry (<code>"cm"</code>), milimetry (<code>"mm"</code>), palce (<code>"in"</code>) a pixely (<code>"px"</code>). Formát exportovaného obrázku je možné nastavit pomocí <code>device</code>, na výběr máme jak formáty rasterové grafiky (např. <code>png</code> a <code>jpeg</code>), tak vektorové (<code>svg</code> nebo <code>wmf</code>). V případě, že exportujeme graf jako rasterový obrázek, je nutné ještě zvolit vhodné rozlišení, čehož docílíme pomocí argumentu <code>dpi</code>. <em>“Dots per Inch”</em> je (dnes možná lehce archaická) míra, udávající počet kapek inkoust na jeden palce při tisku obrázku. Pro tisk na papír rozměru A4 se zpravidla využívá <code>dpi = 300</code>, pro obrazovky s vysokým rozlišením (retina) poté <code>dpi = 600</code>.</p>
+<p>Následující příkaz uloží graf <code>hdi_life_plot</code> jako soubor <code>hdi_life_plot.png</code> do složky <code>plots</code>. Graf bude exportován v png formátu, s rozměry 14x10 centimetrů. Protože plánujeme graf vložit do textového dokumentu, nastavíme rozlišení na 300 DPI.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">plot =</span> hdi_life_plot,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">filename =</span> <span class="st">"hdi_life_plot.png"</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">path =</span> <span class="st">"plots"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">device =</span> <span class="st">"png"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">units =</span> <span class="st">"cm"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">width =</span> <span class="dv">14</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">10</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">dpi =</span> <span class="dv">300</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="rasterová-versus-vektorová-grafika" class="level2" data-number="25.2">
+<h2 data-number="25.2" class="anchored" data-anchor-id="rasterová-versus-vektorová-grafika"><span class="header-section-number">25.2</span> Rasterová versus vektorová grafika</h2>
+<p>Jedním z důležitých rozhodnotí při exportu grafů je volba formátu, ve kterém budou uloženy. Obecně máme dvě volby: rasterovou a vektorovou obrázky.</p>
+<p>Rasterové obrázky jsou složeny z velkého množství malých čtverečků, které dohromady skládají celkový obraz. Jedná se o typ obrázku, který používá například fotoaparát vašeho mbilního telefonu. Výhodou rasterové grafiky je schopnost uchovávat komplexní obrázky v malých souber. Naopak nevýhodou je, že rozlišení i rozměry rasterových obrázku jsou pevně dané. Pokud bychom rasterový obrázek příliš přiblížili, dojde ke ztrátě detailu. Změna rozměrů zase obrázek může zdeformovat.</p>
+<p>Vektorové obrázky jsou souborem matematických funkcí, které vykreslují celkový obraz. S vektorou grafikou se setkáte nejčastěji v profesionálním grafickém softwaru, ať už v kontextu grafického designu nebo tisku. Výhodou vektorové grafiky je, že možné dynamicky upravovat rozměry grafu. Obrázky je také možné upravovat i po jejich exportu a budou také vždy perfektně ostré, protože jejich rozlišení je vypočítáváno dynamicky. Nevýhodou je velké množství úložného prostoru, které vyžadují.</p>
+<p>V praxi se nejčastěji setkáte s rasterovými obrázky, pokud budete vytvářet grafy vlastní potřebu (např. do školní práce nebo malého reportu). Naopak pokud spolupracujete s grafikem, jehož prací je vypiplat vaše výstupy k dokonalosti, exportem grafů do vektorové grafiky dotyčnému usnadníte mnoho práce.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
