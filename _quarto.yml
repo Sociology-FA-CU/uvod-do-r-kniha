@@ -61,7 +61,7 @@ bibliography: references.bib
 format:
   html:
     theme:
-      light: cosmo
+      light: flatly
       dark: darkly
   pdf:
     documentclass: scrreprt
