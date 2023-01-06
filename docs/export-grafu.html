@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="cs" xml:lang="cs"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+<meta name="generator" content="quarto-1.2.280">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="description" content="První výprava do světa R a Tidyverse.">
 
-<title>Úvod do analýzy dat v R - 25&nbsp; Export grafů</title>
+<title>Úvod do analýzy dat v R - 26&nbsp; Export grafů</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -94,7 +94,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./vzhled-grafu.html" rel="prev">
+<link href="./pokrocile-grafy.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -135,7 +135,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Export grafů</span></h1>
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Export grafů</span></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -351,7 +351,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./export-grafu.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Export grafů</span></a>
+  <a href="./pokrocile-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Pokročilé grafy</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./export-grafu.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Export grafů</span></a>
   </div>
 </li>
       </ul>
@@ -365,8 +370,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">Obsah</h2>
    
   <ul>
-  <li><a href="#export-pomocí-ggsave" id="toc-export-pomocí-ggsave" class="nav-link active" data-scroll-target="#export-pomocí-ggsave"><span class="toc-section-number">25.1</span>  Export pomocí <code>ggsave()</code></a></li>
-  <li><a href="#rasterová-versus-vektorová-grafika" id="toc-rasterová-versus-vektorová-grafika" class="nav-link" data-scroll-target="#rasterová-versus-vektorová-grafika"><span class="toc-section-number">25.2</span>  Rasterová versus vektorová grafika</a></li>
+  <li><a href="#export-pomocí-ggsave" id="toc-export-pomocí-ggsave" class="nav-link active" data-scroll-target="#export-pomocí-ggsave"><span class="toc-section-number">26.1</span>  Export pomocí <code>ggsave()</code></a></li>
+  <li><a href="#rasterová-versus-vektorová-grafika" id="toc-rasterová-versus-vektorová-grafika" class="nav-link" data-scroll-target="#rasterová-versus-vektorová-grafika"><span class="toc-section-number">26.2</span>  Rasterová versus vektorová grafika</a></li>
   </ul>
 </nav>
     </div>
@@ -375,7 +380,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Export grafů</span></h1>
+<h1 class="title d-none d-lg-block"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Export grafů</span></h1>
 </div>
 
 
@@ -404,8 +409,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="export-grafu_files/figure-html/plot-example-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<section id="export-pomocí-ggsave" class="level2" data-number="25.1">
-<h2 data-number="25.1" class="anchored" data-anchor-id="export-pomocí-ggsave"><span class="header-section-number">25.1</span> Export pomocí <code>ggsave()</code></h2>
+<section id="export-pomocí-ggsave" class="level2" data-number="26.1">
+<h2 data-number="26.1" class="anchored" data-anchor-id="export-pomocí-ggsave"><span class="header-section-number">26.1</span> Export pomocí <code>ggsave()</code></h2>
 <p>Grafy vytvořené pomocí balíčku <code>ggplot2</code> je možné uložit pomocí funkce <code>ggsave()</code>. Hlavními argumenty této funkce jsou <code>plot</code> a <code>filename</code>. Pomocí prvního z argumentů určíme, jaký graf chceme exportovat, pomocí druhého název souboru (včetně koncovky). Pokud bychom chtěli uložit graf do jiné složky, než je náš pracovní adresář, využijeme argument <code>path</code>. Dále je možné určit rozměry grafu, pomocí argumentů <code>width</code> a <code>height</code>. Jednotky, ve kterých jsou rozměry grafu definovány, upravujeme pomocí argumentu <code>unit</code>. Na výběr máme centimetry (<code>"cm"</code>), milimetry (<code>"mm"</code>), palce (<code>"in"</code>) a pixely (<code>"px"</code>). Formát exportovaného obrázku je možné nastavit pomocí <code>device</code>, na výběr máme jak formáty rasterové grafiky (např. <code>png</code> a <code>jpeg</code>), tak vektorové (<code>svg</code> nebo <code>wmf</code>). V případě, že exportujeme graf jako rasterový obrázek, je nutné ještě zvolit vhodné rozlišení, čehož docílíme pomocí argumentu <code>dpi</code>. <em>“Dots per Inch”</em> je (dnes možná lehce archaická) míra, udávající počet kapek inkoust na jeden palce při tisku obrázku. Pro tisk na papír rozměru A4 se zpravidla využívá <code>dpi = 300</code>, pro obrazovky s vysokým rozlišením (retina) poté <code>dpi = 600</code>.</p>
 <p>Následující příkaz uloží graf <code>hdi_life_plot</code> jako soubor <code>hdi_life_plot.png</code> do složky <code>plots</code>. Graf bude exportován v png formátu, s rozměry 14x10 centimetrů. Protože plánujeme graf vložit do textového dokumentu, nastavíme rozlišení na 300 DPI.</p>
 <div class="cell">
@@ -419,11 +424,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">dpi =</span> <span class="dv">300</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="rasterová-versus-vektorová-grafika" class="level2" data-number="25.2">
-<h2 data-number="25.2" class="anchored" data-anchor-id="rasterová-versus-vektorová-grafika"><span class="header-section-number">25.2</span> Rasterová versus vektorová grafika</h2>
-<p>Jedním z důležitých rozhodnotí při exportu grafů je volba formátu, ve kterém budou uloženy. Obecně máme dvě volby: rasterovou a vektorovou obrázky.</p>
-<p>Rasterové obrázky jsou složeny z velkého množství malých čtverečků, které dohromady skládají celkový obraz. Jedná se o typ obrázku, který používá například fotoaparát vašeho mbilního telefonu. Výhodou rasterové grafiky je schopnost uchovávat komplexní obrázky v malých souber. Naopak nevýhodou je, že rozlišení i rozměry rasterových obrázku jsou pevně dané. Pokud bychom rasterový obrázek příliš přiblížili, dojde ke ztrátě detailu. Změna rozměrů zase obrázek může zdeformovat.</p>
-<p>Vektorové obrázky jsou souborem matematických funkcí, které vykreslují celkový obraz. S vektorou grafikou se setkáte nejčastěji v profesionálním grafickém softwaru, ať už v kontextu grafického designu nebo tisku. Výhodou vektorové grafiky je, že možné dynamicky upravovat rozměry grafu. Obrázky je také možné upravovat i po jejich exportu a budou také vždy perfektně ostré, protože jejich rozlišení je vypočítáváno dynamicky. Nevýhodou je velké množství úložného prostoru, které vyžadují.</p>
+<section id="rasterová-versus-vektorová-grafika" class="level2" data-number="26.2">
+<h2 data-number="26.2" class="anchored" data-anchor-id="rasterová-versus-vektorová-grafika"><span class="header-section-number">26.2</span> Rasterová versus vektorová grafika</h2>
+<p>Jedním z důležitých rozhodnotí při exportu grafů je volba formátu, ve kterém budou uloženy. Obecně máme dvě volby: rasterové a vektorové obrázky.</p>
+<p>Rasterové obrázky jsou složeny z velkého množství malých čtverečků, které dohromady skládají celkový obraz. Jedná se o typ obrázku, který používá například fotoaparát vašeho mbilního telefonu. Výhodou rasterové grafiky je schopnost uchovávat komplexní obrázky v malých souborech. Naopak nevýhodou je, že rozlišení i rozměry rasterových obrázku jsou pevně dané. Pokud bychom rasterový obrázek příliš přiblížili, dojde ke ztrátě detailu. Změna rozměrů zase obrázek může zdeformovat.</p>
+<p>Vektorové obrázky jsou souborem matematických funkcí, které vykreslují celkový obraz. S vektorou grafikou se setkáte nejčastěji v profesionálním grafickém softwaru, ať už v kontextu grafického designu nebo tisku. Výhodou vektorové grafiky je, že možné dynamicky upravovat rozměry grafu. Obrázky je také možné upravovat i po jejich exportu a budou také vždy perfektně ostré, protože jejich rozlišení je vypočítáváno dynamicky. Nevýhodou je relativně velké množství úložného prostoru, které vyžadují.</p>
 <p>V praxi se nejčastěji setkáte s rasterovými obrázky, pokud budete vytvářet grafy vlastní potřebu (např. do školní práce nebo malého reportu). Naopak pokud spolupracujete s grafikem, jehož prací je vypiplat vaše výstupy k dokonalosti, exportem grafů do vektorové grafiky dotyčnému usnadníte mnoho práce.</p>
 
 
@@ -680,8 +685,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./vzhled-grafu.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Vzhled grafů</span></span>
+      <a href="./pokrocile-grafy.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Pokročilé grafy</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

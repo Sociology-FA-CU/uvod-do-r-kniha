@@ -8,7 +8,7 @@
 
 <meta name="description" content="První výprava do světa R a Tidyverse.">
 
-<title>Úvod do analýzy dat v R - 1&nbsp; Instalace softwaru</title>
+<title>Úvod do analýzy dat v R - 25&nbsp; Pokročilé grafy</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +21,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -31,8 +94,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./rstudio.html" rel="next">
-<link href="./struktura.html" rel="prev">
+<link href="./export-grafu.html" rel="next">
+<link href="./vzhled-grafu.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -73,7 +136,7 @@ ul.task-list li input[type="checkbox"] {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Instalace softwaru</span></h1>
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Pokročilé grafy</span></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -139,7 +202,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./instalace.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Instalace softwaru</span></a>
+  <a href="./instalace.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Instalace softwaru</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -289,7 +352,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pokrocile-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Pokročilé grafy</span></a>
+  <a href="./pokrocile-grafy.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Pokročilé grafy</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -308,15 +371,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Obsah</h2>
    
   <ul>
-  <li><a href="#instalace-r" id="toc-instalace-r" class="nav-link active" data-scroll-target="#instalace-r"><span class="toc-section-number">1.1</span>  Instalace R</a>
-  <ul class="collapse">
-  <li><a href="#windows" id="toc-windows" class="nav-link" data-scroll-target="#windows"><span class="toc-section-number">1.1.1</span>  Windows</a></li>
-  <li><a href="#macos" id="toc-macos" class="nav-link" data-scroll-target="#macos"><span class="toc-section-number">1.1.2</span>  MacOS</a></li>
-  <li><a href="#linux" id="toc-linux" class="nav-link" data-scroll-target="#linux"><span class="toc-section-number">1.1.3</span>  Linux</a></li>
-  </ul></li>
-  <li><a href="#instalace-rstudia" id="toc-instalace-rstudia" class="nav-link" data-scroll-target="#instalace-rstudia"><span class="toc-section-number">1.2</span>  Instalace Rstudia</a></li>
-  <li><a href="#instalace-tidyverse" id="toc-instalace-tidyverse" class="nav-link" data-scroll-target="#instalace-tidyverse"><span class="toc-section-number">1.3</span>  Instalace Tidyverse</a></li>
-  <li><a href="#základní-nastavení-rstudia" id="toc-základní-nastavení-rstudia" class="nav-link" data-scroll-target="#základní-nastavení-rstudia"><span class="toc-section-number">1.4</span>  Základní nastavení Rstudia</a></li>
+  <li><a href="#polární-koordináty" id="toc-polární-koordináty" class="nav-link active" data-scroll-target="#polární-koordináty"><span class="toc-section-number">25.1</span>  Polární koordináty</a></li>
+  <li><a href="#skládání-geomů" id="toc-skládání-geomů" class="nav-link" data-scroll-target="#skládání-geomů"><span class="toc-section-number">25.2</span>  Skládání geomů</a></li>
+  <li><a href="#více-zdrojů-dat" id="toc-více-zdrojů-dat" class="nav-link" data-scroll-target="#více-zdrojů-dat"><span class="toc-section-number">25.3</span>  Více zdrojů dat</a></li>
   </ul>
 </nav>
     </div>
@@ -325,7 +382,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-installation" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Instalace softwaru</span></span></h1>
+<h1 class="title d-none d-lg-block"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Pokročilé grafy</span></h1>
 </div>
 
 
@@ -340,68 +397,136 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>Tato kapitola je věnována instalaci R, Rstudia a balíčků Tidyverse na všech platformá a pár základním tipům na usnadnění práce. Instalace softwaru se značně liší podle operačního systému počítače, takže si dejte pozor, která část instrukcí je pro vás relevantní!</p>
-<p>Celý proces sestává ze čtyř kroků:</p>
-<ol type="1">
-<li><p>Instalace R</p></li>
-<li><p>Instalace Rstudia</p></li>
-<li><p>Instalace Tidyverse</p></li>
-<li><p>Základní nastavení Rstudia</p></li>
-</ol>
-<section id="instalace-r" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="instalace-r"><span class="header-section-number">1.1</span> Instalace R</h2>
-<p>Úplně prvním krokem pro práci s R je, snad nepřekvapivě, instalace jazyka samotného.</p>
-<section id="windows" class="level3" data-number="1.1.1">
-<h3 data-number="1.1.1" class="anchored" data-anchor-id="windows"><span class="header-section-number">1.1.1</span> Windows</h3>
-<p>R je možné stáhnout z oficiálních stránek projektu <a href="https://www.r-project.org" class="uri">https://www.r-project.org</a>. Čeští uživatelé budou pravděpodobně chtít stahovat z českého serveru, který je dostupný na adrese <a href="https://mirrors.nic.cz/R/index.html" class="uri">https://mirrors.nic.cz/R/index.html</a>. Zde klikněte na <em>Download R for Windows</em> a poté na <em>base</em>. Po stažení je možné R nainstalovat jako jakýkoliv jiný program.</p>
-<div class="callout-warning callout callout-style-default callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<div class="cell">
+
 </div>
-<div class="callout-caption-container flex-fill">
-Varování
+<p>Předchozí kapitoly byly věnovány základům práce s balíčkem <code>ggplot2</code>. V této kapitole si ukážeme příklady pokročilejších technik, které při vizualizaci dat můžeme využít.</p>
+<section id="polární-koordináty" class="level2" data-number="25.1">
+<h2 data-number="25.1" class="anchored" data-anchor-id="polární-koordináty"><span class="header-section-number">25.1</span> Polární koordináty</h2>
+<p>Většina grafů využívá karteziánské koordináty - objekty v grafu jsou mapované na horizontální a vertikální osu. Čas od času se ovšem vyplatí využít jiný systém. Jedním z nejpopulárnějších jsou polární koordináty.</p>
+<p>Přestože si to možná neuvědomujeme, každý z nás se již s polárními koordináty setkal. Slouží k vytváření koláčových grafů, které nejsou ničím jiným, než stočenými skládánými sloupcovými grafy. Začněme vytvořením skládaného sloupcového grafu:</p>
+<div class="cell" data-fig.asp="0.5">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(postsoviet) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">1</span>, <span class="at">y =</span> n, <span class="at">fill =</span> postsoviet)) <span class="sc">+</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"stack"</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="pokrocile-grafy_files/figure-html/pie-chart-prep-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<div class="callout-body-container callout-body">
-<p>Možná víte, že existují dva typy procesorů, 32bitové a 64bitové. Setkat se dnes s 32bitovým procesorem je dnes poměrně vzácné, pokud ale takový počítač máte je nutné si dát pozor, jakou verzi R instalujete. Poslední verze R, která podporuje 32bitové procesory je 4.1., což <em>není</em> ta nejnovější. Pokud naopak máte 64bitový procesor, můžete si s klidem nainstalovat aktuální verzi R. Pokud si nejste jistí, můžete si procesor svého počítače <a href="https://support.microsoft.com/en-us/windows/32-bit-and-64-bit-windows-frequently-asked-questions-c6ca9541-8dce-4d48-0415-94a3faa2e13d">zkontrolovat v nastavení</a>. Obdobné omezení se týka i Rstudia, které podporuje 32bitové procesory pouze do verze 1.2.</p>
+<p>Nyní jen stači použít funkci <code>coord_polar()</code> pro aplikace polárních koordinátů. Argumentem <code>theta</code> určíme, kterou z os “obtočíme” kolem středu grafu:</p>
+<div class="cell" data-fig.asp="0.5">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(postsoviet) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">1</span>, <span class="at">y =</span> n, <span class="at">fill =</span> postsoviet)) <span class="sc">+</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"stack"</span>) <span class="sc">+</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_polar</span>(<span class="at">theta =</span> <span class="st">"y"</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="pokrocile-grafy_files/figure-html/pie-chart-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Ti z vás, kteří preferují instalaci softwaru přes manager, mohou využít <a href="https://community.chocolatey.org">Chocolatey</a>, Po <a href="https://chocolatey.org/install">instalaci manageru</a> samotného stačí do terminálu zadat</p>
-<pre><code>choco install r</code></pre>
-<p>Upozorňujeme ale, že z naší zkušenost se správcům Cholocatey balíčku ne vždy daří držet krok s aktuální oficiální verzí .</p>
+<p>A je to, koláčový graf je hotový! Obdobným způsobem je možné vytvářet i další varianty. Například takzvaný donut chart, tedy koláčový graf s dírou ve středu, vytvoříme jednoduše tak, že necháme prostor mezi začátkem horizontální osy a sloupcem:</p>
+<div class="cell" data-fig.asp="0.5">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(postsoviet) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">1</span>, <span class="at">y =</span> n, <span class="at">fill =</span> postsoviet)) <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">NA</span>)) <span class="sc">+</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_polar</span>(<span class="at">theta =</span> <span class="st">"y"</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="pokrocile-grafy_files/figure-html/donut-chart-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </section>
-<section id="macos" class="level3" data-number="1.1.2">
-<h3 data-number="1.1.2" class="anchored" data-anchor-id="macos"><span class="header-section-number">1.1.2</span> MacOS</h3>
-<p>R je možné stáhnout stejně jako u Windows verze z <a href="https://mirrors.nic.cz/R/" class="uri">https://mirrors.nic.cz/R/</a>, kde zvolte <em>Download R for MacOS</em>. Pokud máte Macbook s M1 procesorem (tedy Macbook z roku 2020 nebo mladší), zvolte verzi <em>arm64.</em> U starších verzí zvolte základní verzi R. Po stažení je možné nainstalovat jako jakýkoliv jiný software.</p>
-<p>Pokud preferujete instalaci pomocí software manageru, je možné využít <a href="https://brew.sh">Homebrew</a>. Pro instalaci Homebrew otevřete terminál a použijte příkaz</p>
-<pre><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre>
-<p>a řiďte se instrukcemi. Po úspěšné instalaci Homebrew je možné nainstalovat R pomocí příkazu:</p>
-<pre><code>brew install r </code></pre>
+<section id="skládání-geomů" class="level2" data-number="25.2">
+<h2 data-number="25.2" class="anchored" data-anchor-id="skládání-geomů"><span class="header-section-number">25.2</span> Skládání geomů</h2>
+<p>Mnoho komplexních grafů je možné vytvořit kombinací několika vrstev geomů. K tomu nám pomůže fakt, že každá vrstva <code>ggplot2</code> grafů může mít svůj vlastní zdroj dat a své vlastní mapování. Následující graf se nazývá barbell chart a využívá se pro srovnání zpravidla dvou skupin napříč několika proměnnými. Přestože tento graf může na první pohled vypadat komplikovaně, jedná s jen o dvě sady bodů spojené úsečkou.</p>
+<div class="cell" data-fig.asp="0.5">
+<div class="cell-output-display">
+<p><img src="pokrocile-grafy_files/figure-html/barbell-showcase-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Začněme přípravou dat. Pro každou ze skupin proměnné <code>postsoviet</code> spočítáme průměr proměnných <code>material_dep</code>, <code>poverty_risk</code> a <code>uni_prc</code>. Data převedeme do dlouhého formátu a poté zpět do širšího. Spočítáme rozdil mezi oběma skupinami pro každou z proměnných a nakonec dáme sloupcům lepší názvy:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(postsoviet) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="at">.cols =</span> <span class="fu">c</span>(material_dep, poverty_risk, uni_prc),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.fns =</span> mean, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span>postsoviet) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> postsoviet, <span class="at">values_from =</span> value) <span class="sc">%&gt;%</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">diff =</span> yes<span class="sc">-</span>no) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">western =</span> no,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">postsoviet =</span> yes)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 4
+  name         western postsoviet    diff
+  &lt;chr&gt;          &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;
+1 material_dep   0.137      0.239  0.102 
+2 poverty_risk   0.223      0.264  0.0419
+3 uni_prc        0.320      0.249 -0.0705</code></pre>
+</div>
+</div>
+<p>Druhým krokem je vytvořením grafu obsahujícím úsečku spojujícím obě skupiny. Pro vytvoření úsečky využijeme funkce <code>geom_segment()</code>, které vyžaduje čtyři argumenty: <code>x</code>, <code>xend</code>, <code>y</code> a <code>yend</code>.</p>
+<div class="cell" data-fig.asp="0.5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(postsoviet) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="at">.cols =</span> <span class="fu">c</span>(material_dep, poverty_risk, uni_prc),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.fns =</span> mean, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span>postsoviet) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> postsoviet, <span class="at">values_from =</span> value) <span class="sc">%&gt;%</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">diff =</span> yes<span class="sc">-</span>no) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">western =</span> no,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">postsoviet =</span> yes) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> name)) <span class="sc">+</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> western, <span class="at">xend=</span> postsoviet, <span class="at">yend =</span> name), <span class="at">size =</span> <span class="dv">4</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="pokrocile-grafy_files/figure-html/barbell-chart-segment-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>V posledním kroce přidáme body na každou stranu úsečky. Protože průměr každé skupiny je samostatné proměnná, budeme muset použít dvě vrstvy geomů. Dále také budeme muset ručně definovat dimenzi barvy, pro správné vytvoření legendy. Nakonec jen upravíme popisky:</p>
+<div class="cell" data-fig.asp="0.5">
+<div class="cell-output-display">
+<p><img src="pokrocile-grafy_files/figure-html/barball-chart-complete-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </section>
-<section id="linux" class="level3" data-number="1.1.3">
-<h3 data-number="1.1.3" class="anchored" data-anchor-id="linux"><span class="header-section-number">1.1.3</span> Linux</h3>
-<p>Konkrétní podoba instalace R pro Linuxu závisí na tom, jakou distribuci používáte. R oficiálně podporuje tři distribuce a to Debian, Ubuntu a Fedora/Redhead. Instrukce pro instalaci jsou dostupné na <a href="https://mirrors.nic.cz/R/" class="uri">https://mirrors.nic.cz/R/</a>. Velkou pozornost doporučujeme věnovat repozitářům pro instalaci balíčků, jelikož jejich napojení se liší distribuci od distribuce a jejich správnou přípravou si do budoucna ušetříte mnoho času!</p>
-<p>Pokud používáte jinou než jednu z oficiálně podporovaných distribucí, konzultuje svůj package manager.</p>
-</section>
-</section>
-<section id="instalace-rstudia" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="instalace-rstudia"><span class="header-section-number">1.2</span> Instalace Rstudia</h2>
-<p>Po instalaci R jste teoreticky připravení pro další práci! Rychle ale zjistíte, že obsluhovat R pouze z příkazové řádky není ani zdaleka ideální. Analytici a vývojáři proto využívají řadu programů, zvané <em>Integrated Developer Environments (IDE)</em>, které psaní kódu usnadňují. Jedním z nejlepších (podle nás dokonce nejlepší!) IDE pro práci v R je <a href="https://www.rstudio.com/products/rstudio/">Rstudio</a>. Rstudio pro všechny operační systémy je dostupné ke stažení na <a href="https://www.rstudio.com/products/rstudio/download/#download" class="uri">https://www.rstudio.com/products/rstudio/download/#download</a>. Instalace probíhá klasickým způsobem.</p>
-<p>Ti z vás, kteří používají software manager, mohou využít Chocolatey pro Windows (<code>choco install r.studio</code>), Homebrew pro MacOS (<code>brew install rstudio</code>), případně konzultovat dokumentaci k vaší Linux distribuci.</p>
-<p>Rstudio při prvním spuštění vypadá zhruba takto:</p>
-<p><img src="images/Rstudio_install.PNG" class="img-fluid" alt="Rstudio při prvním spuštěním"></p>
-</section>
-<section id="instalace-tidyverse" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="instalace-tidyverse"><span class="header-section-number">1.3</span> Instalace Tidyverse</h2>
-<p>Posledním krokem je instalace sady R balíčků Tidyverse, které budeme využívat v rámci této knihy. Tyto balíčky lze nainstalovat uvnitř Rstudia pomocí příkazu <code>install.packages("tidyverse")</code> zadaného do konzole na levé straně (nezapomeňte na uvozovky!):</p>
-<p><img src="images/tidyverse_install.PNG" class="img-fluid" alt="Instalace Tidyverse"></p>
-<p>Instalace všech potřebných balíčků trvá zpravidla pár minut (s výjimkou některých uživatelů Linuxu, kteří musí balíčky kompilovat. Vy si počkáte zhruba tři čtvrtě hodiny). Úspěšná instalace bude zakončená větou <code>package tidyverse successfully unpacked and MD5 sums checked</code>.</p>
-</section>
-<section id="základní-nastavení-rstudia" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="základní-nastavení-rstudia"><span class="header-section-number">1.4</span> Základní nastavení Rstudia</h2>
-<p>Jako úplně poslední věc se vyplatí změnit dvě výchozí nastavení, kterými si dlouhodobě ušetříte práci i nervy. Rstudio ve výchozím nastavení při ukončení ukládá všechny nahraná data a další vámi vytvořené objekty a znovunahraje je pokaždé, když R znovu zapnete. To je ovšem v praxi spíše na škodu, protože to znamená, že zanedlouho budete mít vaše prostředí zaneřáděné daty z předchozích analýz a projektů. Tomu se dá jednoduše zabránit tím, že si v Rstudiu otevřete záložku <em>Tools</em>, a v ní volbu <em>Global options</em>. V tomto nastavení odškrtněte možnost <em>Restore .Rdata into workspace at startup</em> a zároveň nastavte možnost <em>Save workspace to .Rdata on exit</em> na <em>never</em> tak, jak je to na obrázku níže.</p>
-<p><img src="images/rstudio-startup-settings.png" class="img-fluid" alt="Nastavení Rstudia"></p>
+<section id="více-zdrojů-dat" class="level2" data-number="25.3">
+<h2 data-number="25.3" class="anchored" data-anchor-id="více-zdrojů-dat"><span class="header-section-number">25.3</span> Více zdrojů dat</h2>
+<p>Jeden graf může být vytvořen z několika dataframů. To se může hodit například v situacích, kdy chceme vytvořit graf obsahující facety zvýrazňující určitou skupinu dat:</p>
+<div class="cell" data-fig.asp="0.5">
+<div class="cell-output-display">
+<p><img src="pokrocile-grafy_files/figure-html/facet-highlight-showcase-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Graf výše využívá faktu, že facety recyklují všechna pozorovaní, které nepatří do jedné konkrétní facety. Začneme tím, že vytvoříme nový dataframe <code>countries2</code>, který je téměř stejný jako <code>countries</code>, ale neobsahuje proměnnou <code>di_cat</code> (a rovnou se zbavíme chybějících hodnot):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>countries2 <span class="ot">&lt;-</span> countries <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(di_cat)) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>di_cat)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Poté vytvoříme bodový graf pro proměnné <code>hdi</code> a <code>life_exp</code> rozdělený do facet podle proměnné <code>di_cat</code>. Zdroj dat ale nespecifikujeme uvnitř funkce <code>ggplot()</code>, ale až ve funkci <code>geom_point()</code>. Jako zdroj dat použijeme <code>countries2</code>. Protože tento dataframe neobsahuje facetovou proměnnou, budou všechny body zobrazeny ve všech facetech:</p>
+<div class="cell" data-fig.asp="0.5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(di_cat)) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hdi, <span class="at">y =</span> life_exp)) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> countries2, <span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>di_cat)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="pokrocile-grafy_files/figure-html/facet-highlight-facet-all-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Nyní přidáme druhou vrstvu bodů, tentokrát založenou na dataframu <code>countries</code>. Tento dataframe již facetovou proměnnou obsahuje, takže body budou zobrazeny jen pro relevantní facetu. Také rovnou skryjeme nepotřebnou legendu:</p>
+<div class="cell" data-fig.asp="0.5">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(di_cat)) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hdi, <span class="at">y =</span> life_exp)) <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> countries2, <span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>di_cat) <span class="sc">+</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> di_cat), <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="pokrocile-grafy_files/figure-html/facet-highlight-complete-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 
 
 </section>
@@ -657,13 +782,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./struktura.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Struktura knihy</span>
+      <a href="./vzhled-grafu.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Vzhled grafů</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./rstudio.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">První pohled na Rstudio</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./export-grafu.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Export grafů</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

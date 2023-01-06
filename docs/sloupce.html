@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="cs" xml:lang="cs"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.245">
+<meta name="generator" content="quarto-1.2.280">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -352,7 +352,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./export-grafu.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Export grafů</span></a>
+  <a href="./pokrocile-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Pokročilé grafy</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./export-grafu.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Export grafů</span></a>
   </div>
 </li>
       </ul>
@@ -381,16 +386,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 class="title d-none d-lg-block"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Práce se sloupci</span></h1>
 </div>
 
-<div>
-  <div class="description">
-    <p>První výprava do světa R a Tidyverse.</p>
-  </div>
-</div>
 
 
 <div class="quarto-title-meta">
 
     
+  
     
   </div>
   
@@ -420,8 +421,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  8 Greece       81.2 no        
  9 Spain        83.1 no        
 10 France       82.9 no        
-# … with 28 more rows
-# ℹ Use `print(n = ...)` to see more rows</code></pre>
+# … with 28 more rows</code></pre>
 </div>
 </div>
 <p>Pokud by naším cílem bylo se některého sloupce zbavit, využijeme mínusu (<code>-</code>), podobně jako u indexování (viz. <a href="funkce.html#sec-nested-objects"><span>Sekce&nbsp;6.3</span></a> ). Pro vyřazení více sloupců využijeme již dobře známou funkci <code>c()</code>:</p>
@@ -443,8 +443,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 10 FR     2.35e6  6.69e7 643801 yes       0.328   0.171   0.111  0.9  1958-10-05
 # … with 28 more rows, 4 more variables: maj_belief &lt;chr&gt;, dem_index &lt;dbl&gt;,
 #   di_cat &lt;chr&gt;, hd_title_name &lt;chr&gt;, and abbreviated variable names
-#   ¹​population, ²​eu_member, ³​poverty_risk, ⁴​material_dep, ⁵​foundation_date
-# ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</code></pre>
+#   ¹​population, ²​eu_member, ³​poverty_risk, ⁴​material_dep, ⁵​foundation_date</code></pre>
 </div>
 </div>
 </section>
@@ -488,8 +487,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  8 Greece                 0.277
  9 Spain                  0.34 
 10 France                 0.328
-# … with 28 more rows
-# ℹ Use `print(n = ...)` to see more rows</code></pre>
+# … with 28 more rows</code></pre>
 </div>
 </div>
 <p>Dataframe <code>countries</code> již není obsažen ve funkci <code>filter()</code>, ale je do ní poslán skrze <em>pipe</em> (<code>%&gt;%</code>). Vzpomeňme si, že <em>pipe</em> vezme objekt na její levé straně a vloží ho do prvního argumentu funkce napravo.</p>
@@ -515,8 +513,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 # … with 28 more rows, 2 more variables: `di-cat` &lt;chr&gt;, `hd-title_name` &lt;chr&gt;,
 #   and abbreviated variable names ¹​`eu-member`, ²​`life-exp`, ³​`uni-prc`,
 #   ⁴​`poverty-risk`, ⁵​`material-dep`, ⁶​`foundation-date`, ⁷​`maj-belief`,
-#   ⁸​`dem-index`
-# ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</code></pre>
+#   ⁸​`dem-index`</code></pre>
 </div>
 </div>
 </section>
@@ -542,8 +539,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 # … with 28 more rows, 8 more variables: population &lt;dbl&gt;, area &lt;dbl&gt;,
 #   life_exp &lt;dbl&gt;, uni_prc &lt;dbl&gt;, poverty_risk &lt;dbl&gt;, material_dep &lt;dbl&gt;,
 #   hdi &lt;dbl&gt;, dem_index &lt;dbl&gt;, and abbreviated variable names
-#   ¹​foundation_date, ²​maj_belief, ³​hd_title_name
-# ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</code></pre>
+#   ¹​foundation_date, ²​maj_belief, ³​hd_title_name</code></pre>
 </div>
 </div>
 
@@ -683,7 +679,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   // Switch to dark mode if need be
   if (hasAlternateSentinel()) {
     toggleColorMode(true);
-  } 
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -705,7 +703,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Zkopírováno!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Zkopírováno!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -741,24 +756,42 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>

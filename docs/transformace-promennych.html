@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="cs" xml:lang="cs"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.245">
+<meta name="generator" content="quarto-1.2.280">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -353,7 +353,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./export-grafu.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Export grafů</span></a>
+  <a href="./pokrocile-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Pokročilé grafy</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./export-grafu.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Export grafů</span></a>
   </div>
 </li>
       </ul>
@@ -382,16 +387,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 class="title d-none d-lg-block"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Transformace proměnných</span></h1>
 </div>
 
-<div>
-  <div class="description">
-    <p>První výprava do světa R a Tidyverse.</p>
-  </div>
-</div>
 
 
 <div class="quarto-title-meta">
 
     
+  
     
   </div>
   
@@ -425,8 +426,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  8 Greece    184714.         185.          34.8
  9 Spain    1208248         1208.          26.6
 10 France   2353090         2353.          17.1
-# … with 28 more rows
-# ℹ Use `print(n = ...)` to see more rows</code></pre>
+# … with 28 more rows</code></pre>
 </div>
 </div>
 <p>Zde je vidět nejen aplikace funkce <code>mutate()</code>, ale i její hlavní primární výhoda. Protože jejím výsledkem je dataframe s provedenými transformacemi, je možné na ní navázat dalšími funkcemi, jako je <code>select()</code> nebo <code>filter()</code>. Novým proměnným také můžeme jednoduše přiřadit jméno (viz <a href="jmena.html"><span>Kapitola&nbsp;5</span></a>). Pokud uložíme výsledek transformace pod novým jménem, bude vytvořena nová proměnná (v našem případě <code>gdp_milliards</code>). Pokud použijeme jméno již existující proměnné, bude přepsána hodnotami (<code>poverty_risk</code>).</p>
@@ -451,8 +451,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  8 Greece   0.0172             -0.640
  9 Spain    0.0259             -0.252
 10 France   0.0352              0.162
-# … with 28 more rows
-# ℹ Use `print(n = ...)` to see more rows</code></pre>
+# … with 28 more rows</code></pre>
 </div>
 </div>
 <p>Z transformované proměnné <code>gdp_pc_scaled</code> je vidět, že z skór České republiky je -0.53, naše HDP na hlavu se tedy nachází zhruba půl směrodatné odchylky pod průměrem. Naopak Irsko se těší HDP na hlavu o 1.5 směrodatné odchylky vyšší, než je průměr všech zemí v datasetu.</p>
@@ -482,8 +481,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  8 Greece   no         0.0172             -1.31 
  9 Spain    no         0.0259             -0.894
 10 France   no         0.0352             -0.453
-# … with 28 more rows
-# ℹ Use `print(n = ...)` to see more rows</code></pre>
+# … with 28 more rows</code></pre>
 </div>
 </div>
 <p>Přestože tento dataframe na první pohled vypadá velmi podobně jako ten předchozí, hodnoty proměnné <code>gdp_pc_scaled</code> jsou odlišné. Česká republika má nyní hodnotu 0.52. Nachází se tedy zhruba půl směrodatné odchylky nad průměrem ostatních <em>postsovětských</em> zemí. Naopak z skór Irska se snížil na 1.1, protože ve srovnání s ostatními <em>západními</em> zeměmi je jeho HDP na hlavu pouze jednu směrodatnou odchylku nad průměrem.</p>
@@ -526,8 +524,7 @@ Po použití vypněte
  8 Greece            0.708
  9 Spain             0.394
 10 France            0.282
-# … with 28 more rows
-# ℹ Use `print(n = ...)` to see more rows</code></pre>
+# … with 28 more rows</code></pre>
 </div>
 </div>
 <p>Pomocí funkce <code>rowwise()</code> jsme získali součet podílu lidí ohrožených chudobou a lidí v materiální deprivaci pro každou ze zemí. Jak je vidět, alespoň do jedné z těchto kategorií v České republice spadá maximální 22 % obyvatel.</p>
@@ -558,8 +555,7 @@ Po použití vypněte
  8 Greece              -0.640 Below average
  9 Spain               -0.252 Below average
 10 France               0.162 Above average
-# … with 28 more rows
-# ℹ Use `print(n = ...)` to see more rows</code></pre>
+# … with 28 more rows</code></pre>
 </div>
 </div>
 <p>Co kdybychom ale chtěli, aby výsledkem operace byly více než dvě hodnoty? Možná nám přijde, že klasifikovat země pouze jako nadprůměrné a podprůměrné je příliš redukcionistické (populární to výčitka mezi sociology). Země bychom místo toho raději rozdělili do čtyř kategorií:</p>
@@ -593,8 +589,7 @@ Po použití vypněte
  8 Greece       -0.640 Slightly below average
  9 Spain        -0.252 Slightly below average
 10 France        0.162 Slightly above average
-# … with 28 more rows
-# ℹ Use `print(n = ...)` to see more rows</code></pre>
+# … with 28 more rows</code></pre>
 </div>
 </div>
 <p>Funkce <code>case_when()</code> má oproti dosavadním funkcí atypickou syntax. Každá z logických podmínek je kondezovaná do formule <code>podminka ~ vysledek</code>. První řádek v této funkci, <code>gdp_pc &lt; -1 ~ "Below average"</code>, tedy říká <em>“pokud je hodnota proměnné gdp_pc menší než -1, vrať hodnotu <code>Below average</code>”</em>. Pokud tato podmínka splněná není, funkce zkontroluje podmínku následující. Podmínky jsou ověřovány jedna po druhé, přičemž podmínky na vyšších místech jsou ověřeny dříve. Speciální podmínkou je <code>TRUE ~ vysledek</code>, která je je vždy splněna. To se hodí pokud jsou v datech přítomny hodnoty, které nesplňují žádnou z předchozích podmínek. Kdy se může stát, že hodnota nesplňuje žádnou z našich podmínek? Například, pokud se jedná o hodnotu chybějící:</p>
@@ -755,7 +750,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   // Switch to dark mode if need be
   if (hasAlternateSentinel()) {
     toggleColorMode(true);
-  } 
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -777,7 +774,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Zkopírováno!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Zkopírováno!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -813,24 +827,42 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>

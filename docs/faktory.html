@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="cs" xml:lang="cs"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.245">
+<meta name="generator" content="quarto-1.2.280">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -352,7 +352,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./export-grafu.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Export grafů</span></a>
+  <a href="./pokrocile-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Pokročilé grafy</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./export-grafu.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Export grafů</span></a>
   </div>
 </li>
       </ul>
@@ -380,16 +385,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 class="title d-none d-lg-block"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Práce s faktory</span></h1>
 </div>
 
-<div>
-  <div class="description">
-    <p>První výprava do světa R a Tidyverse.</p>
-  </div>
-</div>
 
 
 <div class="quarto-title-meta">
 
     
+  
     
   </div>
   
@@ -430,6 +431,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Jednou ze situací, ve kterých je nutné převést kategorické proměnné na faktory, je vizualizace dat. Pokud by nás zajímalo náboženské složení zemí v našem datasetu, můžeme data vizualizovat pomocí funkce <code>qplot()</code> (o které se dozvíme více v příštích kapitolách):</p>
 <div class="cell" data-fig.asp="0.5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(<span class="at">x =</span> maj_belief, <span class="at">data =</span> countries)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: `qplot()` was deprecated in ggplot2 3.4.0.</code></pre>
+</div>
 <div class="cell-output-display">
 <p><img src="faktory_files/figure-html/qplot-factor-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -450,23 +454,23 @@ Varování
 </div>
 <p>Pokud chceme změnit pořadí kategorií v grafu, nestačí pouze seřadit řádky datasetu, je třeba změnit pořadí úrovní faktoru. Způsobů, jak řadit úrovně je více. Tím základním je specifikovat pořadí úrovní explicitně, pomocí funkce <code>fct_relevel()</code>. Ta přijímá jako první argument faktor, který chceme transformovat a dále jednolivé úrovně v pořadí, v jakém je chceme uložit.</p>
 <div class="cell" data-fig.asp="0.5">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>countries<span class="sc">$</span>maj_belief <span class="ot">&lt;-</span> <span class="fu">fct_relevel</span>(countries<span class="sc">$</span>maj_belief,</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">"catholic"</span>,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">"orthodox"</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">"protestantism"</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">"nonbelief"</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">"islam"</span>)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(<span class="at">x =</span> maj_belief, <span class="at">data =</span> countries)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>countries<span class="sc">$</span>maj_belief <span class="ot">&lt;-</span> <span class="fu">fct_relevel</span>(countries<span class="sc">$</span>maj_belief,</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">"catholic"</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">"orthodox"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">"protestantism"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">"nonbelief"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">"islam"</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(<span class="at">x =</span> maj_belief, <span class="at">data =</span> countries)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="faktory_files/figure-html/fct-relevel-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>A je to! Sloupce jsou seřazeny. Ovšem manuálně vypisovat všechny kategorie je zdlouhavá záležitost. Lepší variantou je nechat R, aby pořadí úrovní určilo za nás. K tomu nejdříve budeme muset spočítat frekvenci výskytu jednotlivých kategorií. K tomu je možné využít již nám dobře známou kombinaci funkcí <code>group_by()</code> a <code>summarise()</code>. Uvnitř <code>summarise()</code> použijeme funkci <code>n()</code>, která vrátí počet pozorování v rámci dané skupiny.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(maj_belief) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>())</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(maj_belief) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>())</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 2
   maj_belief        n
@@ -480,12 +484,12 @@ Varování
 </div>
 <p>Dalším krokem je zrušit seskupení a aplikovat funkci <code>fct_reorder()</code>, kde prvním argumentem je faktor a druhým proměnná, podle které úrovně faktoru seřadíme. Nakonec už jen zbývá aplikovat <code>qplot()</code>, tentokrát včetně argumentu <code>y</code>:</p>
 <div class="cell" data-fig.asp="0.5">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(maj_belief) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">maj_belief =</span> <span class="fu">fct_reorder</span>(maj_belief, n)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qplot</span>(<span class="at">x =</span> maj_belief, <span class="at">y =</span> n, <span class="at">data =</span> ., <span class="at">geom =</span> <span class="st">"col"</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(maj_belief) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">maj_belief =</span> <span class="fu">fct_reorder</span>(maj_belief, n)) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qplot</span>(<span class="at">x =</span> maj_belief, <span class="at">y =</span> n, <span class="at">data =</span> ., <span class="at">geom =</span> <span class="st">"col"</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="faktory_files/figure-html/fct-reorder-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -502,16 +506,16 @@ Varování
 </div>
 <div class="callout-body-container callout-body">
 <p>Pokud vám série funkci <code>group_by() %&gt;% summarise(n = n()) %&gt;% ungroup()</code> přijde zbytečně zdlouhavá, nejste sami. Autoři Tidyverse mají stejný názor a připravili pro nás proto funkci <code>count()</code>. Ta je v postatě je zkratkou pro výše zmíněnou sérii funkci. Následující skript tedy bude mít stejný výsledek, jako ten výše:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(maj_belief) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">maj_belief =</span> <span class="fu">fct_reorder</span>(maj_belief, n)) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qplot</span>(<span class="at">x =</span> maj_belief, <span class="at">y =</span> n, <span class="at">data =</span> ., <span class="at">geom =</span> <span class="st">"col"</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(maj_belief) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">maj_belief =</span> <span class="fu">fct_reorder</span>(maj_belief, n)) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qplot</span>(<span class="at">x =</span> maj_belief, <span class="at">y =</span> n, <span class="at">data =</span> ., <span class="at">geom =</span> <span class="st">"col"</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <p>V našem posledním grafu jsou kategorie seřazené vzestupně. V našem původním datasetu jsou ovšem pořád sestupně. Pokud bychom chtěli pořadí kategorií obrátit, můžeme k tomu využít funkci <code>fct_rev()</code></p>
 <div class="cell" data-fig.asp="0.5">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>countries<span class="sc">$</span>maj_belief <span class="ot">&lt;-</span> <span class="fu">fct_rev</span>(countries<span class="sc">$</span>maj_belief)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(<span class="at">x =</span> maj_belief, <span class="at">data =</span> countries)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>countries<span class="sc">$</span>maj_belief <span class="ot">&lt;-</span> <span class="fu">fct_rev</span>(countries<span class="sc">$</span>maj_belief)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(<span class="at">x =</span> maj_belief, <span class="at">data =</span> countries)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="faktory_files/figure-html/fct-rev-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -521,10 +525,10 @@ Varování
 <h2 data-number="17.3" class="anchored" data-anchor-id="transformace-úrovní"><span class="header-section-number">17.3</span> Transformace úrovní</h2>
 <p>Kromě řazení úrovní faktoru je také často budeme chtít transformovat. Nejčastěji tak, že budeme chtít změnit název úrovně. Jednou z úrovní naší proměnné <code>maj_belief</code> je <code>protestantism</code>, jejíž název morfologicky neodpovídá ostatním. Rádi bychom proto změnili název kategorie z <code>protestantism</code> na <code>protestant</code>. K tomu nám poslouží funkce <code>fct_recode()</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>countries<span class="sc">$</span>maj_belief <span class="ot">&lt;-</span> <span class="fu">fct_recode</span>(countries<span class="sc">$</span>maj_belief,</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"protestant"</span> <span class="ot">=</span> <span class="st">"protestantism"</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(countries<span class="sc">$</span>maj_belief)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>countries<span class="sc">$</span>maj_belief <span class="ot">&lt;-</span> <span class="fu">fct_recode</span>(countries<span class="sc">$</span>maj_belief,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"protestant"</span> <span class="ot">=</span> <span class="st">"protestantism"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(countries<span class="sc">$</span>maj_belief)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "islam"      "nonbelief"  "protestant" "orthodox"   "catholic"  </code></pre>
 </div>
@@ -532,43 +536,43 @@ Varování
 <p>Jak je vidět, aplikace této funkce ja snadná, stačí specifikovat faktor, a v následujících argumentech poté názvy úrovni ve formátu <em>nový název = starý název</em>. Změnit je možné i více názvu najednou.</p>
 <p>Kromě ručního přepisování názvů je možné měnit úrovně také programátorsky, pomocí funkce <code>fct_relabel()</code>. Pro hezčí vzhled našich grafů bychom například chtěli, aby název každé úrovně začínal velkým písmenem. Převedení prvních písmen na kapitálky je možné dosáhnout pomocí funkce <code>str_to_title()</code>. Nelze ji ale aplikovat přímo, jelikož tím bychom změnili formát proměnné z <em>factor</em> na <em>character</em>. Místo toho ji použijeme v kombinaci s <code>fct_relabel()</code>. Prvním argument je faktor samotný, druhým poté funkce, kterou chceme na názvy úrovní aplikovat:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>countries<span class="sc">$</span>maj_belief <span class="ot">&lt;-</span> <span class="fu">fct_relabel</span>(countries<span class="sc">$</span>maj_belief, str_to_title)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(countries<span class="sc">$</span>maj_belief)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>countries<span class="sc">$</span>maj_belief <span class="ot">&lt;-</span> <span class="fu">fct_relabel</span>(countries<span class="sc">$</span>maj_belief, str_to_title)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(countries<span class="sc">$</span>maj_belief)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Islam"      "Nonbelief"  "Protestant" "Orthodox"   "Catholic"  </code></pre>
 </div>
 </div>
 <p>Poslední transformací, kterou si zde ukážeme, je kolapsování kategorií. I to lze provádět jak ručně, tak programátorsky. První variantou je <code>fct_collapse()</code>, pomocí které můžeme například sloučit existující kategorie <code>Protestant</code>, <code>Catholic</code> a <code>Orthodox</code> do nové kategorie <code>Christian</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>countries<span class="sc">$</span>maj_belief_collapsed <span class="ot">&lt;-</span>  <span class="fu">fct_collapse</span>(countries<span class="sc">$</span>maj_belief,</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">Christianity =</span> <span class="fu">c</span>(<span class="st">"Protestant"</span>,</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                                                                 <span class="st">"Catholic"</span>,</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                                                                 <span class="st">"Orthodox"</span>))</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(countries<span class="sc">$</span>maj_belief_collapsed)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>countries<span class="sc">$</span>maj_belief_collapsed <span class="ot">&lt;-</span>  <span class="fu">fct_collapse</span>(countries<span class="sc">$</span>maj_belief,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">Christianity =</span> <span class="fu">c</span>(<span class="st">"Protestant"</span>,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                                                                 <span class="st">"Catholic"</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                                                                 <span class="st">"Orthodox"</span>))</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(countries<span class="sc">$</span>maj_belief_collapsed)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Islam"        "Nonbelief"    "Christianity"</code></pre>
 </div>
 </div>
 <p>Alternativou je slučování na základě četností pomocí funkce <code>fct_lump()</code>. Pro sloučení všech kategorií, kromě tří nejpočetnějších lze využít argument <code>n</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>countries<span class="sc">$</span>maj_belief_n <span class="ot">&lt;-</span> <span class="fu">fct_lump</span>(countries<span class="sc">$</span>maj_belief,</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">n =</span> <span class="dv">3</span>,</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">other_level =</span> <span class="st">"Other"</span>)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(countries<span class="sc">$</span>maj_belief_n)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>countries<span class="sc">$</span>maj_belief_n <span class="ot">&lt;-</span> <span class="fu">fct_lump</span>(countries<span class="sc">$</span>maj_belief,</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">n =</span> <span class="dv">3</span>,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">other_level =</span> <span class="st">"Other"</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(countries<span class="sc">$</span>maj_belief_n)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Protestant" "Orthodox"   "Catholic"   "Other"     </code></pre>
 </div>
 </div>
 <p>Obdobně, pro sloučení všech kategorií, které netvoří alespoň 20 % všech pozorovaných hodnot, lze využít argument <code>prop</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>countries<span class="sc">$</span>maj_belief_prop <span class="ot">&lt;-</span> <span class="fu">fct_lump</span>(countries<span class="sc">$</span>maj_belief,</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">prop =</span> <span class="fl">0.2</span>,</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">other_level =</span> <span class="st">"Other"</span>)</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(countries<span class="sc">$</span>maj_belief_prop)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>countries<span class="sc">$</span>maj_belief_prop <span class="ot">&lt;-</span> <span class="fu">fct_lump</span>(countries<span class="sc">$</span>maj_belief,</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">prop =</span> <span class="fl">0.2</span>,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">other_level =</span> <span class="st">"Other"</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(countries<span class="sc">$</span>maj_belief_prop)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Orthodox" "Catholic" "Other"   </code></pre>
 </div>
@@ -710,7 +714,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   // Switch to dark mode if need be
   if (hasAlternateSentinel()) {
     toggleColorMode(true);
-  } 
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -732,7 +738,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Zkopírováno!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Zkopírováno!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -768,24 +791,42 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>

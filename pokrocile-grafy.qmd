@@ -1,0 +1,192 @@
+# Pokročilé grafy
+
+```{r setup}
+#| message: false
+#| echo: false
+
+library(tidyverse)
+countries <- read_csv("data-raw/countries.csv")
+```
+
+Předchozí kapitoly byly věnovány základům práce s balíčkem `ggplot2`. V této kapitole si ukážeme příklady pokročilejších technik, které při vizualizaci dat můžeme využít.
+
+## Polární koordináty
+
+Většina grafů využívá karteziánské koordináty - objekty v grafu jsou mapované na horizontální a vertikální osu. Čas od času se ovšem vyplatí využít jiný systém. Jedním z nejpopulárnějších jsou polární koordináty.
+
+Přestože si to možná neuvědomujeme, každý z nás se již s polárními koordináty setkal. Slouží k vytváření koláčových grafů, které nejsou ničím jiným, než stočenými skládánými sloupcovými grafy. Začněme vytvořením skládaného sloupcového grafu:
+
+```{r pie-chart-prep}
+#| fig-asp: 0.5
+
+countries %>% 
+  count(postsoviet) %>% 
+  ggplot(aes(x = 1, y = n, fill = postsoviet)) +
+  geom_col(position = "stack")
+```
+
+Nyní jen stači použít funkci `coord_polar()` pro aplikace polárních koordinátů. Argumentem `theta` určíme, kterou z os "obtočíme" kolem středu grafu:
+
+```{r pie-chart}
+#| fig-asp: 0.5
+
+countries %>% 
+  count(postsoviet) %>% 
+  ggplot(aes(x = 1, y = n, fill = postsoviet)) +
+  geom_col(position = "stack") +
+  coord_polar(theta = "y")
+```
+
+A je to, koláčový graf je hotový! Obdobným způsobem je možné vytvářet i další varianty. Například takzvaný donut chart, tedy koláčový graf s dírou ve středu, vytvoříme jednoduše tak, že necháme prostor mezi začátkem horizontální osy a sloupcem:
+
+```{r donut-chart}
+#| fig-asp: 0.5
+
+countries %>% 
+  count(postsoviet) %>% 
+  ggplot(aes(x = 1, y = n, fill = postsoviet)) +
+  geom_col() +
+  scale_x_continuous(limits = c(0, NA)) + 
+  coord_polar(theta = "y")
+```
+
+## Skládání geomů
+
+Mnoho komplexních grafů je možné vytvořit kombinací několika vrstev geomů. K tomu nám pomůže fakt, že každá vrstva `ggplot2` grafů může mít svůj vlastní zdroj dat a své vlastní mapování. Následující graf se nazývá barbell chart a využívá se pro srovnání zpravidla dvou skupin napříč několika proměnnými. Přestože tento graf může na první pohled vypadat komplikovaně, jedná s jen o dvě sady bodů spojené úsečkou.
+
+```{r barbell-showcase}
+#| echo: false
+#| warning: false
+#| fig-asp: 0.5
+
+countries %>% 
+  group_by(postsoviet) %>% 
+  summarise(across(.cols = c(material_dep, poverty_risk, uni_prc),
+                   .fns = mean, na.rm = TRUE)) %>% 
+  pivot_longer(cols = -postsoviet) %>% 
+  pivot_wider(names_from = postsoviet, values_from = value) %>%
+  mutate(diff = yes-no) %>% 
+  rename(western = no,
+         postsoviet = yes) %>% 
+  ggplot(aes(y = name)) +
+  geom_segment(aes(x = western, xend= postsoviet, yend = name), size = 4) +
+  geom_point(aes(x = western, color = "Western"), size = 12) +
+  geom_point(aes(x = postsoviet, color = "Postsoviet"), size = 12) +
+  labs(x = element_blank(),
+       y = element_blank()) +
+  theme(legend.position = "bottom")
+```
+
+Začněme přípravou dat. Pro každou ze skupin proměnné `postsoviet` spočítáme průměr proměnných `material_dep`, `poverty_risk` a `uni_prc`. Data převedeme do dlouhého formátu a poté zpět do širšího. Spočítáme rozdil mezi oběma skupinami pro každou z proměnných a nakonec dáme sloupcům lepší názvy:
+
+```{r barbell-chart-prep}
+countries %>% 
+  group_by(postsoviet) %>% 
+  summarise(across(.cols = c(material_dep, poverty_risk, uni_prc),
+                   .fns = mean, na.rm = TRUE)) %>% 
+  pivot_longer(cols = -postsoviet) %>% 
+  pivot_wider(names_from = postsoviet, values_from = value) %>%
+  mutate(diff = yes-no) %>% 
+  rename(western = no,
+         postsoviet = yes)
+```
+
+Druhým krokem je vytvořením grafu obsahujícím úsečku spojujícím obě skupiny. Pro vytvoření úsečky využijeme funkce `geom_segment()`, které vyžaduje čtyři argumenty: `x`, `xend`, `y` a `yend`.
+
+```{r barbell-chart-segment}
+#| warning: false
+#| fig-asp: 0.5
+
+countries %>% 
+  group_by(postsoviet) %>% 
+  summarise(across(.cols = c(material_dep, poverty_risk, uni_prc),
+                   .fns = mean, na.rm = TRUE)) %>% 
+  pivot_longer(cols = -postsoviet) %>% 
+  pivot_wider(names_from = postsoviet, values_from = value) %>%
+  mutate(diff = yes-no) %>% 
+  rename(western = no,
+         postsoviet = yes) %>% 
+  ggplot(aes(y = name)) +
+  geom_segment(aes(x = western, xend= postsoviet, yend = name), size = 4)
+```
+
+V posledním kroce přidáme body na každou stranu úsečky. Protože průměr každé skupiny je samostatné proměnná, budeme muset použít dvě vrstvy geomů. Dále také budeme muset ručně definovat dimenzi barvy, pro správné vytvoření legendy. Nakonec jen upravíme popisky:
+
+```{r barball-chart-complete}
+#| echo: false
+#| warning: false
+#| fig-asp: 0.5
+
+countries %>% 
+  group_by(postsoviet) %>% 
+  summarise(across(.cols = c(material_dep, poverty_risk, uni_prc),
+                   .fns = mean, na.rm = TRUE)) %>% 
+  pivot_longer(cols = -postsoviet) %>% 
+  pivot_wider(names_from = postsoviet, values_from = value) %>%
+  mutate(diff = yes-no) %>% 
+  rename(western = no,
+         postsoviet = yes) %>% 
+  ggplot(aes(y = name)) +
+  geom_segment(aes(x = western, xend= postsoviet, yend = name), size = 4) +
+  geom_point(aes(x = western, color = "Western"), size = 12) +
+  geom_point(aes(x = postsoviet, color = "Postsoviet"), size = 12) +
+  labs(x = element_blank(),
+       y = element_blank()) +
+  theme(legend.position = "bottom")
+```
+
+## Více zdrojů dat
+
+Jeden graf může být vytvořen z několika dataframů. To se může hodit například v situacích, kdy chceme vytvořit graf obsahující facety zvýrazňující určitou skupinu dat:
+
+```{r facet-highlight-showcase}
+#| echo: false
+#| warning: false
+#| fig-asp: 0.5
+
+countries2 <- countries %>% 
+  filter(!is.na(di_cat)) %>% 
+  select(-di_cat)
+
+countries %>% 
+  filter(!is.na(di_cat)) %>% 
+ggplot(aes(x = hdi, y = life_exp)) +
+  geom_point(data = countries2, alpha = 0.1) +
+  geom_point(aes(color = di_cat), show.legend = FALSE) +
+  facet_wrap(~di_cat)
+```
+
+Graf výše využívá faktu, že facety recyklují všechna pozorovaní, které nepatří do jedné konkrétní facety. Začneme tím, že vytvoříme nový dataframe `countries2`, který je téměř stejný jako `countries`, ale neobsahuje proměnnou `di_cat` (a rovnou se zbavíme chybějících hodnot):
+
+```{r facet-highlight-data-prep}
+countries2 <- countries %>% 
+  filter(!is.na(di_cat)) %>% 
+  select(-di_cat)
+```
+
+Poté vytvoříme bodový graf pro proměnné `hdi` a `life_exp` rozdělený do facet podle proměnné `di_cat`. Zdroj dat ale nespecifikujeme uvnitř funkce `ggplot()`, ale až ve funkci `geom_point()`. Jako zdroj dat použijeme `countries2`. Protože tento dataframe neobsahuje facetovou proměnnou, budou všechny body zobrazeny ve všech facetech:
+
+```{r facet-highlight-facet-all}
+#| warning: false
+#| fig-asp: 0.5
+
+countries %>% 
+  filter(!is.na(di_cat)) %>% 
+ggplot(aes(x = hdi, y = life_exp)) +
+  geom_point(data = countries2, alpha = 0.1) +
+  facet_wrap(~di_cat)
+```
+
+Nyní přidáme druhou vrstvu bodů, tentokrát založenou na dataframu `countries`. Tento dataframe již facetovou proměnnou obsahuje, takže body budou zobrazeny jen pro relevantní facetu. Také rovnou skryjeme nepotřebnou legendu:
+
+```{r facet-highlight-complete}
+#| warning: false
+#| fig-asp: 0.5
+
+countries %>% 
+  filter(!is.na(di_cat)) %>% 
+ggplot(aes(x = hdi, y = life_exp)) +
+  geom_point(data = countries2, alpha = 0.1) +
+  facet_wrap(~di_cat) +
+    geom_point(aes(color = di_cat), show.legend = FALSE)
+```
