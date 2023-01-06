@@ -1,0 +1,200 @@
+# Vlastní funkce
+
+```{r import}
+#| echo: false
+#| message: false
+
+library(tidyverse)
+countries <- read_csv("data-raw/countries.csv")
+```
+
+R nabízí širokou nabídku funkcí pro analýzu dat. Tuto nabídku je možné dále rozšířit balíčky jako `tidyverse`. Čas od času se ale dostaneme do situace, kdy nám žádná z předpřipravených funkcí nestačí. Naštěstí pro nás nám R umožňuje jednoduše vytvářet funkce vlastní . Obecná poučka říká, že každý kus kódu, který se v našem skriptu opakuje víc než dvakrát, by měl být nahrazen funkcí. Tím si nejen ušetříme čas při analýze, ale také snížíme šanci, že se někde v kódu upíšeme a uděláme chybu.
+
+Funkce v R jsou objekty a je tedy možné je vytvářet stejným způsobem, jakým bychom vytvořili například dataframe. Vlastní funkci vytvoříme pomocí funkce `function()`, následované složenými závorkymi. Uvnitř jednoduchých závorek můžeme definovat jednotlivé argumenty, uvnitř složených závorek poté definujeme funkci samotnou. Obecně vypadá definice nové funkce takto:
+
+```{r function-example}
+#| eval: false
+
+nazev_funkce <- function(argument1, argument2, ...) {
+  # Definice funkce
+}
+```
+
+Vytváření funkcí si ukážeme na několika případech.
+
+## Počet chybějících hodnot v proměnné
+
+Jednou z častých operací, kterou v rámci analýzy budeme provádět, je počítat množství chybějících hodnot v proměnné. Poněkud překvapivě, R neobsahuje funkci, která by pro nás chybějící hodnoty spočítala. Musíme proto využít kombinace funkcí `is.na()` a `sum()`. Například pro spočítáná chybějících hodnot u proměnné `gdp`:
+
+```{r missings-by-hand}
+sum(is.na(countries$gdp))
+```
+
+Pro pohodlnost si vytvoříme vlastní funkci jménem `count_na()`. Pro začátek bude mít tato funkce jeden argument, a to proměnnou, pro které chceme počet chybějících hodnot spočítat:
+
+```{r missings-function-simple}
+count_na <- function(x) {
+  na_count <- sum(is.na(x))
+  
+  return(na_count)
+}
+```
+
+Útroby této funkce vypadají podobně jako předchozí kód, jen název proměnné je nahrazen generickým argumentem `x`. Výsledek je uložený do objektu `na_count` (existujícím pouze uvnitř této funkce). Spočítanou hodnotu poté exportujeme z naší funkce pomocí `return()`. Takto vytvořenou funkci můžeme využívat tak, jak jsme zvyklí:
+
+```{r count-na-example}
+countries %>% 
+  summarise(across(.cols = everything(),
+                   .fns  = count_na)) %>% 
+  pivot_longer(cols = everything(),
+               values_to = "missings_count")
+```
+
+Naše funkce spočítá absolutní frekvenci chybějících hodnot v proměnné. Co kdybychom ale chtěli relativní frekvenci, tedy podíl chybějících hodnot z celkového množství pozorování? Toho docílíme tak, že naši funkci rozšíříme o další argument, `relative`. Pokud bude hodnota tohoto argumentu `TRUE`, bude počet chybějících hodnot vydělen počtem všech hodnot v proměnné.
+
+```{r count-na-complex}
+count_na <- function(x, relative = FALSE) {
+  na_count <- sum(is.na(x))
+  
+  if(relative){
+    na_count <- na_count / length(x)
+  }
+  
+  return(na_count)
+}
+```
+
+Všimněme si, že oproti předchozí verzi, jsme v naší funkci udělali několik změn. Zaprvé jsme přidali argument `relative`, jehož výchozí hodnotu jsme nastavili na `FALSE` (ve výchozím nastavení tedy funkce počítá absolutní počet chybějících hodnot). Dále jsme přidali blok začínající funkcí `if()`. Tato funkce zkontroluje, jestli je hodnota argumentu `relative` rovná `TRUE` a pokud ano, vydělí počet chybějících hodnot celkovou délkou proměnné `x`. Funkci používáme tak, jak jsme zvyklí:
+
+```{r count-na-complex-example}
+countries %>% 
+  summarise(across(.cols = everything(),
+                   .fns  = count_na, relative = TRUE)) %>% 
+  pivot_longer(cols = everything(),
+               values_to = "missings_count")
+```
+
+## Graf pro likertovské položky
+
+Komplexnějším příkladem vlastní funkce je vytvoření grafu pro baterii likertovských položek. Přestože vytvoření takového grafu je pomocí `ggplot2` možné, jde o poměrně zdlouhavý proces. Jako příklad si můžeme ukázat vizualizaci položek týkajících se postojů veřejnosti o válce na Ukrajině. Data pochází z dotazníkového šetření Centra pro průzkum veřejného mínění z března 2022. Data jsou rozdělena do dvou dataframů. První z nich, `ukraine`, obsahuje odpovědi respondentů a druhý, `ukraine_labels`, obsahuje zjednodušené znění jednotlivých položek.
+
+```{r ukraine-import}
+ukraine <- read_rds("data-raw/ukraine.rds")
+ukraine_labels <- read_rds("data-raw/ukraine_labels.rds")
+```
+
+Pro vytvoření grafu popisující postoje občanů k různým formám zapojení zemí do války vypadá následovně:
+
+```{r liker-plot-manual}
+#| warning: false
+
+library(RColorBrewer)
+library(scales)
+
+likert_palette <- c("grey70", brewer.pal(4, "RdYlGn"))
+
+ukraine %>% 
+  select(starts_with("PL_5")) %>% 
+  pivot_longer(cols = everything(),
+               names_to = "item",
+               values_to = "response") %>% 
+  left_join(ukraine_labels, by = "item") %>% 
+  count(label, response) %>% 
+  filter(!is.na(response)) %>% 
+  group_by(label) %>% 
+  mutate(freq = n / sum(n),
+         freq_label = percent(freq, accuracy = 1),
+         positive = sum(freq[response %in% c("rozhodně by mělo", "spíše by mělo") ])) %>% 
+  ungroup() %>% 
+  mutate(label = fct_reorder(label, positive),
+         response = fct_rev(response)) %>% 
+  ggplot(aes(x = freq, y = label, label = freq_label, fill = response)) +
+  geom_col() +
+  geom_text(position = position_stack(vjust = 0.5),
+            color = "white",
+            size = 3) +
+  scale_x_continuous(labels = percent_format()) +
+  scale_fill_manual(values = likert_palette) +
+  labs(x = element_blank(),
+       y = element_blank(),
+       fill = element_blank(),
+       title = "Jaké kroky by podle vás mělo podniknout mezinárodní společenství tváří v tvář\nválce na Ukrajině? Mělo by...") + 
+  theme_minimal() +
+  theme(legend.position = c(0.3, -0.17),
+        panel.grid.major.y = element_blank(),
+        plot.title.position = "plot",
+        plot.margin = unit(c(0,0,3.5,0), 'lines')) +
+  guides(fill = guide_legend(label.position = "bottom",
+                             keywidth = 5,
+                             reverse = TRUE,
+                             direction = "horizontal"))
+```
+
+Uf... asi si dokážeme představit, že použít takto monstrózní kus kódu opakovaně je nejen otravné, ale i recept na to něco zkazit. Naštěstí pro nás, většina kódu zůstané při každém použití stejná. Jediné, co se bude měnit jsou 1) použitá data, 2) barevná paleta, 3) odpovědi, podle kterých jsou položky seřazeny, 4) název a 5) dataframe obsahující znění položek. Vytvořme si funkci `plot_likert`, která tento graf udělá za nás:
+
+```{r liker-plot-function}
+
+plot_likert <- function(data, color_palette, order_by, title, var_labels) {
+ data %>% 
+  pivot_longer(cols = everything(),
+               names_to = "item",
+               values_to = "response") %>% 
+  left_join(var_labels, by = "item") %>% 
+  count(label, response) %>% 
+  filter(!is.na(response)) %>% 
+  group_by(label) %>% 
+  mutate(freq = n / sum(n),
+         freq_label = percent(freq, accuracy = 1),
+         positive = sum(freq[response %in% order_by ])) %>% 
+  ungroup() %>% 
+  mutate(label = fct_reorder(label, positive),
+         response = fct_rev(response)) %>% 
+  ggplot(aes(x = freq, y = label, label = freq_label, fill = response)) +
+  geom_col() +
+  geom_text(position = position_stack(vjust = 0.5),
+            color = "white",
+            size = 3) +
+  scale_x_continuous(labels = percent_format()) +
+  scale_fill_manual(values = color_palette) +
+  labs(x = element_blank(),
+       y = element_blank(),
+       fill = element_blank(),
+       title = title) + 
+  theme_minimal() +
+  theme(legend.position = c(0.3, -0.17),
+        panel.grid.major.y = element_blank(),
+        plot.title.position = "plot",
+        plot.margin = unit(c(0,0,3.5,0), 'lines')) +
+  guides(fill = guide_legend(label.position = "bottom",
+                             keywidth = 5,
+                             reverse = TRUE,
+                             direction = "horizontal")) 
+}
+```
+
+Definice naší funkce vypadá téměř identicky jako původní kód, pět výše zmíněných částí jsme strategicky nahradili argumenty naší funkce. Jakmile je funkce vytvořené, je možné jí aplikovat na data. Kód pro vytvoření grafu se smrknul z třiceti řádků na šest:
+
+```{r likert-plot-function-example}
+ukraine %>% 
+  select(starts_with("PL_5")) %>% 
+  plot_likert(color_palette = likert_palette,
+              order_by = c("rozhodně by mělo", "spíše by mělo"),
+              title = "Jaké kroky by podle vás mělo podniknout mezinárodní společenství tváří v tvář\nválce na Ukrajině? Mělo by...",
+              var_labels = ukraine_labels)
+```
+
+Naší funkci můžeme stejně jednoduše aplikovat na druhou baterii v datech, týkající se vnímané hrozby použití atomových zbraní:
+
+```{r liker-plot-second}
+
+likert_palette2 <- c("grey70", rev(brewer.pal(4, "RdYlBu")))
+
+ukraine %>% 
+  select(starts_with("PL_6")) %>% 
+  plot_likert(color_palette = likert_palette2,
+              order_by = c("velmi se obává", "trochu se obává"),
+              var_labels = ukraine_labels,
+              title = "Obáváte se, že Rusko může použít jaderné zbraně…")
+```
+
+Jak je vidět, vytvořením vlastní funkce si můžeme výrazně ulehčit práci, nemluvě o tom, že tím náš kód uděláme čitelnější a robustnější.

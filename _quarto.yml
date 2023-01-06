@@ -51,6 +51,9 @@ book:
         - vzhled-grafu.qmd
         - pokrocile-grafy.qmd
         - export-grafu.qmd
+    - part: "Pokročilé R"
+      chapters: 
+        - vlastni-funkce.qmd
 license: "CC BY-NC"
 citation: true
 
