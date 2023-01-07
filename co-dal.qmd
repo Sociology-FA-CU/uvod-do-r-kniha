@@ -1,0 +1,21 @@
+# Co dál?
+
+Pokud jste dočetli až sem, znamená to, že máte za sebou vše nezbytné pro to začít s analýzou kvantitativních dat v R. Možnosti práce s R jsou ovšem široké a mnoho dalšího vás ještě čeká. V této, již poslední, kapitole vám proto dáme pár tipů, kam se vaše cesta kvantitativní analýzou dat může ubírat.
+
+## Statistika
+
+Cesta, která se přirozeně nabízí, je dále se vzdělávat v oblasti statistiky a statistického modelování. Zájemcům o studium statistiky doporučujeme začít knihou [Learning Statistics with R](https://learningstatisticswithr.com) od Danielle Navarro, která vás přátelským způsobem provede úvodem do statistické teorie. Navázat na ní můžete s [Regression and Other Stories](https://avehtari.github.io/ROS-Examples/) od Andrewa Gelmana, Jennifer Hill a Aki Vehtariho, knihou která poskytne cenné rady týkající se statistického modelování jak začátečníkům, tak pokročilým. Z trochu jiného soudku je [Tidy Modelling with R](https://www.tmwr.org) od Maxe Kuhna a Julie Silge, text zaměřený na prediktivní modelování a *"machine learning"*.
+
+## Vizualizace dat
+
+Ti z vás, kteří našli svůj zájem ve vizualizaci dat jistě ocení knihu [Fundamentals of Data Visualization](https://clauswilke.com/dataviz/) od Clause Wilkea. Ta vás provede teorií a užitečnámi tipy pro vytváření hezky vypadajících a zároveň efektivních grafů. Naleznete v ní vše od návodů pro vizualizaci různých druhů proměnných až po tipy pro vytváření barevných palet. Pro hlubší pochopení fungování balíčku `ggplo2` a gramatiky grafů doporučujeme [ggplot2: elegant graphics for data analysis](https://ggplot2-book.org) od Hadleyho Wickhama, Danielle Navarro, and Thomase Lin Pedersena.
+
+## Oragnizace práce
+
+Poslední a neméně důležitou oblastí je organizace práce. Ti z vás, kteří mají zkušenosti z prací v týmech a na dlouhodobých projektech jistě chápou jak nezbytné je mít dobře nastavené systémy pro sdílení a zálohování dat, analýz a výsledků. Užitečné tipy pro toto vše nabízí [The Plain Person\'s Guide to Plain Text Social Science](https://plain-text.co) od Keirana Healyho. Pro moderního analytika je nezbytný především verzovací program Git, se kterým vás seznámí [Happy Git and GitHub for the useR](https://happygitwithr.com/index.html) od Jennifer Bryan.
+
+## Na vše ostatní je tu Big Book of R
+
+Pokud vás žádné z předchozích témat nezaujalo, nemusíte smutnit. [Big Book of R](https://www.bigbookofr.com) je ultimátní kniha knih spravovaná Oscarem Baruffem. V ní naleznete odkazy na zdroje týkající se nepřeberného množství témat. Na své si přijdou všichni, od fanoušku analýzy sociální sítí po finanční analytiky a datové žurnalisty. Rozhodně doporučujeme si najít klidnou půl hodinu a knihu si projít.
+
+A to je vše! Doufáme, že se vám naše kniha líbila a přejeme mnoho zdaru s analýzami. :-)

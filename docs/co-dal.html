@@ -8,7 +8,7 @@
 
 <meta name="description" content="První výprava do světa R a Tidyverse.">
 
-<title>Úvod do analýzy dat v R - 19&nbsp; Struktura grafů</title>
+<title>Úvod do analýzy dat v R - 29&nbsp; Co dál?</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,69 +21,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -94,8 +31,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./kategoricke-grafy.html" rel="next">
-<link href="./stringy.html" rel="prev">
+<link href="./for-loops.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -136,7 +72,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Struktura grafů</span></h1>
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Co dál?</span></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -322,7 +258,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./obsah-grafu.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Struktura grafů</span></a>
+  <a href="./obsah-grafu.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Struktura grafů</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -384,7 +320,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./co-dal.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Co dál?</span></a>
+  <a href="./co-dal.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Co dál?</span></a>
   </div>
 </li>
     </ul>
@@ -396,8 +332,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">Obsah</h2>
    
   <ul>
-  <li><a href="#sec-grammar-of-graphics" id="toc-sec-grammar-of-graphics" class="nav-link active" data-scroll-target="#sec-grammar-of-graphics"><span class="toc-section-number">19.1</span>  Grammar of graphics</a></li>
-  <li><a href="#struktura-ggplot2-grafů" id="toc-struktura-ggplot2-grafů" class="nav-link" data-scroll-target="#struktura-ggplot2-grafů"><span class="toc-section-number">19.2</span>  Struktura <code>ggplot2</code> grafů</a></li>
+  <li><a href="#statistika" id="toc-statistika" class="nav-link active" data-scroll-target="#statistika"><span class="toc-section-number">29.1</span>  Statistika</a></li>
+  <li><a href="#vizualizace-dat" id="toc-vizualizace-dat" class="nav-link" data-scroll-target="#vizualizace-dat"><span class="toc-section-number">29.2</span>  Vizualizace dat</a></li>
+  <li><a href="#oragnizace-práce" id="toc-oragnizace-práce" class="nav-link" data-scroll-target="#oragnizace-práce"><span class="toc-section-number">29.3</span>  Oragnizace práce</a></li>
+  <li><a href="#na-vše-ostatní-je-tu-big-book-of-r" id="toc-na-vše-ostatní-je-tu-big-book-of-r" class="nav-link" data-scroll-target="#na-vše-ostatní-je-tu-big-book-of-r"><span class="toc-section-number">29.4</span>  Na vše ostatní je tu Big Book of R</a></li>
   </ul>
 </nav>
     </div>
@@ -406,7 +344,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Struktura grafů</span></h1>
+<h1 class="title d-none d-lg-block"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Co dál?</span></h1>
 </div>
 
 
@@ -421,70 +359,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<div class="cell">
-
-</div>
-<p>V této kapitole se seznámíme se základy vizualizace dat pomocí balíčky <code>ggplot2</code>, který je (nepřekvapivě) součástí <em>Tidyverse</em>. S tímto balíčkem jsme se již krátce setkali v kapitole věnované faktorům (<a href="funkce.html"><span>Kapitola&nbsp;6</span></a>), kde jsme využívali funkci <code>qplot()</code>. Balíček <code>ggplot2</code> ovšem nabízí mnohem více.</p>
-<section id="sec-grammar-of-graphics" class="level2" data-number="19.1">
-<h2 data-number="19.1" class="anchored" data-anchor-id="sec-grammar-of-graphics"><span class="header-section-number">19.1</span> Grammar of graphics</h2>
-<p>Ačkoliv to nemusí být na první pohled zřejmé, i vizalizace dat je předmětem vědeckého výzkumu a teorie. Teoretické základy balíčku <code>ggplot2</code> leží v takzvané <em>“grammar of graphics”</em> (<a href="https://link.springer.com/book/10.1007/0-387-28695-0">Wilkinson, 2005</a>). Základnímí pilíři tohoto paradigmatu, tak jak je implementované zde, jsou takzvané <em>scales</em>, <em>geoms</em> a <em>themes:</em></p>
-<ul>
-<li><p><em>Scales</em> jsou dimenze grafu, v kterých se nachází data. Jedná se osy grafu, ale také například o barvu nebo velikost.</p></li>
-<li><p><em>Geoms</em> jsou objekty, které fyzicky reprezentují data v grafu. Jde například o sloupce ve sloupcovém grafu nebo body v bodovém grafu.</p></li>
-<li><p><em>Themes</em> kontrolují estestickou stránku grafu, jako velikost nebo font písma, barvu pozadí nebo zda jsou v grafu přítomné vodicí přímky.</p></li>
-</ul>
+<p>Pokud jste dočetli až sem, znamená to, že máte za sebou vše nezbytné pro to začít s analýzou kvantitativních dat v R. Možnosti práce s R jsou ovšem široké a mnoho dalšího vás ještě čeká. V této, již poslední, kapitole vám proto dáme pár tipů, kam se vaše cesta kvantitativní analýzou dat může ubírat.</p>
+<section id="statistika" class="level2" data-number="29.1">
+<h2 data-number="29.1" class="anchored" data-anchor-id="statistika"><span class="header-section-number">29.1</span> Statistika</h2>
+<p>Cesta, která se přirozeně nabízí, je dále se vzdělávat v oblasti statistiky a statistického modelování. Zájemcům o studium statistiky doporučujeme začít knihou <a href="https://learningstatisticswithr.com">Learning Statistics with R</a> od Danielle Navarro, která vás přátelským způsobem provede úvodem do statistické teorie. Navázat na ní můžete s <a href="https://avehtari.github.io/ROS-Examples/">Regression and Other Stories</a> od Andrewa Gelmana, Jennifer Hill a Aki Vehtariho, knihou která poskytne cenné rady týkající se statistického modelování jak začátečníkům, tak pokročilým. Z trochu jiného soudku je <a href="https://www.tmwr.org">Tidy Modelling with R</a> od Maxe Kuhna a Julie Silge, text zaměřený na prediktivní modelování a <em>“machine learning”</em>.</p>
 </section>
-<section id="struktura-ggplot2-grafů" class="level2" data-number="19.2">
-<h2 data-number="19.2" class="anchored" data-anchor-id="struktura-ggplot2-grafů"><span class="header-section-number">19.2</span> Struktura <code>ggplot2</code> grafů</h2>
-<p>Jednotlivé složky se na sebe nanášejí ve vrstvách (<em>layers</em>). Tvorba každého grafu bude začínat funkcí <code>ggplot()</code>:</p>
-<div class="cell" data-fig.asp="0.5">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> countries)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="obsah-grafu_files/figure-html/ggplot-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>Funkce <code>ggplot()</code> vyžaduje minimálně argument <code>data</code>, pomocí kterého specifikujeme náš dataframe. Výsledkem je prázdné plátno. Druhým krokem je specifikovat dimenze (<em>scales</em>) našeho grafu. Toho docíleme pomocí funkce <code>aes()</code> (zkratka pro <em>aesthetics</em>) a argumentu <code>mapping</code>:</p>
-<div class="cell" data-fig.asp="0.5">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> countries,</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> hdi, <span class="at">y =</span> life_exp))</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="obsah-grafu_files/figure-html/scales-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>Pomocí funkce <code>aes()</code> jsme definovali dvě dimenze (<em>scales</em>). Ose X jsme přiřadili proměnnou <code>hdi</code>, a na osu Y jsme “namapovali” proměnnou <code>life_exp</code>. Výsledkem je graf s popsanými osami, nicméně pořád bez dat.</p>
-<div class="callout-tip callout callout-style-default callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Mapování
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Slovo “mapovat” je zde používané v matematickém významu, tedy ve smyslu přiřazování elementů jednoho setu k elementům druhého setu. V našem případě přiřazujeme proměnné v datech k dimenzím v grafu. Od toho je odvozeno také jméno argumentu <code>mapping</code>.</p>
-</div>
-</div>
-<p>Dalším krokem je přidání geomů, tedy objektů, které budou reprezentovat jednotlivé pozorování. V našem případě se nabízí zobrazit jednotlivé země jako body, využijeme tedy funkce <code>geom_point()</code>:</p>
-<div class="cell" data-fig.asp="0.5">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> countries,</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> hdi, <span class="at">y =</span> life_exp)) <span class="sc">+</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="obsah-grafu_files/figure-html/geoms-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>Výsledkem je starý známý bodový graf (<em>scatter plot</em>), ve kterém je každý řádek dataframu reprezentovaný bodem. Posledním krokem je úprava vizuální stránky grafu, jako například barvy pozadí, Toho docílíme pomocí funkce <code>themes()</code>, která má řadu argumentů, mezi nimi i <code>panel.background</code>. Na to, jak přesně tato funkce funguje, se zaměříme v budoucích kapitolách:</p>
-<div class="cell" data-fig.asp="0.5">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> countries,</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> hdi, <span class="at">y =</span> life_exp)) <span class="sc">+</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#fff6e5"</span>))</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="obsah-grafu_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>A to je v podstatě celá logika balíčku <code>ggplot2</code>! V následujících kapitolách si představíme nejpoužívánější dimenze/<em>scales</em> a geomy, a ponoříme se také do fungování funkce <code>theme()</code>.</p>
+<section id="vizualizace-dat" class="level2" data-number="29.2">
+<h2 data-number="29.2" class="anchored" data-anchor-id="vizualizace-dat"><span class="header-section-number">29.2</span> Vizualizace dat</h2>
+<p>Ti z vás, kteří našli svůj zájem ve vizualizaci dat jistě ocení knihu <a href="https://clauswilke.com/dataviz/">Fundamentals of Data Visualization</a> od Clause Wilkea. Ta vás provede teorií a užitečnámi tipy pro vytváření hezky vypadajících a zároveň efektivních grafů. Naleznete v ní vše od návodů pro vizualizaci různých druhů proměnných až po tipy pro vytváření barevných palet. Pro hlubší pochopení fungování balíčku <code>ggplo2</code> a gramatiky grafů doporučujeme <a href="https://ggplot2-book.org">ggplot2: elegant graphics for data analysis</a> od Hadleyho Wickhama, Danielle Navarro, and Thomase Lin Pedersena.</p>
+</section>
+<section id="oragnizace-práce" class="level2" data-number="29.3">
+<h2 data-number="29.3" class="anchored" data-anchor-id="oragnizace-práce"><span class="header-section-number">29.3</span> Oragnizace práce</h2>
+<p>Poslední a neméně důležitou oblastí je organizace práce. Ti z vás, kteří mají zkušenosti z prací v týmech a na dlouhodobých projektech jistě chápou jak nezbytné je mít dobře nastavené systémy pro sdílení a zálohování dat, analýz a výsledků. Užitečné tipy pro toto vše nabízí <a href="https://plain-text.co">The Plain Person's Guide to Plain Text Social Science</a> od Keirana Healyho. Pro moderního analytika je nezbytný především verzovací program Git, se kterým vás seznámí <a href="https://happygitwithr.com/index.html">Happy Git and GitHub for the useR</a> od Jennifer Bryan.</p>
+</section>
+<section id="na-vše-ostatní-je-tu-big-book-of-r" class="level2" data-number="29.4">
+<h2 data-number="29.4" class="anchored" data-anchor-id="na-vše-ostatní-je-tu-big-book-of-r"><span class="header-section-number">29.4</span> Na vše ostatní je tu Big Book of R</h2>
+<p>Pokud vás žádné z předchozích témat nezaujalo, nemusíte smutnit. <a href="https://www.bigbookofr.com">Big Book of R</a> je ultimátní kniha knih spravovaná Oscarem Baruffem. V ní naleznete odkazy na zdroje týkající se nepřeberného množství témat. Na své si přijdou všichni, od fanoušku analýzy sociální sítí po finanční analytiky a datové žurnalisty. Rozhodně doporučujeme si najít klidnou půl hodinu a knihu si projít.</p>
+<p>A to je vše! Doufáme, že se vám naše kniha líbila a přejeme mnoho zdaru s analýzami. :-)</p>
 
 
 </section>
@@ -740,14 +631,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./stringy.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Práce se stringy</span></span>
+      <a href="./for-loops.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">For loops (cykly)</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./kategoricke-grafy.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Vizualizace kategorických proměnných</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->

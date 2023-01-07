@@ -54,6 +54,8 @@ book:
     - part: "Pokročilé R"
       chapters: 
         - vlastni-funkce.qmd
+        - for-loops.qmd
+    - co-dal.qmd
 license: "CC BY-NC"
 citation: true
 

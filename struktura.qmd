@@ -1,3 +1,13 @@
 # Struktura knihy {.unnumbered}
 
-\[to be done.\]
+Tato kniha je rozdělana do pěti sekcí.
+
+První sekce názvem **Trocha teorie** vám pomůže nainstalovat všechen nezbytný software, předá vám tipy pro organizaci práce a seznámý vás se základním fungováním R jako programovacího jazyka.
+
+V druhé sekci **Manipulace s dataframy** se seznámíme s importem a exportem dat a se základní manipulací s daty, jako filtrování sloupců a řádků datasetů a se převodem dat mezi širokým a dlouhým formátem.
+
+Třetí v pořadi je sekce **Manipulace s proměnnými** si ukážeme jak transformovat a sumarizovat proměnné. Krátce se také dotkneme práce s strukturovaným a nestrukturovaným textem.
+
+Čtvrtou sekcí je **Vizualizace dat**, jejímž obsahem je vytváření základních i pokročilých grafů, upravování jejich vzhledu a nakonec jejich export z R pro dalš použití.
+
+Poslední sekce nese název **Pokročilé R** a krátce si v ní představíme komplexnější, ale o to užitečnější funkce R, jmenovitě vytváření vlastních funkcí a *for loop* cykly.

@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="cs" xml:lang="cs"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="První výprava do světa R a Tidyverse.">
+
+<title>Úvod do analýzy dat v R - 28&nbsp; For loops (cykly)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./co-dal.html" rel="next">
+<link href="./vlastni-funkce.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Žádný výsledek",
+    "search-matching-documents-text": "Nalezené výsledky",
+    "search-copy-link-title": "Zkopírovat odkaz pro vyhledávání",
+    "search-hide-matches-text": "Skrýt další výsledky",
+    "search-more-match-text": "Další výsledek v tomto dokumentu",
+    "search-more-matches-text": "Žádná shoda v tomto dokumentu",
+    "search-clear-button-title": "Vymazat",
+    "search-detached-cancel-button-title": "Zrušit",
+    "search-submit-button-title": "Odeslat"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">For loops (cykly)</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Úvod do analýzy dat v R</a> 
+        <div class="sidebar-tools-main">
+    <a href="" title="Download" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-download"></i></a>
+    <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
+        <li>
+          <a class="dropdown-item sidebar-tools-main-item" href="./Úvod-do-analýzy-dat-v-R.pdf">
+            <i class="bi bi-bi-file-pdf pe-1"></i>
+          Download PDF
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item sidebar-tools-main-item" href="./Úvod-do-analýzy-dat-v-R.epub">
+            <i class="bi bi-bi-journal pe-1"></i>
+          Download ePub
+          </a>
+        </li>
+    </ul>
+  <a href="" class="quarto-color-scheme-toggle sidebar-tool" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Předmluva</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./predstaveni.html" class="sidebar-item-text sidebar-link">R, Rstudio, Tidyverse</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./struktura.html" class="sidebar-item-text sidebar-link">Struktura knihy</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Trocha teorie</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./instalace.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Instalace softwaru</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rstudio.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">První pohled na Rstudio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./organizace.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jak si organizovat práci</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./objekty.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Typy objektů</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./jmena.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Jména objektů</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./funkce.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Funkce</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./balicky.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">R balíčky</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Manipulace s dataframy</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./import-export.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Import a export dat</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dataframe.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">První pohled na dataframe</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sloupce.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Práce se sloupci</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./radky.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Práce s řádky</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./siroky-dlouhy-format.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Široký a dlouhý formát</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spojovani-dat.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Spojování dataframů</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Manipulace s proměnnými</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./transformace-promennych.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Transformace proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sumarizace-promennych.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Sumarizace proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mnoho-promennych.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Transformace a sumarizace více proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./faktory.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Práce s faktory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stringy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Práce se stringy</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">Vizualizace dat</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./obsah-grafu.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Struktura grafů</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kategoricke-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Vizualizace kategorických proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./numericke-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Vizualizace numerických proměnných</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kombinovane-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Kombinované grafy</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./facety.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Facety</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vzhled-grafu.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Vzhled grafů</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pokrocile-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Pokročilé grafy</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./export-grafu.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Export grafů</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">Pokročilé R</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vlastni-funkce.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Vlastní funkce</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./for-loops.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">For loops (cykly)</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./co-dal.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Co dál?</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Obsah</h2>
+   
+  <ul>
+  <li><a href="#kdo-je-členem-gangu" id="toc-kdo-je-členem-gangu" class="nav-link active" data-scroll-target="#kdo-je-členem-gangu"><span class="toc-section-number">28.1</span>  Kdo je členem gangu?</a></li>
+  <li><a href="#průměr-každé-numerické-proměnné" id="toc-průměr-každé-numerické-proměnné" class="nav-link" data-scroll-target="#průměr-každé-numerické-proměnné"><span class="toc-section-number">28.2</span>  Průměr každé numerické proměnné</a></li>
+  <li><a href="#histogram-pro-každou-numerickou-proměnnou" id="toc-histogram-pro-každou-numerickou-proměnnou" class="nav-link" data-scroll-target="#histogram-pro-každou-numerickou-proměnnou"><span class="toc-section-number">28.3</span>  Histogram pro každou numerickou proměnnou</a></li>
+  <li><a href="#boostraping" id="toc-boostraping" class="nav-link" data-scroll-target="#boostraping"><span class="toc-section-number">28.4</span>  Boostraping</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">For loops (cykly)</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<p>V průběhu analýzy dat se čas od času dostaneme do situace, kdy bude třeba opakovaně vykonávat určitý úkon, ať už se jedná o import velkého množství datasetů, vytvoření grafu pro každou proměnnou v dataframu nebo odhad intervalů spolehlivosti pomocí boostrapingu. U všech těchto úkonů by bylo zdlouhavé a nepraktické aplikovat funkce ručně. Naštěstí pro nás, počítače jsou velmi dobré v opakování.</p>
+<p>Nástroj, pomocí kterého docílíme výše zmíněného, se nazývá <em>For loop</em> (For cyklus).</p>
+<section id="kdo-je-členem-gangu" class="level2" data-number="28.1">
+<h2 data-number="28.1" class="anchored" data-anchor-id="kdo-je-členem-gangu"><span class="header-section-number">28.1</span> Kdo je členem gangu?</h2>
+<p>Základní aplikaci For cyklu si představím na jednoduchém příkladu. Naším cílem bude vyjmenovat jednotlivé členy Scoobyho gangu. Nejdříve si vytvoříme objekt obsahující jména členů:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>gang <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Fred"</span>, <span class="st">"Velma"</span>, <span class="st">"Daphne"</span>, <span class="st">"Shaggy"</span>, <span class="st">"Scooby"</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Bez For cyklů musíme členy vyjmenovat ručně. Využijeme k tomu funkci <code>paste()</code>, pomocí které spojíme jméno člena/ky s větou <em>“is a member!”</em> :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(gang[<span class="dv">1</span>], <span class="st">"is a member!"</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Fred is a member!"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(gang[<span class="dv">2</span>], <span class="st">"is a member!"</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Velma is a member!"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(gang[<span class="dv">3</span>], <span class="st">"is a member!"</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Daphne is a member!"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(gang[<span class="dv">4</span>], <span class="st">"is a member!"</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Shaggy is a member!"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(gang[<span class="dv">5</span>], <span class="st">"is a member!"</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Scooby is a member!"</code></pre>
+</div>
+</div>
+<p>Toto řešení je dost nepraktické, protože opakovaně kopírujeme stejný kód. Přitom jediné, co se ve funkcích výše mění, je pořadí člena. Elegantnější alternativou je již zmiňovaný for cyklus. For cyklus lze v R aplikovat (minimálně) dvěma způsoby.</p>
+<p>Prvním způsobem je explicitní <em>for loop</em>. Explicitní <em>for loop</em> začíná funkcí <code>for()</code>, následovanou složenými závorkami. Argumenty <code>for()</code> funkce mají speciální podobu, v našem případě bude funkce vypadat následovně: <code>for(name in gang)</code>. Tímto říkáme, že chceme aplikovat nějakou funkci na každý element (zde zvaný <code>name</code>) objektu <code>gang</code>. Můžeme si přitom zvolit jakkékoliv označení pro jednotlivé elementy, které chceme. Zde používáme <code>name</code>, ale stejně tak bychom mohli použít například <code>for(i in gang)</code> nebo <code>for(pesky_child in gang)</code>. Následují složené závorky, definující, jaké funkce se na každý element mají aplikovat. Celý <em>for loop</em> by našem případě vypadal následovně:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(name <span class="cf">in</span> gang) {</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">paste</span>(name, <span class="st">"is a member!"</span>))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Fred is a member!"
+[1] "Velma is a member!"
+[1] "Daphne is a member!"
+[1] "Shaggy is a member!"
+[1] "Scooby is a member!"</code></pre>
+</div>
+</div>
+<p>Jak je vidět, nemusíme již kopírovat funkci <code>paste()</code> pětkrát za sebou. For cyklus se o to postará za nás. Výhodou explicitních <em>for loops</em> je, že se aplikují téměř identicky v každém programovacím jazyce. Pokud se tedy seznámíte s for cykly v R, můžete je jednoduše aplikovat i Pythonu nebo Julii.</p>
+<p>Nevýhodou explicitních for cyklů, že jsou relativně květnaté - jejich zápis je delší, než je nezbytně nutné. Alternativou jsou funkce z balíčku <code>purrr</code>, který je součástí Tidyverse. Tyto funkce také aplikují různé druhy cyklů, jejich zápis je ale kompaktnější. Hlavní funkcí je zde <code>map()</code>, která má dva argumenty. Prvním argumentem je <code>.x</code>, objekt přes jehož elementy chceme iterovat. Druhým argumentem jsou funkce, které chceme aplikovat:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(<span class="at">.x =</span> gang, <span class="sc">~</span><span class="fu">paste</span>(.x, <span class="st">"is a member!"</span>))</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] "Fred is a member!"
+
+[[2]]
+[1] "Velma is a member!"
+
+[[3]]
+[1] "Daphne is a member!"
+
+[[4]]
+[1] "Shaggy is a member!"
+
+[[5]]
+[1] "Scooby is a member!"</code></pre>
+</div>
+</div>
+<p>Jak je vidět, funkce <code>map()</code> zabírá méně prostoru, než explicitní <em>for loop</em> (a má další výhody, které zmínímě za chvíli). Výsledkem této funkce je objekt typu <em>list</em>. Protože ale víme, že výsledkem naší funkce je věta, můžeme využít funkci <code>map_chr()</code>, jejímž výsledkem je <em>character</em> vektor:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_chr</span>(<span class="at">.x =</span> gang, <span class="sc">~</span><span class="fu">paste</span>(.x, <span class="st">"is a member!"</span>))</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Fred is a member!"   "Velma is a member!"  "Daphne is a member!"
+[4] "Shaggy is a member!" "Scooby is a member!"</code></pre>
+</div>
+</div>
+<p>Obdobně bychom mohli využít funkce <code>map_dbl()</code> pokud je výsledkem desetinné číslo, <code>map_int()</code> pro celé číslo nebo <code>map_lgl()</code> pokud je výsledkem logický vektor.</p>
+</section>
+<section id="průměr-každé-numerické-proměnné" class="level2" data-number="28.2">
+<h2 data-number="28.2" class="anchored" data-anchor-id="průměr-každé-numerické-proměnné"><span class="header-section-number">28.2</span> Průměr každé numerické proměnné</h2>
+<p>Vyzkoušejme si nyní o něco praktičtější příklad. Naším cílem bude spočítat průměr každé numerické proměnné v datasetu <code>countries</code>. Začněme tím, že si vyfiltrujeme pouze numerické proměnné.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>countries_numeric <span class="ot">&lt;-</span> <span class="fu">select</span>(countries, <span class="fu">where</span>(is.numeric))</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Nejdříve spočítme průměry proměnných pomocí explicitního for cyklu. Prvním krokem je vytvořením prázdného vektoru, do kterého uložíme výsledky. Toho docílíme pomocí funkce <code>vector()</code>. Tento krok není nezbytně nutný, jedná se ale o dobrou praxi, protože urychlí výpočet. Poté definujeme <em>for loop</em> samotný. Nejdřív musíme získat pořadí jednotlivých proměnných v dataframu, a to pomocí funkce <code>seq_along()</code>. Ta vytvoří vektor čísel od 1 po hodnotu rovnou počtu elementů v objektu, přes iterujeme. Náš dataframe obsahuje devět proměnných, <code>seq_along(countries_numeric)</code> tedy vytvoří řadu celých čísel od 1 do 9. Uvnitř for cyklu spočítáme průměr i-té proměnné a výsledek uložíme jako i-tý element předpřipraveného objektu <code>countries_means</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>countries_means <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"numeric"</span>, <span class="at">length =</span> <span class="fu">ncol</span>(countries_numeric))</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(countries_numeric)) {</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  countries_means[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(countries_numeric[[i]], <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>countries_means</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.846008e+05 1.675474e+07 1.560186e+05 7.957838e+01 2.914857e-01
+[6] 2.403030e-01 1.798788e-01 8.739474e-01 7.639189e+00</code></pre>
+</div>
+</div>
+<p>Výsledkem je devět průměrů pro devět proměnných. Zde začínáme vidět, že explicitní for cykly mohou být poněkud krkolomné. Je třeba předvytvořit vektor pro výsledky a musíme pracovat s pořadím proměnných. Vyzkoušejme si stejný úkol pomocí funkcí funkcí z balíčku <code>purrr</code>.</p>
+<p>Narozdíl od explicitního for cyklu není třeba předvytvářet vektor pro výsledky, <code>map()</code> a příbuzné funkce to za nás udělají automaticky. také není třeba řešit pořadí proměnných pomocí <code>seq_along()</code>. Stačí nám tedy aplikovat funkci <code>map_dbl()</code> (protože výsledkem bude desetinné číslo) následovně:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dbl</span>(<span class="at">.x =</span> countries_numeric, <span class="sc">~</span><span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         gdp   population         area     life_exp      uni_prc poverty_risk 
+4.846008e+05 1.675474e+07 1.560186e+05 7.957838e+01 2.914857e-01 2.403030e-01 
+material_dep          hdi    dem_index 
+1.798788e-01 8.739474e-01 7.639189e+00 </code></pre>
+</div>
+</div>
+<p>Jak vidíme, tato funkce je mnohem kompaktnější a navíc zachovává názvy původních proměnných. Jinak jsou výsledky identické.</p>
+</section>
+<section id="histogram-pro-každou-numerickou-proměnnou" class="level2" data-number="28.3">
+<h2 data-number="28.3" class="anchored" data-anchor-id="histogram-pro-každou-numerickou-proměnnou"><span class="header-section-number">28.3</span> Histogram pro každou numerickou proměnnou</h2>
+<p>Naším dalším cílem bude vytvoření histogramu pro každou proměnnou datasetu <code>countries_numeric</code>. Graf pro jednu proměnnou můžeme vytvořit tak, jak jsme si ukázali v předchozích kapitolách:</p>
+<div class="cell" data-fig.asp="0.5">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>countries_numeric <span class="sc">%&gt;%</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hdi)) <span class="sc">+</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>, <span class="at">fill =</span> <span class="st">"dodgerblue"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="for-loops_files/figure-html/histogram-example-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Co kdychom chtěli efektivně vytvořit tento graf pro všechny proměnné. S využitím funkce <code>map()</code> je to jednoduché. Jedinou změnou oproti předchozím příkladům bude využití složených závorek, které nám umožní aplikovat více funkcí najednou uvnitř jednoho for cyklu:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>countries_histograms <span class="ot">&lt;-</span> <span class="fu">map</span>(<span class="at">.x =</span> countries_numeric,</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>                            <span class="sc">~</span>{countries_numeric <span class="sc">%&gt;%</span> </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .x)) <span class="sc">+</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>, <span class="at">fill =</span> <span class="st">"dodgerblue"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">theme_minimal</span>()</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>                                })</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Kód pro vytvoření grafu je téměř identický, pouze název proměnné jsme nahradili generickým argumentem <code>.x</code>. Výsledkem je list, obsahující devět grafů. Naše grafy ovšem postrádají nadpis, který by identifikoval, kterou proměnnou reprezentují. Naším dalším cílem tedy bude přidání popisků obsahující název proměnné. Pro jeden konkrétní graf bychom graf s popiskem vytvořili následovně:</p>
+<div class="cell" data-fig.asp="0.5">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>countries_numeric <span class="sc">%&gt;%</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hdi)) <span class="sc">+</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>, <span class="at">fill =</span> <span class="st">"dodgerblue"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Histogram for Human Development Index"</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="for-loops_files/figure-html/histograms-titles-single-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Pro vytvoření podobného grafu bude třebat iterovat přes dvě objekty. Prvním objektem je proměnná, pro kterou chceme histogram vytvořit, druhým je vektor názvů, které chceme v grafech použít. K tomu využijeme funkci <code>map2()</code>. Ta funguje velmi podobně, jako nám již známá funkce <code>map()</code>, ale kromě argumentu <code>.x</code> má i druhý <code>.y</code>, čímž nám umožňuje dosadit do cyklu dva různé objekty. Pro vytvoření grafů s popisky pro každou z proměnných nejdříve vytvoříme vektor obsahující názvy všech proměnných a poté aplikujeme funkci <code>map2()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>countries_names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Gross Domestic Product"</span>,</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"Population"</span>,</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"Area"</span>,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"Life Expectancy"</span>,</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"Proportion of People with University Degree"</span>,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"Proportion of People at the risk of Poverty"</span>,</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"Proportion of Materialy Deprived"</span>,</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"Human Development Index"</span>,</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"Democratic Index"</span>)</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>countries_histograms <span class="ot">&lt;-</span> <span class="fu">map2</span>(<span class="at">.x =</span> countries_numeric,</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>                             <span class="at">.y =</span> countries_names,</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>                             <span class="sc">~</span>{countries_numeric <span class="sc">%&gt;%</span> </span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>                               <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .x)) <span class="sc">+</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>                               <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>, <span class="at">fill =</span> <span class="st">"dodgerblue"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>                               <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>                               <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste</span>(<span class="st">"Histogram for"</span>, .y))})</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A je to! Graf pro jednotlivé proměnné můžeme zobrazit jejich zavoláním:</p>
+<div class="cell" data-fig.asp="0.5">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>countries_histograms<span class="sc">$</span>dem_index</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="for-loops_files/figure-html/histograms-map-example-print-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Iterace více než dvou objektů
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Funkce <code>map2()</code> nám umožňuje iterativně aplikovat funkce na dva objekty najednou. Co kdybychom ale chtěli iterovat přes tři, čtyři nebo více objektů? Právě k tomu slouží funkce <code>pmap()</code>. Funkce <code>pmap()</code> funguje trochu odlišně oproti klasickému <code>map()</code>. Prvním argumentem je list objektů, přes které chceme iterovat. Každému z těchto objektů je přiděleno kódové označení - první objekt dostane označní <code>..1</code>, druhý <code>..2</code>, třetí <code>..3</code> a tak dále. Druhým argumentem jsou poté funkce, které chceme aplikovat. Pokud bychom chtěli předchozí úkol vyřešit pomocí <code>pmap()</code> místo <code>map2()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>countries_histograms <span class="ot">&lt;-</span> <span class="fu">pmap</span>(<span class="fu">list</span>(countries_numeric,  <span class="co">#..1</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>                                  countries_names),   <span class="co">#..2 </span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>                             <span class="sc">~</span>{countries_numeric <span class="sc">%&gt;%</span> </span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>                               <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> ..<span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>                               <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">fill =</span> <span class="st">"dodgerblue"</span>,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>                               <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>                               <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste</span>(<span class="st">"Histogram for"</span>, ..<span class="dv">2</span>))})</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="boostraping" class="level2" data-number="28.4">
+<h2 data-number="28.4" class="anchored" data-anchor-id="boostraping"><span class="header-section-number">28.4</span> Boostraping</h2>
+<p>Posledním příkladem využití for cyklů, který si zde ukážeme, je <em>boostraping</em>. Většina čtenářů pravděpodobně ví, že výzkumníci většinou nemají k dispozici data o celé populaci, kterou studují. Místo toho se musíme spokojit pouze s jejím vzorkem. Žádný vzorek ale svým složením nekopíruje dokonale populaci, ze které byl získaný. Tyto odchylky ve složení vzorku vedou k odchylkám v našich výsledcích. Učebnicovým příkladem jsou předvolební výzkumy - pokud ve vzorku voličů podporuje určitou politickou stranu například 5 procent respondentů, reálná podpora strany v populaci je zpravidla něco mezi 3 a 8 procenty. Tyto odchylky od skutečné hodnoty (takzvaná výběrová chyba) jsou náhodné a velká část statistiky je věnována jejímu vyčíslení. Protože zde nechceme příliš zabíhat do statistické teorie, doporučjeme zájemcům o více informací učebnici <a href="https://learningstatisticswithr.com">Learning Statistics with R</a> od Danielle Navarro. My si zde ukážeme jeden ze způsobů, jak tuto náhodnou výběrovou chybu vyčíslit, a to <em>boostrapping</em>.</p>
+<p>Metoda bootstrappingu je založená na vytváření nových vzorků pomocí opakovaného náhodného vytahování pozorování z našich původních dat. Pozorování jsou vytahována s opakováním, jedno pozorování se tedy může do nového vzorku může dostat více než jednou. Tímto způsobem můžeme za určitých podmínek zodpovědět otázku <em>“Jak by se naše výsledky lišily, kdybychom nasbírali trochu odlišná data?”.</em> R nabízí několik balíčku pro aplikaci boostrappingu, jako jsou <code>boot</code>, <code>rsample</code>, <code>coin</code> nebo <code>infer</code>. Jednoduchý boostrapping je ale možné aplikovat pomocí for cyklů.</p>
+<p><em>Boostrapping</em> probíhá ve dvou krocích. V prvním kroku vytvoříme boostrapový vzorek pomocí náhodného výběru s opakováním z původních dat (je přitom nezbytné, aby nový vzorek měl stejný počet pozorování, jako ten původní). Poté spočítáme statistiku, pro kterou chceme vyčíslit náhodnou výběrovou chybu (například průměr). Tyto dva kroky mnohokrát opakujeme, čímž dostaneme vektor statistik, spočítaný na vzorcích s trochu odlišným složením. Tyto hodnoty představují odhad výběrové distribuce výběrové statistiky.</p>
+<p>Jako praktický příklad zkusme vyčíslit výběrovou chybu průměru proměnné <code>hdi</code> v datasetu <code>countries</code>. Začněme aplikací funkce <code>map_dbl()</code>. To použijeme, protože víme, že jednotlivé průměry jsou čísla a výsledkem tedy bude numerický vektor. Prvním argumentem není žádný konkrétní objekt, místo toho se jedná o vektor celých čísel od 1 po hodnotu určující počet bootstrapových vzorků, které chceme vytvořit. My budeme chtít vytvořit 10 000 vzorků, prvním argumentem tedy bude <code>1:10000</code>. Druhým argumentem je výpočet bootstrapové statistiky samotné. K tomu nejdříve využijeme funkce <code>sample()</code>, pomocí které vytvoříme boostrapový vzorek. Dáme si přitom pozor nato, abychom nastavili argument <code>replace = TRUE</code>, čímž zajistíme, že výběr probíhá s opakováním (jinak bychom skončili pokaždé se stejným vzorkem). Poté už jen stačí spočítat požadovanou statistiku, v našem případě průměr. Celá funkce funkce provádí následjící - pro každý krok od prvního po desetitisící vytvoř nový bootstrapový vzorek a spočítej jeho průměr. Výsledek uložíme do objektu <code>hdi_bootstraps</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>hdi_bootstraps <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>,</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>                          <span class="sc">~</span>{</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>                            sample <span class="ot">&lt;-</span> <span class="fu">sample</span>(countries<span class="sc">$</span>hdi, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">mean</span>(sample)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>                            })</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Výsledný vektor 10 000 průměrů představuje odhad výběrové distribuce průměrů proměnné <code>hdi</code>. Můžeme jí graficky zobrazit:</p>
+<div class="cell" data-fig.asp="0.5">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(hdi_bootstraps)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="for-loops_files/figure-html/hdi-bootstraps-plot-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Můžeme spočítat standardní odchylku výběrových průměrů (tedy standardní chybu):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(hdi_bootstraps)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.008612849</code></pre>
+</div>
+</div>
+<p>A nakonec můžeme spočítat 95% intervalový odhad průměru <code>hdi</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(hdi_bootstraps, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     2.5%     97.5% 
+0.8563158 0.8905263 </code></pre>
+</div>
+</div>
+<p>A je to! <em>Boostrapping</em> představuje jednoduchý způsob vyčíslení náhodné výběrové chyby, a to zejména pokud pracujeme s většími vzorky s jednoduchou strukturou. Čtenáři by ovšem měli mít na paměti dvě věci. Zaprvé, bootstrapované hodnoty představují pouze odhad výběrové distribuce - čím více simulací, tím přesnější odhad bude. Zadruhé, <em>boostrapping</em> je stejně jako všechny ostatní statistické nástroje založený na sadě předpokladů, které zaručují jeho správnou funkci. Pokud je některý z těchto předpokladů výrazně porušený, naše výsledky se stanou velmi nepřesnými. Čtenáři by si měli důkladně nastudovat potřebnou teorii, než aplikují bootstrapping v praxi.</p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+R rozumí vědecké notaci
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Protože R rozpoznává vědeckou notaci, je možné nahradit <code>10000</code> výrazem <code>1e4</code>. Výsledná funkce tedy může vypadat následovně:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>hdi_bootstraps <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(<span class="dv">1</span><span class="sc">:</span><span class="fl">1e4</span>,</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>                          <span class="sc">~</span>{</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>                            sample <span class="ot">&lt;-</span> <span class="fu">sample</span>(countries<span class="sc">$</span>hdi, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">mean</span>(sample)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>                            })</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Zkopírováno!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Zkopírováno!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./vlastni-funkce.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Vlastní funkce</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./co-dal.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Co dál?</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
