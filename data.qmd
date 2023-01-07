@@ -1,0 +1,32 @@
+# Data {.unnumbered}
+
+Tato kniha využívá několik datasetů.
+
+## Countries
+
+Prvním a hlavním je dataset `countries`. Dataset je možné stáhnout [zde](https://raw.githubusercontent.com/Sociology-FA-CU/uvod-do-r-kniha/master/data-raw/countries.csv) (klikněte pravým tlačítkem na odkaz a zvolte *Uložit jako...*). Popis proměnných naleznete v následující tabulce.
+
+| Jméno proměnné  | Popis                                                             | Zdroj                 |
+|-----------------|-------------------------------------------------------------------|-----------------------|
+| country         | Jméno země                                                        |                       |
+| code            | Dvoumístný ISO kód země                                           |                       |
+| gdp             | HDP země v milionech euro (2018)                                  | Eurostat              |
+| population      | Populace země k 1. lednu 2018                                     | Eurostat              |
+| area            | Celková rozloha země                                              | CIA factbook          |
+| eu_member       | Je země členem Evropské unie? (2019)                              | Evropská unie         |
+| postsoviet      | Byla země součástí Východního bloku?                              | Wikipedie             |
+| life_exp        | Naděje na dožití při narození (2017)                              | OSN                   |
+| uni_prc         | Podíl lidí s vysokoškolským vzděláním ve věku 15 až 64 let (2018) | Eurostat              |
+| poverty_risk    | Podíl lidí ohrožených chudobou (2017)                             | Eurostat              |
+| material_dep    | Podíl lidí s materiální deprivací, 3 nebo méně položek (2017)     | Eurostat              |
+| hdi             | Index lidského rozvoje (2018)                                     | OSN                   |
+| foundation_date | Datum vzniku/zformování země                                      | Wikipedie             |
+| maj_belief      | Největší náboženská skupina v zemi (2018)                         | Pew Researcher Center |
+
+## Dogs
+
+Dataset věnovaný psím plemenům, původně z projektu [TidyTuesday](https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-02-01/readme.md). Jedná se o dva datasety, [první](https://raw.githubusercontent.com/Sociology-FA-CU/uvod-do-r-kniha/master/data-raw/dog-traits.csv) obsahuje vlastnosti psích plemen, [druhý](https://raw.githubusercontent.com/Sociology-FA-CU/uvod-do-r-kniha/master/data-raw/dog-ranks.csv) popularitu plemen v čase (pro stažení klikněte pravým tlačítkem na odkaz a zvolte *Uložit jako...*).
+
+## Ukraine
+
+Poslední data se týkají postojů občanů České republiky k válce na Ukrajině z března 2022. Data pochází z dotazníkového šetření Centra pro výzkum veřejného mínění Akademie věd. [První](https://github.com/Sociology-FA-CU/uvod-do-r-kniha/raw/master/data-raw/ukraine.rds) dataset obsahuje odpovědi respondentů, [druhý](https://github.com/Sociology-FA-CU/uvod-do-r-kniha/raw/master/data-raw/ukraine_labels.rds) popis jednotlivých proměnných.

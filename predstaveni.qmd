@@ -16,13 +16,13 @@ Přestože jeho počátky sahají na Nový Zéland, do historie R se významně 
 
 Cenou za široké možnosti R jsou vyšší nároky na jeho osvojení, jelikož na rozdíl od programů s grafickým rozhraním vyžaduje práce s R alespoň základní znalosti programování. Naštěstí již dnes existuje řada zdrojů a komunit, které mohou s tímto problémem pomoci. Pro inspiraci můžeme zmínit blog [R-bloggers](https://www.r-bloggers.com/), skupinu [Rladies](https://rladies.org/) nebo komunitní projekt [Tidytuesday](https://www.tidytuesday.com/).
 
-# **Rstudio**
+## **Rstudio**
 
 Dávno už jsou pryč časy, kdy práce s programovacími jazyky znamenala psaní kódu v jednoduché příkazové řádce (nebo nedej bože prorážení dírkovacích štítků!). Dnešní uživatelé mohou využívat sofistikovaných programů, jejich cílem je usnadnit každodenní práci. Těmto programům se říká integrované vývojářské prostředí (*Integrated Development Environments*) a jasně nejpopulárnějším *IDE* pro R je v současné době Rstudio.
 
 Rstudio, vyvíjené stejnojmennou společností, bude kontrolovat váš kód, napovídat vám jména funkcí, exportovat grafy a mnoho dalšího. Nejedná se samozřejmě o jediné vývojářským prostředí pro R (konkurenty jsou například [VScode](https://code.visualstudio.com), [Vim](https://www.vim.org/scripts/script.php?script_id=2628) nebo [ESS Emacs](https://ess.r-project.org/)), představuje však výbornou rovnováhu mezi výkonem a uživatelskou přívětivostí a skvělou volbou pro všechny nováčky.
 
-# **Tidyverse**
+## **Tidyverse**
 
 Přestože jsou možnosti R nesmírně široké, zdaleka ne všechny nástroje vám budou k dispozici hned po jeho instalaci. Většina rozšíření pro R je distribuovaná formou balíčků (*packages*), které jsou volně dostupné ke stažení.
 
@@ -30,7 +30,7 @@ Balíčků, které do R přináší nové funkce, dnes existují desítky tisíc
 
 Je nutné zmínit, že využívání Tidyverse není striktně nutné. Tidyverse vzniklo dlouho po vzniku samotného R a do dneška existuje mnoho uživatelů, pro které představuje základní R (nebo jiné balíčky pro analýzu dat) ideální pracovní prostředí. Nicméně, stejně jako u Rstudia, Tidyverse představuje skvělou rovnováhu mezi uživatelskou přívětivostí a flexibilitou práce.
 
-# **Proč ne grafická rozhraní?**
+## **Proč ne grafická rozhraní?**
 
 Nakonec si dovolíme krátce vyjádřit k tématu, pravidelně objevuje vždy, když dojde na výuku analýzy dat.
 

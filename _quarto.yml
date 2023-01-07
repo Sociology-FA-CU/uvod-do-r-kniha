@@ -17,6 +17,7 @@ book:
     - index.qmd
     - predstaveni.qmd
     - struktura.qmd
+    - data.qmd
     - part: "Trocha teorie"
       chapters:
         - instalace.qmd

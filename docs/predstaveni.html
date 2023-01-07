@@ -129,6 +129,11 @@ ul.task-list li input[type="checkbox"] {
   <a href="./struktura.html" class="sidebar-item-text sidebar-link">Struktura knihy</a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data.html" class="sidebar-item-text sidebar-link">Data</a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Trocha teorie</a>
@@ -380,19 +385,19 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <p>Cenou za široké možnosti R jsou vyšší nároky na jeho osvojení, jelikož na rozdíl od programů s grafickým rozhraním vyžaduje práce s R alespoň základní znalosti programování. Naštěstí již dnes existuje řada zdrojů a komunit, které mohou s tímto problémem pomoci. Pro inspiraci můžeme zmínit blog <a href="https://www.r-bloggers.com/">R-bloggers</a>, skupinu <a href="https://rladies.org/">Rladies</a> nebo komunitní projekt <a href="https://www.tidytuesday.com/">Tidytuesday</a>.</p>
 </section>
-<section id="rstudio" class="level1">
-<h1><strong>Rstudio</strong></h1>
+<section id="rstudio" class="level2">
+<h2 class="anchored" data-anchor-id="rstudio"><strong>Rstudio</strong></h2>
 <p>Dávno už jsou pryč časy, kdy práce s programovacími jazyky znamenala psaní kódu v jednoduché příkazové řádce (nebo nedej bože prorážení dírkovacích štítků!). Dnešní uživatelé mohou využívat sofistikovaných programů, jejich cílem je usnadnit každodenní práci. Těmto programům se říká integrované vývojářské prostředí (<em>Integrated Development Environments</em>) a jasně nejpopulárnějším <em>IDE</em> pro R je v současné době Rstudio.</p>
 <p>Rstudio, vyvíjené stejnojmennou společností, bude kontrolovat váš kód, napovídat vám jména funkcí, exportovat grafy a mnoho dalšího. Nejedná se samozřejmě o jediné vývojářským prostředí pro R (konkurenty jsou například <a href="https://code.visualstudio.com">VScode</a>, <a href="https://www.vim.org/scripts/script.php?script_id=2628">Vim</a> nebo <a href="https://ess.r-project.org/">ESS Emacs</a>), představuje však výbornou rovnováhu mezi výkonem a uživatelskou přívětivostí a skvělou volbou pro všechny nováčky.</p>
 </section>
-<section id="tidyverse" class="level1">
-<h1><strong>Tidyverse</strong></h1>
+<section id="tidyverse" class="level2">
+<h2 class="anchored" data-anchor-id="tidyverse"><strong>Tidyverse</strong></h2>
 <p>Přestože jsou možnosti R nesmírně široké, zdaleka ne všechny nástroje vám budou k dispozici hned po jeho instalaci. Většina rozšíření pro R je distribuovaná formou balíčků (<em>packages</em>), které jsou volně dostupné ke stažení.</p>
 <p>Balíčků, které do R přináší nové funkce, dnes existují desítky tisíc. Jednou z nejpopulárnějších rodin takových balíčků je <a href="https://www.tidyverse.org/">Tidyverse</a>, která rozšiřuje možnosti R zejména v oblastech manipulace a vizualizace dat. Mnoho úkonů, které se v základním R provádí velmi zdlouhavě nebo krkolomně, jsou v Tidyverse záležitostí na jeden dva řádky. Jednotlivé balíčky jsou také designovány tak, aby si spolu navzájem rozuměli a využívali identickou syntax. Stinnou stránkou živelné popularity R je, že řada jeho vývojářů má značně rozdílné představy o psání počítačového kódu. To vede k mnoha různým konvencím, které jsou pro běžného uživatele matoucí (např. mají funkce začínat velkým, nebo malým písmenem? mají se slova oddělovat potržítkem, nebo tečkou?). Všechny balíčky Tidyverse se drží jednotného stylu a je proto velice jednoduché jejich funkce kombinovat bez zbytečných zmatků. Jedná se tak o další způsob, jak ulehčit ponoření do R.</p>
 <p>Je nutné zmínit, že využívání Tidyverse není striktně nutné. Tidyverse vzniklo dlouho po vzniku samotného R a do dneška existuje mnoho uživatelů, pro které představuje základní R (nebo jiné balíčky pro analýzu dat) ideální pracovní prostředí. Nicméně, stejně jako u Rstudia, Tidyverse představuje skvělou rovnováhu mezi uživatelskou přívětivostí a flexibilitou práce.</p>
 </section>
-<section id="proč-ne-grafická-rozhraní" class="level1">
-<h1><strong>Proč ne grafická rozhraní?</strong></h1>
+<section id="proč-ne-grafická-rozhraní" class="level2">
+<h2 class="anchored" data-anchor-id="proč-ne-grafická-rozhraní"><strong>Proč ne grafická rozhraní?</strong></h2>
 <p>Nakonec si dovolíme krátce vyjádřit k tématu, pravidelně objevuje vždy, když dojde na výuku analýzy dat.</p>
 <p>Na začátku jsme zmínili, že R je programovací jazyk a pro práci s ním je nutné znát základy programování. To striktně řečeno není úplně pravda. Protože je v R možné udělat téměř cokoliv, je možné v něm vytvořit i grafické rozhraní, a tím práci s ním přiblížit “klikacímu” softwaru jako je SPSS. Těchto rozhraní již dnes existuje celá řada, mezi nejpopulárnější se řadí například <a href="https://www.jamovi.org/">Jamovi</a> a <a href="https://jasp-stats.org">JASP</a>. S využitím těchto rozhraní je možné analýzy “naklikávat” místo psaní programovacího kódu, čímž se výrazně snižuje vstupní bariéra. Grafická rozhraní ale podle našeho názoru mají tři velké slabiny, které dříve nebo později převáží nad jakýmikoliv potencionálními výhodami:</p>
 <ul>

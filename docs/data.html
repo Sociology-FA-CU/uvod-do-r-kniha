@@ -8,7 +8,7 @@
 
 <meta name="description" content="První výprava do světa R a Tidyverse.">
 
-<title>Úvod do analýzy dat v R - 20&nbsp; Vizualizace kategorických proměnných</title>
+<title>Úvod do analýzy dat v R - Data</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,69 +21,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -94,8 +31,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./numericke-grafy.html" rel="next">
-<link href="./obsah-grafu.html" rel="prev">
+<link href="./instalace.html" rel="next">
+<link href="./struktura.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -136,7 +73,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Vizualizace kategorických proměnných</span></h1>
+      <h1 class="quarto-secondary-nav-title">Data</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -194,7 +131,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./data.html" class="sidebar-item-text sidebar-link">Data</a>
+  <a href="./data.html" class="sidebar-item-text sidebar-link active">Data</a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -332,7 +269,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./kategoricke-grafy.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Vizualizace kategorických proměnných</span></a>
+  <a href="./kategoricke-grafy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Vizualizace kategorických proměnných</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -401,8 +338,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">Obsah</h2>
    
   <ul>
-  <li><a href="#vizualizace-jedné-proměnné" id="toc-vizualizace-jedné-proměnné" class="nav-link active" data-scroll-target="#vizualizace-jedné-proměnné"><span class="toc-section-number">20.1</span>  Vizualizace jedné proměnné</a></li>
-  <li><a href="#vizualizace-více-proměnnýchných" id="toc-vizualizace-více-proměnnýchných" class="nav-link" data-scroll-target="#vizualizace-více-proměnnýchných"><span class="toc-section-number">20.2</span>  Vizualizace více proměnnýchných</a></li>
+  <li><a href="#countries" id="toc-countries" class="nav-link active" data-scroll-target="#countries">Countries</a></li>
+  <li><a href="#dogs" id="toc-dogs" class="nav-link" data-scroll-target="#dogs">Dogs</a></li>
+  <li><a href="#ukraine" id="toc-ukraine" class="nav-link" data-scroll-target="#ukraine">Ukraine</a></li>
   </ul>
 </nav>
     </div>
@@ -411,7 +349,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Vizualizace kategorických proměnných</span></h1>
+<h1 class="title d-none d-lg-block">Data</h1>
 </div>
 
 
@@ -426,162 +364,104 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<div class="cell">
-
-</div>
-<p>V této kapitole si představíme nejčastější typy grafů pro vizualizaci kategorických proměnných.</p>
-<section id="vizualizace-jedné-proměnné" class="level2" data-number="20.1">
-<h2 data-number="20.1" class="anchored" data-anchor-id="vizualizace-jedné-proměnné"><span class="header-section-number">20.1</span> Vizualizace jedné proměnné</h2>
-<p>Začněme vizualizací jedné kategoriální proměnné. Sloupcové grafy jsou pravděpodobně nejpopulárnějším typem vizualizace, se kterým se setkáme. Pro vytvoření sloupcového grafu je dobré si vybavit, ktteré proměnné se nachází na jednotlivých osách. Na ose X se nachází název kategorie, na ose Y poté frekvence výskyty. Vstupními daty pro funkci <code>ggplot()</code> bude tedy dataframe s těmito dvěmi proměnnými. Data budou reprezentovaná pomocí sloupců, které přidáme funkcí <code>geom_col()</code>:</p>
-<div class="cell" data-fig.asp="0.5">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(postsoviet) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> postsoviet, <span class="at">y =</span> n)) <span class="sc">+</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="kategoricke-grafy_files/figure-html/geom-col-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<div class="callout-tip callout callout-style-default callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-<code>geom_bar()</code>
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Pokud je cílem našeho sloupcového grafu zobrazit (absolutní) četnost jednotlivých kategorií, můžeme nahradit <code>geom_col()</code> funkcí <code>geom_bar()</code>, která automaticky frekvenci výskytu všech skupin. Celý kód by vypadal následovně:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(countries,</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> postsoviet)) <span class="sc">+</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-<p>Pokud bychom v grafu chtěli zobrazit relativní frekvenci výskytu kategorií, spočítáme percentuální zastoupení před vytvořením grafu.</p>
-<div class="cell" data-fig.asp="0.5">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(postsoviet) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">freq =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> postsoviet, <span class="at">y =</span> freq)) <span class="sc">+</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="kategoricke-grafy_files/figure-html/geom-col-relative-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<div class="callout-tip callout callout-style-default callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Orientace grafu
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Názvy kategorií nemusí být nutně na ose X. Pro otočení grafu o 90 stupňů stačí použít <code>ggplot(aes(x = freq, y = postsoviet))</code>.</p>
-</div>
-</div>
-<p>Do grafu také můžeme přidat popisky jednotlivých sloupců. Nejdříve je nutné napojit proměnou obsahující frekvenci jednotlivých kategorií na dimenzi <code>label</code>. Popisky přidáme do grafu pomocí funkcec <code>geom_text()</code>:</p>
-<div class="cell" data-fig.asp="0.5">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(postsoviet) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">freq =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> postsoviet, <span class="at">y =</span> freq, <span class="at">label =</span> freq)) <span class="sc">+</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span> </span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>()</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="kategoricke-grafy_files/figure-html/geom-col-text-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>Výsledkem je funkční, ale nepříliš vzhledný graf. Aby náš graf byl použitelný, je nutné čísla v popiscích zaoukrouhlit a popisky samotné posunout tak, aby nepřekrývali sloupce. Zaokrouhlení dosáhneme pomocí funkce <code>round()</code>, kterou můžeme aplikovat přímo uvnitř funkce <code>ggplot()</code>. Pro posunutí popisků na vertikální ose je možné využít argument <code>vjust</code> uvnitř funkce <code>geom_text()</code>, k posouvání na horizontální ose poté slouží <code>hjust</code>. Hodnoty argumentů <code>vjust</code> a <code>hjust</code> jsou ve stejných jednotkách, jako proměnná na dané ose.</p>
-<div class="cell" data-fig.asp="0.5">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(postsoviet) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">freq =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> postsoviet, <span class="at">y =</span> freq, <span class="at">label =</span> <span class="fu">round</span>(freq, <span class="dv">2</span>)) ) <span class="sc">+</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span> </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-fig.asp="0.5">
-<div class="cell-output-display">
-<p><img src="kategoricke-grafy_files/figure-html/geom-col-pretty-scaled-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
+<p>Tato kniha využívá několik datasetů.</p>
+<section id="countries" class="level2">
+<h2 class="anchored" data-anchor-id="countries">Countries</h2>
+<p>Prvním a hlavním je dataset <code>countries</code>. Dataset je možné stáhnout <a href="https://raw.githubusercontent.com/Sociology-FA-CU/uvod-do-r-kniha/master/data-raw/countries.csv">zde</a> (klikněte pravým tlačítkem na odkaz a zvolte <em>Uložit jako…</em>). Popis proměnných naleznete v následující tabulce.</p>
+<table class="table">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 62%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Jméno proměnné</th>
+<th>Popis</th>
+<th>Zdroj</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>country</td>
+<td>Jméno země</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>code</td>
+<td>Dvoumístný ISO kód země</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>gdp</td>
+<td>HDP země v milionech euro (2018)</td>
+<td>Eurostat</td>
+</tr>
+<tr class="even">
+<td>population</td>
+<td>Populace země k 1. lednu 2018</td>
+<td>Eurostat</td>
+</tr>
+<tr class="odd">
+<td>area</td>
+<td>Celková rozloha země</td>
+<td>CIA factbook</td>
+</tr>
+<tr class="even">
+<td>eu_member</td>
+<td>Je země členem Evropské unie? (2019)</td>
+<td>Evropská unie</td>
+</tr>
+<tr class="odd">
+<td>postsoviet</td>
+<td>Byla země součástí Východního bloku?</td>
+<td>Wikipedie</td>
+</tr>
+<tr class="even">
+<td>life_exp</td>
+<td>Naděje na dožití při narození (2017)</td>
+<td>OSN</td>
+</tr>
+<tr class="odd">
+<td>uni_prc</td>
+<td>Podíl lidí s vysokoškolským vzděláním ve věku 15 až 64 let (2018)</td>
+<td>Eurostat</td>
+</tr>
+<tr class="even">
+<td>poverty_risk</td>
+<td>Podíl lidí ohrožených chudobou (2017)</td>
+<td>Eurostat</td>
+</tr>
+<tr class="odd">
+<td>material_dep</td>
+<td>Podíl lidí s materiální deprivací, 3 nebo méně položek (2017)</td>
+<td>Eurostat</td>
+</tr>
+<tr class="even">
+<td>hdi</td>
+<td>Index lidského rozvoje (2018)</td>
+<td>OSN</td>
+</tr>
+<tr class="odd">
+<td>foundation_date</td>
+<td>Datum vzniku/zformování země</td>
+<td>Wikipedie</td>
+</tr>
+<tr class="even">
+<td>maj_belief</td>
+<td>Největší náboženská skupina v zemi (2018)</td>
+<td>Pew Researcher Center</td>
+</tr>
+</tbody>
+</table>
 </section>
-<section id="vizualizace-více-proměnnýchných" class="level2" data-number="20.2">
-<h2 data-number="20.2" class="anchored" data-anchor-id="vizualizace-více-proměnnýchných"><span class="header-section-number">20.2</span> Vizualizace více proměnnýchných</h2>
-<p>Pro vizualizaci většího počtu proměnných pomocí sloupcových grafů zpravidla využíváme barev, pro rozlišení jednotlivých kategorií. Jedna kategorická proměnná bude tedy namapovaná na osu X, druhá poté na barvu sloupce. Frekvence dané kategorie bude na ose Y:</p>
-<div class="cell" data-fig.asp="0.5">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(postsoviet, eu_member) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> postsoviet, <span class="at">fill =</span> eu_member, <span class="at">y =</span> n)) <span class="sc">+</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="kategoricke-grafy_files/figure-html/geom-col-stack-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>Všimněme si, že v našem grafu jsou nyní jednotlivé kategorie naskládány na sebe. Jejich pozici je možné upravovat pomocí argumentu <code>position</code>, pro který je výchozí hodnota <code>position = "stack"</code>. První alternativou je <code>argument = "fill"</code>, který je obdobný <code>stack</code>, ale velikost sloupců je standardizována. Graf tedy zobrazuje relativní frekvenci jednotlivých kategorií:</p>
-<div class="cell" data-fig.asp="0.5">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(postsoviet, eu_member) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> postsoviet, <span class="at">fill =</span> eu_member, <span class="at">y =</span> n)) <span class="sc">+</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"fill"</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="kategoricke-grafy_files/figure-html/geom-col-fill-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>Stejně jako u jednoduchého sloupcového grafu, i do skládáných grafů je možné přidat popisky. Je ale nutné sladit jejich pozici s pozicí sloupců. Pokud jsme jako sloupců zvolili <code>position = "fill"</code>, je nutné stejnou pozici zvolit i pro popisky. Také je nutné popisky zarovnat doprostřed jednotlivých dlaždic. Obojího docíleme pomocí <code>position = position_fill(vjust = 0.5)</code>:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(postsoviet, eu_member) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> postsoviet, <span class="at">fill =</span> eu_member, <span class="at">y =</span> n, <span class="at">label =</span> n)) <span class="sc">+</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">position =</span> <span class="fu">position_fill</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>))</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="kategoricke-grafy_files/figure-html/geom-fill-text-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>Druhou alternativou je <code>position = "dodge"</code>, pomocí které je možné vyskládat jednotlivé sloupce vedle sebe. Obdobně jako u předchozí varianty přidáme popisky, tentokrát ale pomocí <code>position_dodge()</code>. jednotlivé sloupce jsou od sebe zpravidla vzdálené jednu “jednotku”. Stejně jako u jednoduchého grafu také popisky posuneme lehce nahoru:</p>
-<div class="cell" data-fig.asp="0.5">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(postsoviet, eu_member) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> postsoviet, <span class="at">fill =</span> eu_member, <span class="at">y =</span> n, <span class="at">label =</span> n)) <span class="sc">+</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="dv">1</span>), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="kategoricke-grafy_files/figure-html/geom-col-dodge-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>Alternativou klasických sloupcových grafů je <em>heat map</em>. Pro vytvoření <em>heat</em> mapy nejdříve získáme frekvenci výskytu kombinací jednotlivých kategorií, obdobně jako když jsme vytvářeli sloupcový graf. Poté jen napojíme jednu z kategorických proměnných na osu X, druhou na osu Y a frekvenci výskytu na barvu jednotlivých “dlaždic”. Graf dokončíme pomocí funkce <code>geom_tile()</code>. Stejně jako v předchozích grafech můžeme přidat popisky pro jednotlivé dlaždice pomocí <code>geom_text()</code>.</p>
-<div class="callout-caution callout callout-style-default callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Chybějící kombinace kategorií
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>V případě, že se v naši datech nevyskytují některé kombinace kategorií, je nutné proměnné převést na faktory a do funkce <code>count()</code> přidáme argument <code>.drop = FALSE</code>. Pokud bychom to neudělali, objevily by se v naší <em>heat</em> mapě mezery.</p>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>countries <span class="sc">%&gt;%</span> </span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(maj_belief, postsoviet),</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                as.factor)) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(postsoviet, maj_belief, <span class="at">.drop =</span> F) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> postsoviet, <span class="at">y =</span> maj_belief,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">label =</span> n, <span class="at">fill =</span> n)) <span class="sc">+</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">color =</span> <span class="st">"white"</span>)</span></code><button title="Zkopírovat do schránky" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="kategoricke-grafy_files/figure-html/geom-tile-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
+<section id="dogs" class="level2">
+<h2 class="anchored" data-anchor-id="dogs">Dogs</h2>
+<p>Dataset věnovaný psím plemenům, původně z projektu <a href="https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-02-01/readme.md">TidyTuesday</a>. Jedná se o dva datasety, <a href="https://raw.githubusercontent.com/Sociology-FA-CU/uvod-do-r-kniha/master/data-raw/dog-traits.csv">první</a> obsahuje vlastnosti psích plemen, <a href="https://raw.githubusercontent.com/Sociology-FA-CU/uvod-do-r-kniha/master/data-raw/dog-ranks.csv">druhý</a> popularitu plemen v čase (pro stažení klikněte pravým tlačítkem na odkaz a zvolte <em>Uložit jako…</em>).</p>
+</section>
+<section id="ukraine" class="level2">
+<h2 class="anchored" data-anchor-id="ukraine">Ukraine</h2>
+<p>Poslední data se týkají postojů občanů České republiky k válce na Ukrajině z března 2022. Data pochází z dotazníkového šetření Centra pro výzkum veřejného mínění Akademie věd. <a href="https://github.com/Sociology-FA-CU/uvod-do-r-kniha/raw/master/data-raw/ukraine.rds">První</a> dataset obsahuje odpovědi respondentů, <a href="https://github.com/Sociology-FA-CU/uvod-do-r-kniha/raw/master/data-raw/ukraine_labels.rds">druhý</a> popis jednotlivých proměnných.</p>
 
 
 </section>
@@ -837,13 +717,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./obsah-grafu.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Struktura grafů</span></span>
+      <a href="./struktura.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Struktura knihy</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./numericke-grafy.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Vizualizace numerických proměnných</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./instalace.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Instalace softwaru</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

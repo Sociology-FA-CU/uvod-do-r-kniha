@@ -3,7 +3,7 @@
 ```{r import}
 #| echo: false
 #| message: false
-
+showtext::showtext_auto()
 library(tidyverse)
 countries <- read_csv("data-raw/countries.csv")
 ```
@@ -305,7 +305,7 @@ ggplot(countries,
        aes(x = hdi, y = life_exp, color = poverty_risk)) +
   geom_point() +
   theme(legend.position = c(0.9, 0.3),
-        text = element_text(family = "Times New Roman", size = 12),
+        text = element_text(family = "Calibri", size = 12),
         panel.background = element_rect(fill = "#F5DDB1"),
         plot.background = element_rect(fill = "#F5CE87"),
         legend.background = element_rect(fill = "#F5CE87"),
