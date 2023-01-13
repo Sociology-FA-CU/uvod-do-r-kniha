@@ -4,6 +4,8 @@
 #| echo: false
 #| message: false
 
+knitr::opts_chunk$set(dev = "ragg_png")
+
 library(tidyverse)
 countries <- read_csv("data-raw/countries.csv")
 ```
