@@ -8,6 +8,6 @@ Učit se R je běh na dlouhou trať. Je to cesta, která znamená mnohem větš�
 >
 > ---Evelyn Hall and Simon 'Yoda' Blomberg, R-help (April 2005)
 
-Tento text je průvodcem pro návštěvníky poprvé vstupující do světa R, který je provede základy datové analýzy od instalace všeho nezbytného softwaru, až po manipulaci a vizualizaci dat. Slouží zároveň jako podklad pro výuku kurzu [Úvod do analýzy dat v R](https://sociology-fa-cu.github.io/Uvod_do_analyzy_dat_v_R/) na katedře sociologie FF Univerzity Karlovy. Vznik tohoto textu byl podpořen [NMS Market Research](https://nms.global/cz/).
+Tento text je průvodcem pro návštěvníky poprvé vstupující do světa R, který je provede základy datové analýzy od instalace všeho nezbytného softwaru, až po manipulaci a vizualizaci dat. Slouží zároveň jako podklad pro výuku kurzu [Úvod do analýzy dat v R](https://sociology-fa-cu.github.io/uvod-do-r/) na katedře sociologie FF Univerzity Karlovy. Vznik tohoto textu byl podpořen [NMS Market Research](https://nms.global/cz/).
 
 Tato kniha je licencovaná pod [Creative Commons Attribution-NonCommercial 2.0 Generic](https://creativecommons.org/licenses/by-nc/2.0/) a je možné ji volně šířit pro nekomerční účely.
