@@ -1,4 +1,4 @@
-# Práce s řádky
+# Práce s řádky {#sec-radky}
 
 ```{r import}
 #| echo: false
@@ -40,6 +40,13 @@ filter(countries, maj_belief %in% c("catholic", "orthodox", "protestantism"))
 ```
 
 Oba tyto příkazy vedou ke stejnému výsledku, ten druhý je ale výrazně kompaktnější.
+
+Zároveň se může stát, že je někdy jednodušší vyjmenovat hodnoty, které ve výběru nechceme, než ty, které tam chceme. I pro to existuje elegantní řešení, které využívá znak `!`, jehož význam v jazyce R je negace čili logické NOT. Například pokud bychom chtěli všechny země, které nemají jako majoritní některé z křesťanských nábožesntví:
+
+```{r filter-multiple-good-neg}
+#| eval: false
+filter(countries, !maj_belief %in% c("catholic", "orthodox", "protestantism"))
+```
 :::
 
 Jak si jistě dokážete představit, funkce `select()` a `filter()` jsou často využívané dohromady:
@@ -86,7 +93,7 @@ slice_min(countries, order_by = life_exp, n = 3) %>%
   select(country, life_exp)
 ```
 
-Funkce `slice_max()` a `slice_min()` jsem zde zkombinovaly s funkcí `select()`, abychom vybrali jen relevantní proměnné.
+Funkce `slice_max()` a `slice_min()` jsme zde zkombinovali s funkcí `select()`, abychom vybrali jen relevantní proměnné.
 
 Posledním členem rodiny je funkce `slice_sample()`, která vybere náhodné řádky dataframu. Tato funkce najde uplatnění zejména v simulačních studiích a technikách.
 
@@ -95,20 +102,40 @@ Posledním členem rodiny je funkce `slice_sample()`, která vybere náhodné ř
 slice_sample(countries, n = 3)
 ```
 
-## Group_by() {#sec-group-by}
+## Podskupiny v datech {#sec-group-by}
 
-V tuto chvíli si možná někteří čtenáři říkají, jaké je využití `slice` funkcí oproti jejich klasickým variantám, jako je `head()` nebo `tail()`. Jednou z jejich velkých předností je možnost kombinovat je s funkcí `group_by()`.
+V tuto chvíli si možná někteří čtenáři říkají, jaké je využití `slice` funkcí oproti jejich klasickým variantám, jako je `head()` nebo `tail()`. Jednou z jejich předností je možnost kombinovat je s funkcionalitou `by`, což je možnost, jak můžeme různým funkcím z balíku `dplyr` přikázat, aby požadovanou operaci provedly zvlášť pro různé podskupiny.
 
-Funkce `group_by()` umožňuje rozdělit dataframe na podskupiny a aplikovat funkce z balíčku `dplyr` na každou z podskupin zvlášť. Podskupiny jsou definované kategorickou proměnnou v dataframu. Tímto způsobem můžeme zjistit nejen které země se těší nejvyšší naději na dožití obecně, ale i to, jak jsou na tom západní a postsovětské země zvlášť:
+Funkcionalita se vyvolá použitím argumentu `by` uvnitř funkce. Podskupiny jsou definované kategorickou proměnnou v dataframu. Tímto způsobem můžeme zjistit, nejen které země se těší nejvyšší naději na dožití obecně, ale i to, jak jsou na tom postsovětské a ostatní země zvlášť:
 
 ```{r slice-groupby}
 countries %>% 
-  group_by(postsoviet) %>% 
-  slice_max(order_by = life_exp, n = 3) %>% 
+  slice_max(order_by = life_exp, n = 3, by = postsoviet) %>% 
   select(country, postsoviet, life_exp)
 ```
 
-Zatímco mezi západními zeměmi vedou Švýcarsko, Španělsko a Francie, v postsovětské skupině je to Německo, Slovinsko a Česká republika. Třídit je možné i pomocí většího počtu proměnných, například pro třídění podle postsovětské historie a členství v Evropské unii bychom použili `group_by(postsoviet, eu_member)`. Jak jistě tušíte, funkce `group_by()` má mnoho využití a budeme se s ní setkávat opakovaně i následujících kapitolách.
+Zatímco mezi nepostsovětskými zeměmi vedou Švýcarsko, Španělsko a Francie, v postsovětské skupině je to Německo, Slovinsko a Česká republika. Třídit je možné i pomocí většího počtu proměnných, například pro třídění podle postsovětské historie a členství v Evropské unii takto:
+
+```{r slice-groupby2}
+countries %>% 
+  slice_max(order_by = life_exp, n = 1, by = c(postsoviet, eu_member)) %>% 
+  select(country, postsoviet, eu_member, life_exp)
+```
+
+Využití argumentu `by` ve spojení s  funkcemi pro manipulaci s daty z balíku `dplyr` má široke využití, které bude dále ilustrováno v různých situacích.
+
+::: callout-note
+Argument `by` byl představen teprve ve verzi `dplyr 1.1.0` v roce 2023 jako alternativa pro do té doby používanou funkci `group_by()`. V jejím případě šlo na rozdíl od argumentu `by` o samostantou funkci, která dataset rozdělila na podskupiny typicky až do odvolání pomocí funkce `ungroup()`. Ve většině případů nám přijde vhodnější používat argument `by`, přestože varianta `group_by()` je také dále dostupná. Pro případ uvedený výše by fungovala takto:
+
+```{r slice-groupby3}
+countries %>% 
+  group_by(postsoviet, eu_member) |> 
+  slice_max(order_by = life_exp, n = 1) %>% 
+  select(country, postsoviet, eu_member, life_exp) |> 
+  ungroup()
+```
+Pokud bychom nepřipojili závěrečné `ungroup()` dostali bychom stejné hodnoty, výsledek by nicméně zůstal rozdělen na čtyři podksupiny i pro případné další operace. 
+::: 
 
 ## Pořadí řádků
 
@@ -120,12 +147,23 @@ countries %>%
   select(country, life_exp)
 ```
 
-Při bližším pohledu zjistíme, že země jsou seřazený vzestupně. Nejhůře se vede Bulhrasko a Litva s Lotyšskem. Co kdyby nás ale zajímaly země s nejvyšší nadějí na dožití? Pro sestupné řazení zkombinujeme funkci `arrange()` s funkcí `des()`:
+Při bližším pohledu zjistíme, že země jsou seřazený vzestupně. Nejhůře se vede Bulhrasko a Litva s Lotyšskem. Co kdyby nás ale zajímaly země s nejvyšší nadějí na dožití? Pro sestupné řazení zkombinujeme funkci `arrange()` se znaménkem `-`:
 
 ```{r arrange-desc}
+countries %>% 
+  arrange(-life_exp) %>% 
+  select(country, life_exp)
+```
+
+Nejvyšší naději na dožití se těší Švýcarsko, se Španělskem v těsném závěsu.
+
+::: callout info
+Alternativně se lze setkat také s využitím funkce `desc()` ve smyslu anglického slova "descending". Tuto variantu nepreferujeme, protože zmamená více psaní:
+
+```{r arrange-desc2}
 countries %>% 
   arrange(desc(life_exp)) %>% 
   select(country, life_exp)
 ```
 
-Nejvyšší naději na dožití se těší Švýcarsko, se Španělskem v těsném závěsu.
+:::
