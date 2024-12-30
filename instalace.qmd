@@ -26,25 +26,33 @@ Možná víte, že existují dva typy procesorů, 32bitové a 64bitové. Setkat 
 
 Ti z vás, kteří preferují instalaci softwaru přes manager, mohou využít [Chocolatey](https://community.chocolatey.org), Po [instalaci manageru](https://chocolatey.org/install) samotného stačí do terminálu zadat
 
-    choco install r
+```         
+choco install r
+```
 
 Upozorňujeme ale, že z naší zkušenost se správcům Cholocatey balíčku ne vždy daří držet krok s aktuální oficiální verzí .
 
 ### MacOS
 
-R je možné stáhnout stejně jako u Windows verze z <https://mirrors.nic.cz/R/>, kde zvolte *Download R for MacOS*. Pokud máte Macbook s M1 procesorem (tedy Macbook z roku 2020 nebo mladší), zvolte verzi *arm64.* U starších verzí zvolte základní verzi R. Po stažení je možné nainstalovat jako jakýkoliv jiný software.
+R je možné stáhnout stejně jako u Windows verze z <https://mirrors.nic.cz/R/>, kde zvolte *Download R for MacOS*. Pokud máte Macbook se Silicon procesorem jako M1 nebo M4 (tedy Macbook z roku 2020 nebo mladší), zvolte verzi *arm64.* U starších modelů zvolte základní verzi R. Po stažení je možné nainstalovat jako jakýkoliv jiný software.
 
-Pokud preferujete instalaci pomocí software manageru, je možné využít [Homebrew](https://brew.sh). Pro instalaci Homebrew otevřete terminál a použijte příkaz
+Pokud preferujete instalaci pomocí software manageru, je možné využít [Homebrew](https://brew.sh). Homebrew je manažer pro instalaci softwaru - něco jako App store přes příkazový řádek. Pokud jste techničtější nátury, můžete s jeho pomocí efektivně instalovat a aktualizovat programy a fonty na vašem Pro instalaci Homebrew otevřete terminál a použijte příkaz
 
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```         
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
 
 a řiďte se instrukcemi. Po úspěšné instalaci Homebrew je možné nainstalovat R pomocí příkazu:
 
-    brew install r 
+```         
+brew install --cask r 
+```
 
 ### Linux
 
 Konkrétní podoba instalace R pro Linuxu závisí na tom, jakou distribuci používáte. R oficiálně podporuje tři distribuce a to Debian, Ubuntu a Fedora/Redhead. Instrukce pro instalaci jsou dostupné na <https://mirrors.nic.cz/R/>. Velkou pozornost doporučujeme věnovat repozitářům pro instalaci balíčků, jelikož jejich napojení se liší distribuci od distribuce a jejich správnou přípravou si do budoucna ušetříte mnoho času!
+
+Uživatelé Ubuntu a Fedory zajisté ocení repozitáře [r2u](https://github.com/eddelbuettel/r2u) a [cran2copr](https://github.com/cran4linux/cran2copr), pomocí kterých je možné instalovat R balíčky v *binary* formátu. Ty jsou oficiálně dosptupné pouze pro uživatele Windows a MacOS. Uživatelé Linuxu si musí balíčky kompilovat sami, což je nejen zdlouhavé, ale často také vede k problémům kvůli chybějícím systémovým knihovnám. Zmíněné dvě knihovny poskytují prekompilované verze většiny Rkovských balíčků.
 
 Pokud používáte jinou než jednu z oficiálně podporovaných distribucí, konzultuje svůj package manager.
 
