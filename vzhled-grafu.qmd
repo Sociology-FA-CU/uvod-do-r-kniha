@@ -352,7 +352,7 @@ ggplot(countries,
 ```
 :::
 
-## Fonty
+## Fonty {#sec-fonts}
 
 Jedním z nejvíce problematických aspektů grafů vytvořených v R byli historicky fonty. Není tomu tak dávno, co bylo velmi obtížné přesvědčit R, aby rozeznalo fonty nainstalované na našem počítači a správně je vykreslilo do grafu. Naštěstí se situace v posledních letech výrazně zlepšíla.
 

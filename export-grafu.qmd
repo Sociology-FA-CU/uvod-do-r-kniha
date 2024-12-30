@@ -40,6 +40,22 @@ ggsave(plot = hdi_life_plot,
        dpi = 300)
 ```
 
+Pokud graf exportujeme do PNG formátu, vyplatí se využít funkce `agg_png()` z balíčku `ragg`. Ten se postará o jednak o správné vykreslení všech fontů (viz @sec-fonts), ale umožní nám i upravovat velikost textu popisků grafu přímo při exportu. Toho docílíme pomocí argumentu `scaling`, jehož výchozí hodnotou je 1. Pokud argumentem nastavíme například na 1.2, zvětšíme všechno písmo v grafu o 20%. Naopak, nastavením argumentu na 0.8 písmo o 20% zmenšíme.
+
+```{r ggsave-ragg}
+#| eval: false
+
+ggsave(plot = hdi_life_plot,
+       filename = "hdi_life_plot.png",
+       path = "plots",
+       device = ragg::agg_png, #používáme ragg::, abychom nemuseli načítat celý balíček pomocí library()
+       units = "cm",
+       width = 14,
+       height = 10,
+       dpi = 300,
+       scaling = 1.2)
+```
+
 ## Rasterová versus vektorová grafika
 
 Jedním z důležitých rozhodnotí při exportu grafů je volba formátu, ve kterém budou uloženy. Obecně máme dvě volby: rasterové a vektorové obrázky.
