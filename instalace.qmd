@@ -74,6 +74,12 @@ Posledním krokem je instalace sady R balíčků Tidyverse, které budeme využ�
 
 Instalace všech potřebných balíčků trvá zpravidla pár minut (s výjimkou některých uživatelů Linuxu, kteří musí balíčky kompilovat. Vy si počkáte zhruba tři čtvrtě hodiny). Úspěšná instalace bude zakončená větou `package tidyverse successfully unpacked and MD5 sums checked`.
 
+::: callout-tip
+## Kde se vlastně berou balíčky?
+
+Někteří čtenáři si možná teď pokládají otázku, odkud se balíčky jako tidyverse vlastně stahují. Primárním zdrojem Rkovských balíčků je The Comprehensive R Archive Network (CRAN). Tato databáze je spravována vývojáři Rka samotného a má vysoká nároky na kvalitu balíčků, co se kompatibility a bezpečnosti týče. Pokaždé, když použijete příkaz `install.packages()`, budete stahovat právě z ní. Některé balíčky ale v ní z různých důvodů nanajdeme. Dalšími zdroji balíčků jsou například platformy [Github](https://github.com) a [Bioconductor](https://www.bioconductor.org). Pro instalaci těchto balíčků je třeba využít například balíček [pak](https://pak.r-lib.org) nebo [remotes](https://remotes.r-lib.org). V rámci této knihy si ale vystačíme s oficiálním repozitářem CRAN.
+:::
+
 ## Základní nastavení Rstudia
 
 Jako úplně poslední věc se vyplatí změnit dvě výchozí nastavení, kterými si dlouhodobě ušetříte práci i nervy. Rstudio ve výchozím nastavení při ukončení ukládá všechny nahraná data a další vámi vytvořené objekty a znovunahraje je pokaždé, když R znovu zapnete. To je ovšem v praxi spíše na škodu, protože to znamená, že zanedlouho budete mít vaše prostředí zaneřáděné daty z předchozích analýz a projektů. Tomu se dá jednoduše zabránit tím, že si v Rstudiu otevřete záložku *Tools*, a v ní volbu *Global options*. V tomto nastavení odškrtněte možnost *Restore .Rdata into workspace at startup* a zároveň nastavte možnost *Save workspace to .Rdata on exit* na *never* tak, jak je to na obrázku níže.
