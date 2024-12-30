@@ -20,13 +20,101 @@ Cenou za široké možnosti R jsou vyšší nároky na jeho osvojení, jelikož 
 
 Dávno už jsou pryč časy, kdy práce s programovacími jazyky znamenala psaní kódu v jednoduché příkazové řádce (nebo nedej bože prorážení dírkovacích štítků!). Dnešní uživatelé mohou využívat sofistikovaných programů, jejich cílem je usnadnit každodenní práci. Těmto programům se říká integrované vývojářské prostředí (*Integrated Development Environments*) a jasně nejpopulárnějším *IDE* pro R je v současné době Rstudio.
 
-Rstudio, vyvíjené stejnojmennou společností, bude kontrolovat váš kód, napovídat vám jména funkcí, exportovat grafy a mnoho dalšího. Nejedná se samozřejmě o jediné vývojářským prostředí pro R (konkurenty jsou například [VScode](https://code.visualstudio.com), [Vim](https://www.vim.org/scripts/script.php?script_id=2628) nebo [ESS Emacs](https://ess.r-project.org/)), představuje však výbornou rovnováhu mezi výkonem a uživatelskou přívětivostí a skvělou volbou pro všechny nováčky.
+Rstudio, vyvíjené společností Posit, bude kontrolovat váš kód, napovídat vám jména funkcí, exportovat grafy a mnoho dalšího. Nejedná se samozřejmě o jediné vývojářským prostředí pro R (konkurenty jsou například [VScode](https://code.visualstudio.com), [Vim](https://www.vim.org/scripts/script.php?script_id=2628) nebo [ESS Emacs](https://ess.r-project.org/)), představuje však výbornou rovnováhu mezi výkonem a uživatelskou přívětivostí a skvělou volbou pro všechny nováčky.
+
+::: callout-note
+## Positron jako nástupce Rstudia?
+
+Rstudio je léty prověřené IDE, na které spolehá velká část Rkovské komunity. Má však i jistá omezení. Nehodí se například pro další populární jazyky. Jeho autoři proto v roce 2024 představili nové IDE jménem [Positron](https://positron.posit.co). Positron podporuje širší paletu programovacích jazyků a obsahuje další vychytávky, jako možnost rychle zobrazit sumarizační statistiky pro všechny proměnné. Zatím je ale dostupný pouze v beta verzi a jeho autoři usilovně pracují na jeho rozvoji. Většina z vás proto zatím doporučujeme držet se Rstudia, které je pro naše potřeby zcela dostatečné. Positron využíjí primárně ti, kteří do Rka přichází z Pythonu.
+:::
 
 ## **Tidyverse**
 
 Přestože jsou možnosti R nesmírně široké, zdaleka ne všechny nástroje vám budou k dispozici hned po jeho instalaci. Většina rozšíření pro R je distribuovaná formou balíčků (*packages*), které jsou volně dostupné ke stažení.
 
 Balíčků, které do R přináší nové funkce, dnes existují desítky tisíc. Jednou z nejpopulárnějších rodin takových balíčků je [Tidyverse](https://www.tidyverse.org/), která rozšiřuje možnosti R zejména v oblastech manipulace a vizualizace dat. Mnoho úkonů, které se v základním R provádí velmi zdlouhavě nebo krkolomně, jsou v Tidyverse záležitostí na jeden dva řádky. Jednotlivé balíčky jsou také designovány tak, aby si spolu navzájem rozuměli a využívali identickou syntax. Stinnou stránkou živelné popularity R je, že řada jeho vývojářů má značně rozdílné představy o psání počítačového kódu. To vede k mnoha různým konvencím, které jsou pro běžného uživatele matoucí (např. mají funkce začínat velkým, nebo malým písmenem? mají se slova oddělovat potržítkem, nebo tečkou?). Všechny balíčky Tidyverse se drží jednotného stylu a je proto velice jednoduché jejich funkce kombinovat bez zbytečných zmatků. Jedná se tak o další způsob, jak ulehčit ponoření do R.
+
+Rodina Tidyverse obsahuje osm hlavních balíčků. Není třeba si je pamatovat nazpaměť, budou nám vždy dostupné. Vyplatí se ale o nich alespoň slyšet, abychom věděli, kde hledat pomoc a nápovědu, pokud se někde zasekneme.
+
+::::: grid
+::: g-col-3
+[![](images/dplyr.png){width="100"}](https://dplyr.tidyverse.org)
+:::
+
+::: g-col-9
+**dplyr** je balíček sloužící pro manipulaci s daty. Budeme ho používat pro čištění, transformaci a sumarizaci našich proměnných. Jeho nejvíce využívanými funkcemi jsou `summarise()` a `mutate()`.
+:::
+:::::
+
+::::: grid
+::: g-col-3
+[![](images/ggplot2.png){width="100"}](https://ggplot2.tidyverse.org)
+:::
+
+::: g-col-9
+Jak již název napovídá, **ggplot2** slouží k vizualizaci data a lze s ním hravě vytvářet jednoduché i komplexní grafy. Hlavní funkcí tohoto balíčku je `ggplot()`.
+:::
+:::::
+
+::::: grid
+::: g-col-3
+[![](images/tidyr.png){width="100"}](https://tidyr.tidyverse.org)
+:::
+
+::: g-col-9
+Cílem balíčku **tidyr** je co nejvíce ulehčit čištění dat. Za tímto účelem obsahuje funkce pro práci s chybějícími hodnotami jako `drop_na()` nebo převádění dat mezi širokým a dlouhým formátem pomocí `pivot_longer()` a `pivot_wider()`.
+:::
+:::::
+
+::::: grid
+::: g-col-3
+[![](images/tibble.png){width="100"}](https://tibble.tidyverse.org)
+:::
+
+::: g-col-9
+Většina dat, se kterými se v praxi setkáme, mají podobu tabulky, v Rkovském žargonu dataframu. A právě balíček **tibble** slouží k jejich efektivnímu zobrazování.
+:::
+:::::
+
+::::: grid
+::: g-col-3
+[![](images/stringr.png){width="100"}](https://stringr.tidyverse.org)
+:::
+
+::: g-col-9
+Balíček **stringr** slouží pro práci s nestruktorovaným textem, ať už se jedná o knihy, záznamy rozhovorů nebo odpovědi na otevřené otázky z dotazníkových šetření. Mezi příklady funkcí patří `str_detect()`, pro nacházení slov a slovních spojení, nebo `str_replace()` pro jejich nahrazení.
+:::
+:::::
+
+::::: grid
+::: g-col-3
+[![](images/forcats.png){width="100"}](https://forcats.tidyverse.org)
+:::
+
+::: g-col-9
+**forcats** slouží k práci se standardizovaným textem. O co se jedná? Zkrátka o kategoriální proměnné, ať už jde o likertovské položky, region bydliště nebo pohlaví.
+:::
+:::::
+
+::::: grid
+::: g-col-3
+[![](images/readr.png){width="100"}](https://readr.tidyverse.org)
+:::
+
+::: g-col-9
+Balíček **readr** nám bude pomáhat s importem a exportem dat, ať už se jedná o CSV formát pomocí funkce `read_csv()` nebo o Rkovský formát RDS pomocí `read_rds()`.
+:::
+:::::
+
+::::: grid
+::: g-col-3
+[![](images/purrr.png){width="100"}](https://purrr.tidyverse.org)
+:::
+
+::: g-col-9
+Čas od času se dostaneme do situací, kdy budeme potřebovat komplexnější programovaní. Jak například říct Rku, aby vytvořilo graf pro všechny proměnné najednou? Právě k tomu slouží funkce balíčku **purrr**, jakou je třeba `map()`.
+:::
+:::::
 
 Je nutné zmínit, že využívání Tidyverse není striktně nutné. Tidyverse vzniklo dlouho po vzniku samotného R a do dneška existuje mnoho uživatelů, pro které představuje základní R (nebo jiné balíčky pro analýzu dat) ideální pracovní prostředí. Nicméně, stejně jako u Rstudia, Tidyverse představuje skvělou rovnováhu mezi uživatelskou přívětivostí a flexibilitou práce.
 
