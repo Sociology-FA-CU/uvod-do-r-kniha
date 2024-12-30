@@ -13,15 +13,19 @@ breed_traits <- read_csv("data-raw/dog-traits.csv")
 
 V ideálním světě by všechna data potřebná pro naši analýzu byla připravena v jednom úhledném datasetu. Praxe je ovšem mnohem krutější a nutí nás si data čistit svépomocí. Jednou z častých nutností je spojovat větší počet dílčích datasetů dohromady, k čemuž nám poslouží sada funkcí `*_join()`.
 
-## Spojovací funkce
+## Spojovací funkce rodiny JOIN
 
-Spojovat dva datasety lze více způsoby, všechny ale vyžadují klíč, tedy proměnou, která je přítomná v obou datframech a pomocí které budou propojeny jednotlivé řádky.
+Funkce rodiny JOIN použijeme, pokud máme dva a více datasetů, ve kterých pozorujeme stejné (nebo zčásti stejné) subjekty, ale v každém souboru pro ně máme k dispozici jiné údaje. Jako ilustrativní příklad využijeme dva datasety, kde jednotlivá porozování (řádky) představují jednotlivá psí plemena. Ve sloupcích jsou v jednom z nich hodnoty pro jednotlvé vlastnosti těchto plemen (dataset "traits"), ve druhém pak pořadí jejich oblíbenosti (asi v USA) ve vybraných letech. Hned nás napadne, že bychom možná rádi měli hodnoty vlastností a pořadí oblíbenosti propojeny do jednoho datového souboru. O tom je tato kapitola. Abychom situaci trochu zkomplikovali, v každém datasetu jsme několik plemen vymazali. Takže z většiny se oba datasety překrývají, ale každý také obsahuje některá plemena, která ten druhý neobsahuje.
+
+V takové situaci můžeme spojovat dva datasety více způsoby, které jsou naznačeny na následujícím obrázku.
 
 ![\*\_join() funkce](images/df-joins.png)
 
-Funkcí pro spojení dvou dataframů nabízí Tidyverse více. První z nich, `left_join()`, připojí k prvnímu specifikovanému dataframu všechny řádky druhého dataframu se shodnou hodnotou klíče. Řádky, které se nachází pouze v druhém dataframu, ale ne v prvním, jsou ztraceny. Analogickou funkcí je poté `right_join()`, která zachová pouze řádky s hodnotami klíče, nacházejícím se v druhém dataframu. `inner_join()` je nejpřísnější z funkcí a při spojení dataframů zachová pouze řádky s hodnotami nacházejícími se v obou datasetech. Naopak funkce `full_join()` je nejliberálnější a zachová při spojení všechna data.
+Ať už se rozhodneme pro kteroukoliv metodu propojení, vždy potřebujeme zvolit tzv. klíč, tedy jednu nebo více proměnných, podle kterých budeme data spojovat. V našem ilustrativním příakladu to bude plemeno psa.
 
-Pro ukázku spojovacích funkcí opustíme dataset `countries` a místo toho se podíváme do zvířecí říše, konkrétně na data z American Kennel Club. Jedná se o dva dasety, které jsou dostupné v rámci [Tidytuesday](https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-02-01/readme.md). Importovat je lze přímo ze repozitáře projektu:
+Nyní už k jednotlivým metodám spojování: První z nich, `left_join()`, se podívá, které řádky (resp. která psí plemena) v prvním specifikovaném datasetu se vyskytují také ve druhém datasetu. Proměnné pozorované pro tato plemena pak "připojí" k proměnným v prvním datasetu. Pokud jsou nějaké řádky (nějaká plemena) přítomny jen ve druhém (pravém) datasetu, jsou ztraceny. Pokud jsou nějaké jen v prvním z nich, zůstanou zachovány, ale proměnné z druhého datasetu pro ně přirozeně budou mít chybějící hodnoty. Analogickou funkcí je poté `right_join()`, která zachová pouze řádky s hodnotami klíče (s psími plemeny) nacházejícími se v druhém dataframu. Následně `inner_join()` je nejpřísnější z funkcí a při spojení dataframů zachová pouze řádky s hodnotami nacházejícími se v obou datasetech. Naopak funkce `full_join()` je nejliberálnější a zachová při spojení všechna data.
+
+Nyní už slibovaná ukázka na datech ze světa psů, konkrétně datech z American Kennel Club. Původní dva dasety jsme získali z otevřené výzvy v rámci [Tidytuesday](#0). Pro naše účely jsme data mírně upravili, importovat je lze přímo z webových stránek
 
 ```{r dog-data}
 #| eval: false
@@ -44,7 +48,7 @@ První možností je vzít dataframe `breed_traits` a přilepit k němu `breed_r
 ```{r left-join}
 #| eval: false
 
-left_join(breed_traits, breed_ranks, by = "Breed")
+x <- left_join(breed_traits, breed_ranks, by = "Breed")
 ```
 
 ```{r left-join-dt}

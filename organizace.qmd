@@ -1,4 +1,4 @@
-# Jak si organizovat práci
+# Jak si organizovat práci {#sec-organizace}
 
 Pokud byste se zeptali, co dělá datového analytika dobrým analytikem, většina lidí by vám asi odpověděla, že je to dobrá znalost statistických technik. Další by možná řekli, že je to schopnost psát počítačový kód nebo vytvářet poutavé grafy. A všechny tyto věci opravdu jsou extrémně důležité. Neméně důležitou, zato však často opomíjenou schopností, je ale také schopnost efektivně organizovat svoji vlastní práci. Ta se týká všeho, od organizace souborů v počítači, až po pojmenovávání proměnných. Předtím než se vrhneme do R samotného, si tedy řekneme několik organizačních tipů.
 
@@ -16,34 +16,38 @@ Teď, když je vaše práce organizovaná do (Rstudio) projektů, můžeme se za
 
 Všechny vaše soubory by v rámci jednoho projektu měli být roztříděny do srozumitelně pojmenovaných podsložek. Konkrétní struktura projektu závisí na osobních preferencích a povaze práce, nám se obecně osvědčilo následující schéma:
 
-    project/
-    |-data-raw/
-    |-data-cleaned/
-    |-scripts/
-    |-documentation/
-    |-outputs/
-    |-project.Rproj
+```         
+project/
+|-data-raw/
+|-data-cleaned/
+|-scripts/
+|-documentation/
+|-outputs/
+|-project.Rproj
+```
 
 Složka projektu by měla obsahovat alespoň následující podsložky a soubory. V podsložce *data-raw* jsou uchována data se kterými pracujeme, a to v takové podobě, v jaké se k nám dostala. Tato syrová data nikdy nepřepisujeme! Slouží jako poslední záchrana, pokud by bylo nutné provést všechny analýzy znovu od začátku. Naproti tomu, složka *data-cleaned* je pro již zpracovaná data. Nachází se zde vyčištěná data ze složky *data-raw*, připravená k další analýze. Data v té složce můžeme přepisovat, protože v případě potřeby je můžeme vždy znovuvytvořit pomocí našich skriptů. Skripty samotné bydlí ...(dramatická pauza)... ve složce *scripts.* Zde asi není nutní mnoho vysvětlovat. Ve slože *documentation* je uchována dokumentace k projektu. Zpravidla se jedná o PDF verze dotazníků, popis sběru dat, codebooky a podobně. Poslední složkou je *output*, do které ukládáme všechny naše výstupy, ať už se jedná o dílčí grafy nebo celé reporty. V kořenovém adresáři se nachází pouze soubor .Rproj (který Rstudiu říká, že tato složka je Rstudio projekt).
 
 Na konci kurzu Úvodu do R by složka vašeho Rstudio projektu mohla vypadat zhruba nějak takto:
 
-    uvod-do-r/
-    |-data-raw/
-      |-countries.csv
-      |-cvvm-cerven-2019.csv
-    |-data-cleaned/
-      |-countries-clean.csv
-    |-scripts/
-      |-01-import-export.R
-      |-02-data-manipulation.R
-      |-03-data-visualization.R
-      |-04-final-homework.R
-    |-documentation/
-      |-cvvm-codebook.pdf
-    |-outputs/
-      |-vomacka-intro-r-homework.docx
-    |-uvod-do-r.Rproj
+```         
+uvod-do-r/
+|-data-raw/
+  |-countries.csv
+  |-cvvm-cerven-2019.csv
+|-data-cleaned/
+  |-countries-clean.csv
+|-scripts/
+  |-01-import-export.R
+  |-02-data-manipulation.R
+  |-03-data-visualization.R
+  |-04-final-homework.R
+|-documentation/
+  |-cvvm-codebook.pdf
+|-outputs/
+  |-vomacka-intro-r-homework.docx
+|-uvod-do-r.Rproj
+```
 
 Jakmile si najdete svou preferovanou strukturu svých souborů, dodržujte ji napříč všemi projekty. To vám umožní se rychle zorientovat i v projektech, na kterých jste řadu týdnů nebo dokonce měsíců nepracovali.
 
