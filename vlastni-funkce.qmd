@@ -24,7 +24,9 @@ nazev_funkce <- function(argument1, argument2, ...) {
 
 Vytváření funkcí si ukážeme na několika případech.
 
-## Počet chybějících hodnot v proměnné
+## Příklady vlastních funkcí
+
+### Počet chybějících hodnot v proměnné
 
 Jednou z častých operací, kterou v rámci analýzy budeme provádět, je počítat množství chybějících hodnot v proměnné. Poněkud překvapivě, R neobsahuje funkci, která by pro nás chybějící hodnoty spočítala. Musíme proto využít kombinace funkcí `is.na()` a `sum()`. Například pro spočítáná chybějících hodnot u proměnné `gdp`:
 
@@ -71,14 +73,43 @@ Všimněme si, že oproti předchozí verzi, jsme v naší funkci udělali něko
 ```{r count-na-complex-example}
 countries %>% 
   summarise(across(.cols = everything(),
-                   .fns  = count_na, relative = TRUE)) %>% 
+                   .fns  = ~count_na(., relative = TRUE))) %>% 
   pivot_longer(cols = everything(),
                values_to = "missings_count")
 ```
 
-## Graf pro likertovské položky
+### Vlastní ggplot2 tématika
 
-Komplexnějším příkladem vlastní funkce je vytvoření grafu pro baterii likertovských položek. Přestože vytvoření takového grafu je pomocí `ggplot2` možné, jde o poměrně zdlouhavý proces. Jako příklad si můžeme ukázat vizualizaci položek týkajících se postojů veřejnosti o válce na Ukrajině. Data pochází z dotazníkového šetření Centra pro průzkum veřejného mínění z března 2022. Data jsou rozdělena do dvou dataframů. První z nich, `ukraine`, obsahuje odpovědi respondentů a druhý, `ukraine_labels`, obsahuje zjednodušené znění jednotlivých položek.
+O něco komplexnější, ale také velmi častou vlastní funkcí je vlastní tématika pro grafy vytvoření balíčkem ggplot2. V praxi se často dostaneme do situací, kdy je třeba aby všechny naše grafy měli jednotný vzhled. Vypisovat pokaždé ty samé argumenty do funkce `theme()` je ale zdlouhavé a kopírování zbytečně prodluže skript. Vytvoříme si proto vlastní tématiku a formátování grafů se tak stane záležitostí na jeden řádek.
+
+Ideální je využít již existující tématiku jako základ a pouze upravit části, se kterými nejsme spokojení. Stejně jako v předchozím případě vytvoříme novou funkci pomocí `function()`. Jako základ použijeme `theme_light()`, na kterou navážeme funkcí `theme()` s našimi vlastními argumenty:
+
+```{r custom-theme-setup}
+theme_scooby <- function() {
+    theme_light() +
+    theme(plot.background = element_rect(fill = "#fee8c8"),
+          panel.background = element_rect(fill = "#fee8c8"),
+          text = element_text(family = "Calibri", size = 12),
+          title = element_text(size = 16),
+          legend.position = "bottom")
+}
+```
+
+Jakmile je naše tématika vytvořená, můžeme ji přidat ke grafům tak, jak jsme zvyklí:
+
+```{r custom-theme-example}
+ggplot(countries,
+       mapping = aes(x = hdi, y = life_exp)) +
+geom_point() +
+labs(title = "Tohle je naše nová tématika!",
+     x = "Index lidského rozvoje",
+     y = "Naděje na dožití") +
+theme_scooby()
+```
+
+### Graf pro likertovské položky
+
+Nejkomplexnějším příkladem vlastní funkce, který si ukážeme, je vytvoření grafu pro baterii likertovských položek. Přestože vytvoření takového grafu je pomocí `ggplot2` možné, jde o poměrně zdlouhavý proces. Jako příklad si můžeme ukázat vizualizaci položek týkajících se postojů veřejnosti o válce na Ukrajině. Data pochází z dotazníkového šetření Centra pro průzkum veřejného mínění z března 2022. Data jsou rozdělena do dvou dataframů. První z nich, `ukraine`, obsahuje odpovědi respondentů a druhý, `ukraine_labels`, obsahuje zjednodušené znění jednotlivých položek.
 
 ```{r ukraine-import}
 ukraine <- read_rds("data-raw/ukraine.rds")
@@ -200,3 +231,53 @@ ukraine %>%
 ```
 
 Jak je vidět, vytvořením vlastní funkce si můžeme výrazně ulehčit práci, nemluvě o tom, že tím náš kód uděláme čitelnější a robustnější.
+
+## Export vlastních funkcí
+
+Vlastní funkce nám výrazně ulehčují (a urychlují!) práci. Jak si je ale efektivně uložit pro pozdější použití? Možnosti máme v podstatě dvě - uložit si naše funkce do samostatného skript a vytvořit si vlastní balíček.
+
+Uchovávat si naše funkce ve vlastním skriptu je jednoduším rešením. Stačí si vytvořit nový R skript a zkopírujete si do něj definice vašich funkcí. Skript si můžete pojmenovat podle libosti, například `custom-functions.R`. Obsahem toho skriptu by pro pořádek měli být pouze definice funkcí:
+
+```{r custom-fns-script-exmaple}
+#| eval: false
+
+## Vlastní tématika pro ggplot2
+theme_scooby <- function() {
+    theme_light() +
+    theme(plot.background = element_rect(fill = "#fee8c8"),
+          panel.background = element_rect(fill = "#fee8c8"),
+          text = element_text(family = "Calibri", size = 12),
+          title = element_text(size = 16),
+          legend.position = "bottom")
+}
+
+## Výpočet chybějících hodnot
+count_na <- function(x, relative = FALSE) {
+  na_count <- sum(is.na(x))
+  
+  if(relative){
+    na_count <- na_count / length(x)
+  }
+  
+  return(na_count)
+}
+```
+
+Jakmile máme skript připravený, naše funkce jsou na dosah ruky i poté, co zrestartujeme R. Stačí na začátku analýzu využít funkci `source()`, pomocí které lze spustit Rkovský skript z jiného Rkovského skriptu. Skript pro analýzu dat poté může začínat nějak takhle:
+
+```{r fns-custom-script-source}
+#| eval: false
+
+library(tidyverse) # Nahraje funkce z balíčků tidyverse
+source("custom-functions.R") # Nahraje námi vytvořené funkce ze skriptu custom-functions.R 
+
+countries <- read_csv("data-raw/countries.csv")
+
+
+```
+
+S pomocí `source()` se v jistém smyslu můžeme ke skriptu `custom-functions.R` chovat jako k našemu vlasntímu pseudo-balíčku!
+
+Výše popsaný postup je jednoduchý a v mnoha případech dostatečný, zvlášť pokud tušíme, že naše funkce nebudeme používat ve více, než jednom projektu. I přesto se ale někdy vyplatí vytvořit plnohodnotný balíček. To nejen ulehčí příštup k našim funkcím našim kolegům, ale umožní nám také připravit pro ně (a pro nás) nápovědu k funkcím nebo příklady použití. U plnohodnotných balíčků je také jednoduší provádět automatické kontroly funkčnosti, abychom měli jistotu, že funguje jak má.
+
+Vytváření vlastního balíčku je bohužel nad rámec této učebnice, nemusíte ale zoufat. Excelentí učebnící je [R packages](https://r-pkgs.org), která vás provede všemi kroky vytváření balíčků. A možná zjistíte, že vytváření balíčků je mnohem jednoduší, než se na první pohled může zdát!
