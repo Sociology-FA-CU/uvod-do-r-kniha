@@ -18,12 +18,12 @@ c("Fred", "Daphne", "Velma", "Shaggy", "Scooby")
 
 Na rozdíl od předchozího příkladu, tento vektor obsahuje pět elementů. Všimněte si, že elementy jsou spojeny do jednoho vektoru pomocí funkce `c()` (zkratka pro *combine*). R zná čtyři typy atomových vektorů:
 
-| Typ       | Popis                                                                                                                                         | Příklady               |
-|---------------|-------------------------------------------|---------------|
-| character | Písmena a další znaky. Poznáte je podle toho, že elementy jsou "obaleny" úvozkovami (`"` nebo `'`).                                           | `"Fred"`, `"?"`, `"1"` |
-| integer   | Celá čísla. Spolu s typem *double* tvoří skupinu numerických (*numeric*) vektorů.                                                             | `-1`, `316`, `17`      |
-| double    | Desetinná čísla. Zkratka pro *double precision floating point format*. Spolu s typem *integer* tvoří skupinu numerických (*numeric*) vektorů. | `1.32`, `0.1`, `-9.0`  |
-| logical   | Binární vektor, který může nabývat pouze dvou hodnota: pravda (*TRUE*) a nepravda (*FALSE*).                                                  | `TRUE`, `FALSE`        |
+| Typ | Popis | Příklady |
+|----------------|----------------------------------------|----------------|
+| character | Písmena a další znaky. Poznáte je podle toho, že elementy jsou "obaleny" úvozkovami (`"` nebo `'`). | `"Fred"`, `"?"`, `"1"` |
+| integer | Celá čísla. Spolu s typem *double* tvoří skupinu numerických (*numeric*) vektorů. | `-1`, `316`, `17` |
+| double | Desetinná čísla. Zkratka pro *double precision floating point format*. Spolu s typem *integer* tvoří skupinu numerických (*numeric*) vektorů. | `1.32`, `0.1`, `-9.0` |
+| logical | Binární vektor, který může nabývat pouze dvou hodnota: pravda (*TRUE*) a nepravda (*FALSE*). | `TRUE`, `FALSE` |
 
 : Typy atomových vektorů
 
