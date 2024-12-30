@@ -39,7 +39,7 @@ V záložce Appearance je možné nastavit velikost a font písma a celkový vzh
 ::: callout-tip
 ## Víc schémat, víc!
 
-Rstudio nabízí malý výběr barevných schémat (*themes*). Pokud vám není žádné z nich po chuti, je možné si vytvořit vlastní nebo si stáhnout schéma vytvořené jinými uživateli. K tomu je ideální stránka <https://tmtheme-editor.herokuapp.com>. Zde si můžete prohlédnout galerii schémat (gruvbox je naše oblíbené!) nebo si vytvořit vlastní. Jakmile najdete schéma, se kterým jste spokojení, stáhněte si ho a naimportujte ho v záložce Appearence.
+Rstudio nabízí malý výběr barevných schémat (*themes*). Pokud vám není žádné z nich po chuti, je možné si vytvořit vlastní nebo si stáhnout schéma vytvořené jinými uživateli. K tomu je ideální balíček [rsthemes](https://www.garrickadenbuie.com/project/rsthemes/), případně [tato kolekce](https://github.com/max-alletsee/rstudio-themes?tab=readme-ov-file). Zde si můžete prohlédnout galerii celé řady schémat (gruvbox je naše oblíbené!).
 :::
 
 Poslední záložkou, do které mnoho uživatelů zavítá jako do jedné z prvních, je Pane Layout. Zde si můžete upravit rozložení Rstudia. Chcete mít konzoli napravo od skriptu? Nepotřebujete některou ze záložek? Zde si můžete nastavit vše k vaší spokojenosti.
