@@ -63,35 +63,27 @@ countries %>%
   group_by(postsoviet) %>% 
   summarise(across(.cols = c(material_dep, poverty_risk, uni_prc),
                    .fns = mean, na.rm = TRUE)) %>% 
-  pivot_longer(cols = -postsoviet) %>% 
-  pivot_wider(names_from = postsoviet, values_from = value) %>%
-  mutate(diff = yes-no) %>% 
-  rename(western = no,
-         postsoviet = yes) %>% 
-  ggplot(aes(y = name)) +
-  geom_segment(aes(x = western, xend= postsoviet, yend = name), size = 4) +
-  geom_point(aes(x = western, color = "Western"), size = 12) +
-  geom_point(aes(x = postsoviet, color = "Postsoviet"), size = 12) +
+  pivot_longer(cols = -postsoviet) |> 
+  ggplot(aes(x = value, y = name)) +
+  geom_line() +
+  geom_point(aes(color = postsoviet), size = 3) +
+  theme(legend.position = "bottom")
   labs(x = element_blank(),
        y = element_blank()) +
   theme(legend.position = "bottom")
 ```
 
-Začněme přípravou dat. Pro každou ze skupin proměnné `postsoviet` spočítáme průměr proměnných `material_dep`, `poverty_risk` a `uni_prc`. Data převedeme do dlouhého formátu a poté zpět do širšího. Spočítáme rozdil mezi oběma skupinami pro každou z proměnných a nakonec dáme sloupcům lepší názvy:
+Začněme přípravou dat. Pro každou ze skupin proměnné `postsoviet` spočítáme průměr proměnných `material_dep`, `poverty_risk` a `uni_prc`. Data poté převedeme do dlouhého formátu:
 
 ```{r barbell-chart-prep}
 countries %>% 
   group_by(postsoviet) %>% 
   summarise(across(.cols = c(material_dep, poverty_risk, uni_prc),
                    .fns = mean, na.rm = TRUE)) %>% 
-  pivot_longer(cols = -postsoviet) %>% 
-  pivot_wider(names_from = postsoviet, values_from = value) %>%
-  mutate(diff = yes-no) %>% 
-  rename(western = no,
-         postsoviet = yes)
+  pivot_longer(cols = -postsoviet)
 ```
 
-Druhým krokem je vytvořením grafu obsahujícím úsečku spojujícím obě skupiny. Pro vytvoření úsečky využijeme funkce `geom_segment()`, které vyžaduje čtyři argumenty: `x`, `xend`, `y` a `yend`.
+Druhým krokem je vytvořením grafu. Nejdříve využijeme funkce `geom_line()` pro vytvoření úsečky spojující obě skupiny zemí. Poté přidámé další vrstu grafu, tentokrát za pomoci funkce `geom_point()`. Tou vytvoříme body reprezentující oba typy zemí. Všimněme si, že `geom_point()` má svůj vlastní argument `mapping`. To proto, že chceme barevně rozlišit pouze body, ne úsečky, které je spojují. Díky tomu, že každý geom je možné napojit na jiný zdroj dat, máme velkou kontrolu nad  finálním vzhledem grafu.
 
 ```{r barbell-chart-segment}
 #| warning: false
@@ -101,16 +93,13 @@ countries %>%
   group_by(postsoviet) %>% 
   summarise(across(.cols = c(material_dep, poverty_risk, uni_prc),
                    .fns = mean, na.rm = TRUE)) %>% 
-  pivot_longer(cols = -postsoviet) %>% 
-  pivot_wider(names_from = postsoviet, values_from = value) %>%
-  mutate(diff = yes-no) %>% 
-  rename(western = no,
-         postsoviet = yes) %>% 
-  ggplot(aes(y = name)) +
-  geom_segment(aes(x = western, xend= postsoviet, yend = name), size = 4)
+  pivot_longer(cols = -postsoviet) |> 
+  ggplot(mapping = aes(x = value, y = name)) +
+  geom_line() +
+  geom_point(mapping = aes(color = postsoviet), size = 3)
 ```
 
-V posledním kroce přidáme body na každou stranu úsečky. Protože průměr každé skupiny je samostatné proměnná, budeme muset použít dvě vrstvy geomů. Dále také budeme muset ručně definovat dimenzi barvy, pro správné vytvoření legendy. Nakonec jen upravíme popisky:
+V posledním kroce už jen stačí upravit a lehce doladit vzhled grafu. Hned je patrné, že postsovětské země vedou nad západními v počtu lidí ohrožených chudobou i materiální deprivací a naopak zaostávájí v počtu vysokoškoláků.
 
 ```{r barball-chart-complete}
 #| echo: false
@@ -121,15 +110,10 @@ countries %>%
   group_by(postsoviet) %>% 
   summarise(across(.cols = c(material_dep, poverty_risk, uni_prc),
                    .fns = mean, na.rm = TRUE)) %>% 
-  pivot_longer(cols = -postsoviet) %>% 
-  pivot_wider(names_from = postsoviet, values_from = value) %>%
-  mutate(diff = yes-no) %>% 
-  rename(western = no,
-         postsoviet = yes) %>% 
-  ggplot(aes(y = name)) +
-  geom_segment(aes(x = western, xend= postsoviet, yend = name), size = 4) +
-  geom_point(aes(x = western, color = "Western"), size = 12) +
-  geom_point(aes(x = postsoviet, color = "Postsoviet"), size = 12) +
+  pivot_longer(cols = -postsoviet) |> 
+  ggplot(mapping = aes(x = value, y = name)) +
+  geom_line() +
+  geom_point(mapping = aes(color = postsoviet), size = 3) +
   labs(x = element_blank(),
        y = element_blank()) +
   theme(legend.position = "bottom")
