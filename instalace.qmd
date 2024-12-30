@@ -24,13 +24,13 @@ R je možné stáhnout z oficiálních stránek projektu <https://www.r-project.
 Možná víte, že existují dva typy procesorů, 32bitové a 64bitové. Setkat se dnes s 32bitovým procesorem je dnes poměrně vzácné, pokud ale takový počítač máte je nutné si dát pozor, jakou verzi R instalujete. Poslední verze R, která podporuje 32bitové procesory je 4.1., což *není* ta nejnovější. Pokud naopak máte 64bitový procesor, můžete si s klidem nainstalovat aktuální verzi R. Pokud si nejste jistí, můžete si procesor svého počítače [zkontrolovat v nastavení](https://support.microsoft.com/en-us/windows/32-bit-and-64-bit-windows-frequently-asked-questions-c6ca9541-8dce-4d48-0415-94a3faa2e13d). Obdobné omezení se týka i Rstudia, které podporuje 32bitové procesory pouze do verze 1.2.
 :::
 
-Ti z vás, kteří preferují instalaci softwaru přes manager, mohou využít [Chocolatey](https://community.chocolatey.org), Po [instalaci manageru](https://chocolatey.org/install) samotného stačí do terminálu zadat
+Ti z vás, kteří preferují instalaci softwaru přes manager, mohou využít [Chocolatey](https://community.chocolatey.org). Chocolatey je manažer pro instalaci softwaru. Jedná se v podstatě o Microsoft Store přes příkazový řádek (ovšem nespravovaný společností Microsoft). Pokud vám nevadí pracovat v terminálu, manažery jako Chocolatey zpříjemňují instalaci a aktualizace vašich programů. Po [instalaci manageru](#0) samotného stačí do terminálu zadat
 
 ```         
 choco install r
 ```
 
-Upozorňujeme ale, že z naší zkušenost se správcům Cholocatey balíčku ne vždy daří držet krok s aktuální oficiální verzí .
+Pokud nemáte administrativní práva na svém počítači, je možné misto Chocolatey využít [Scoop](https://scoop.sh/#/), který plní stejnou funkci.
 
 ### MacOS
 
