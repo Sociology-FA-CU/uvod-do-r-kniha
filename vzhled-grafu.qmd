@@ -44,6 +44,29 @@ ggplot(dem_countries,
   geom_col(fill = "#008080")
 ```
 
+::: callout-tip
+## Aktualizace výchozího vzhledu geomů
+
+Pokud by se nám výše použitá barva líbila a chtěli jsme ji použít u všech, není nutné doplňovat `fill = "#008080"` u každého grafu. Můžeme si ušetřit čas využít funkce `update_geom_defaults()`.
+
+Jak již název napovídá, tato funkce upravuje výchozí vzhled geomů. Pro zelené sloupce ve všech grafech stačí na začátek našeho kódu přidat
+
+```{r update-geoms-example}
+#| eval: false
+
+update_geom_defaults(geom = "col", new = list(fill = "#008080"))
+```
+
+Obdobně je možné upravovat nastavení všech geomů:
+
+```{r update-geoms-example2}
+#| eval: false
+
+update_geom_defaults(geom = "point", new = list(fill = "#008080", size = 12))
+update_geom_defaults(geom = "text", new = list(color = "grey", size = 12))
+```
+:::
+
 Komplexnějším úkonem je aplikace palety barev. Základní nabídku palet, kterou přínáší balíček `RColorBrewer`, je možné zobrazit pomocí funkce `display.brewer.all()` (nesmíme ale zapomentou nejdříve balíček aktivovat!):
 
 ```{r}
@@ -328,3 +351,27 @@ ggplot(countries,
   theme(legend.position = "bottom")
 ```
 :::
+
+## Fonty
+
+Jedním z nejvíce problematických aspektů grafů vytvořených v R byli historicky fonty. Není tomu tak dávno, co bylo velmi obtížné přesvědčit R, aby rozeznalo fonty nainstalované na našem počítači a správně je vykreslilo do grafu. Naštěstí se situace v posledních letech výrazně zlepšíla.
+
+Pro správné fungování fontů budeme potřebovat dva balíčky, `systemfonts` a `ragg`. První z balíčků Rku ukáže, kde jsou na našem počítači nainstalované fonty, ten druhý se postará o jejich správné zobrazení. Začneme tím, že oba balíčky nainstalujeme:
+
+```{r fonts-install}
+#| eval: false
+
+install.packages(c("systemfonts", "ragg"))
+```
+
+Jakmile jsou oba balíčky nainstalované, restartujeme Rko. Poté můžeme použít funkci `system_fonts()` k zobrazení seznamu všech fontů, které máme na našem počítači k dispozici. Primární je sloupeček `family`, obsahující název fontu. Ten můžeme využít k nastavení fontu v našich grafech. Například:
+
+```{r fonts-example}
+#| eval: false
+
+theme(text = element_text(family = "Calibri"))
+```
+
+Pokud se písmo pořád nezobrazuje, je problém pravděpodobně v softwaru, který náš počítač používá k nakreslení grafu. I to má ale jednoduché řešení. Zde do hry vstupuje druhý z nainstalovaných balíčků, `ragg`, který nám umožňí vykreslit grafy pomocí grafického nástroje AGG. Nejjednoduším způsobem, jak ho použít, je nastavit AGG jako výchozí grafický nástroj v Rstudiu. Stačí na horní liště otevřít záložku Tools a poté Global Options -\> General -\> Graphics. Zde nastavte *Backend* na *AGG*. A je to! Restartujte Rstudio a graf je i s naším fontem na světě.
+
+![](images/ragg-example.png)
