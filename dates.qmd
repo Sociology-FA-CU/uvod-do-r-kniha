@@ -1,0 +1,38 @@
+# Práce s časovými daty
+
+V této kapitole nás čeká práce s časovými daty, jednou z nejzákeřnějších věcí, se kterou se při analýze dat můžeme setkat. Naštěstí pro nás ale Tidyverse obsauje balíček `lubridate`, který nám naše snažení usnadní.
+
+```{r import}
+#| echo: false
+#| message: false
+
+library(tidyverse)
+countries <- read_csv("data-raw/countries.csv")
+```
+
+## Epochy aneb jak počítače měří čas
+
+Než se podíváme na funkce, které Rko pro práci s časovými daty poskytuje, vyplatí se zamyslet nad tím, jak se vlastně čas měří. Primární zákeřností času je, že je relativní - je vždy měřen relativně vůči určitému bodu. Například, v okamžiku psaní tohoto textu je 21. 7. 2025 16:46. Co to znamená? Že v tomto okamžiku uběhlo 2025 let, 7 měsíců, 21 dní, 16 hodin a 46 minut od začátku Gregoriánského kalendáře, tedy od 1. ledna roku 0. Tomuto bodu se v technické terminologii říká *počátek epochy*. Ne všechny kultury ovšem odvozují své chápání času od křesťanského (Gregoriánského) kalendáře - podle Islámského kalendáře se v době vzniku tohoto textu píše rok 1447, podle Hebrejského potom 5785.
+
+Počítače měří čas obdobně jako lidé, tedy od začátku epochy. Odlišují se ovšem dvěma věcmi:
+
+1.  Počítače měří čas mnohem precizněji. Základní jednotkou měření času nejsou roky, dny ani minuty, ale vteřiny.
+
+2.  Počítače mají své vlastní epochy. Podobně jako lidé, ani stroje se jednomyslně neshodnou na tom, od kdy jakého okamžiku by se měl čas měřit, zdaleka nejpoužívanější je ale takzvaná Unix epocha, která začíná o půlnoci 1. ledna 1970.
+
+Zatímco mi bychom tedy řekli, že dnes je 21.7. 2025, pro Rko je 1 753 107 850 vteřin od 1. 1. 1970. V tuto chvíli možná některé z nás napadne otázka, proč je důležité o epochách vědět. Důvody jsou dva. Tím prvním je, že jakmile si uvědomíme, že čas je jen počet vteřin od od určitého okamžiku, můžeme s časovými daty pracovat jako s jakkýmikoliv numerickými proměnnými. Časové okamžiky je od sebe možné odčítat, přičítat, dělit a podobně. Druhým z důvodů je, abychom dokázali čelit problémům, které při převodu mezi epochami mohou nastat. Již jsme zmínili, že Rko (a většina počítačových programů) počítá čas od 1. ledna 1970. Ne všechny populární programy ale dodržují tuto konvenci. Nejvíce rozšířenou vyjímkou je Microsoft Excel, který za počátek epochy považuje 1. leden 1900. Ve většině případů se modernímu softwaru daří převádět mezi epochami automaticky. Pokud byste ovšem v budoucnu naimportovali data z Excelu do Rka a zjistili, že všechna časová data jsou o circa 70 posunutá, tak už budete vědět, v čem je podstata problému.
+
+## Vytváření časových proměnných
+
+Rko a balíček `lubridate` poskytují několik funkcí pro vytváření časových proměnných. Situaci komplikuje fakt, že lidé z různých částí světa mají tendenci zapisovat čas různými způsoby. Standardní, mezinárodní formát je takzvaný ISO8601. V Rámci tohoto formátu se čas zapisuje od nějvětší jednotky (roku) po nejmenší (den), přičemž jednotky jsou odděleny pomlčkou. Například `2025-07-21`. Pokud proměnná zaznamená i menší jednotky (hodiny, minuty, vteřiny, ...), jsou od data odděleny mezerou od sebe dvojtečkou, např. `2025-07-21 16:46`. Pokud jsou vaše data formátovány takto, Rko nebude mít problém je zpracovat. Ne vždy ale budeme mít takové štěstí. V severní Americe je například zvykem zapisovat časová data ve formátu měsíc-den-rok. Občas také místo čísel používají názvy měsíců nebo jejich zkratky ("January" nebo "Jan").
+
+`lubridate` naštěstí obsahuje hned několik funkcí, které nám import atypických formátů usnaďnují. Pro jejich aplikaci stačí specifikovat pořadí roku (`y`), měsíce (`m`) a dne (`d`), případě hodiny (`h`), minuty (`m`) a vteřiny (`s`). Například:
+
+```{r}
+ymd("2025-07-21")
+mdy("July 21st, 2025")
+dmy("21-Jul-2025")
+
+ymd_hms("2025-07-21 16:46:59")
+mdy_hm("07/21/2025 16:46")
+```
