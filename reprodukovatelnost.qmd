@@ -1,0 +1,116 @@
+# Reprodukovatelnost práce
+
+V začátcích analytické práce je pro většinu z nás typické pracovat na malých, jednorázových projektech. Postupem času se ale budeme čím dál tím častěji dostávat k projektům s rostoucím mírou komplexity. Komplexita v kontextu analýzy dat má přitom mnoho podob. Může se jednat o kom∫plexitou časovou - některé projekty trvají roky. Dalším typem komplexity je komplexita organizační - na mnoha projektech pracuje více osob najednou. A nezřídka se setkáme setkáme i s komplexitou obsahou - komplexní analýzy vyžadují velké množství na sebe navazujících kroků.
+
+S rostoucí komplexitou rostou i nároky na organizovanost naší práce. Nevystačíme si již s tím že "nějak dojdeme k výsledku". Ke kýženému výsledku je třeba dojít cestou, která je reprodukovatelná pro ostatní. To nám může ze začátku připadat jako zbytečná práce navíc, ale vězte, že se úsilí nám naše vrátí - reprodukovatelnost analýz nepomáhá jen našim kolegům, ale i našim budoucím já.
+
+Protože reprodukovatelnost analýz je velkým tématem, které by si zasloužilo učebnici samo o sobě, představíme si zde pouze úplně základní principy.
+
+## Struktura projektu
+
+Základem organizované práce je dobrá struktura projektu. Každý pracovní projekt by měl být na vašem počítači uložen právě v jedné složce. Složky projektů by měli mít konzistentní struktru, například:
+
+```         
+project_folder:
+    |-01_data_raw
+    |-02_data_processed
+    |-03_data_out
+    |-04_scripts
+    |-05_documentation
+    |-06_figures
+    |-08_models
+    |-09_writing
+```
+
+První tři podsložky projektu slouží k uchovávání dat. Do podsložky `01_data_raw` vkládáme originální datové soubory. Soubory v této složce nikdy přepisujeme, slouží k reprodukci analýzy od začátku do konce! Modifikované datasety ukládáme do podsložky `02_data_processed`, do které patří vyčištěná data i spojené datové sady. Pokud některé datasety plánujeme sdílet s třetí stranou, ukládáme je do podsložky `03_data_out` - tato data jsou vyčištěná, popsaná a připravená ke zveřejnění.
+
+Do `04_scripts` patří všechny skripty, které během naší práce vyprodukujeme. Skripty by měli být očíslované v pořadí, v jakém na sebe navazují a měli by mít srozumitelné názvy - `01_data_cleaning.R`, `02_descriptives.R`, `03_plots.R`, a podobně. Pokud k datům nebo projektu existuje dokumentace (codebooky, informace o sběru dat, plán projektu), patří do podsložky `05_documentation`. Do `06_figures` přijdou všechny grafy a další vizuální výstupy, tedy vše co má koncovky `.png`, `.jpeg` nebo `.svg`.
+
+V rámci některých projektů si nevystačíme pouze s deskriptivními statistikami a grafy, ale budeme využívat sofistikovanějších statistických modelů. Počítat tyto modely pořád dokola pokaždé, když dojde drobné změně v jiných částech skriptu, bývá nepraktické a proto je uložíme do vlastního souboru v podsložce `08_models`. Poslední podsložkou je `09_writing`, kam budou směřovat všechny textové reporty projektu - reporty, tabulky, články a podobně.
+
+## pak
+
+Primární funkcí pro instalaci balíčků je nám již známá `install.packages()`, pomocí které můžeme jednoduše stahovat balíčky z centrálního repozitáře CRAN. Tato funkce má ale několik omezení. Neumožňuje stahovat z jiných repozitářů (Bioconductor, GitHub), nekontroluje zda již balíčky nejsou stažené, a neposkytuje jednoduchý způsob pro stažení specifické verze balíčků. Hlavní výhodou `install.packages()` je, že je součástí základní instalace Rka a pro její použítí není nutné instalovat nic dalšího. Pokud ale pro nás instalace dalších nástrojů není překážkou, oceníme moderního nástupce jménem [{pak}](https://pak.r-lib.org/).
+
+Jedná se o balíček pro instalaci dalších balíčků. Na rozdíl od již zmíněné základní funkce umožňuje stahovat ze všech populárních repozitářů a stahovat více balíčků najednou. Také kontroluje, zda je opravdu nutné balíčky stahovat - pokud již máme aktuální verzi nebo je aktuální verze dostupná na našem počítači, jednoduše použije tu. Lépe také řeší konflikty při instalaci více balíčků a třešničkou na dortu je detailnejší popis, jaké balíčky instalujeme včetně jejich závislosti. Použití {pak} je jednoduché stačí nainstalovat a využít funkce `pak()`:
+
+```{r}
+#| eval: false
+install.packages("pak")
+pak::pak("tidyverse")
+```
+
+## renv
+
+Konzistentní struktura složek nám pomůže lépe se vyznat v projektech, ke kterým se vracíme po delší době nebo které přebíráme po někom dalším. Tím ale úskalí s reprodukovatelností nekončí. Proud času je neúprosný a kód, který fungoval včera, nemusí nutně fungovat zítra. Příčinou je neúnavná práce vývojařů Rkovských balíčků. S vývojem balíčků může docházet k řadě změn v obsahu - některé funkce mohou změnit své fungování, jiné mohou zmizet úplně a být nahrazeny novými. Pro dlouhodobou životnost projektů je proto nezbytné zaznamenat a zafixovat konkrétní verze balíčků, které používáme.
+
+Nejčastějším nástrojem pro zafixování Rkovských balíčků je balíček [`{renv}`](https://rstudio.github.io/renv/articles/renv.html) (zkratka pro *R virtual environment*). Balíček {renv} umožňuje instalovat balíčky na úrovni jednotlivých projektů - ve jednum projektu tak můžete například používat {ggplot2} verze 3.5, zatímco ve druhém 4.0. Tyto lokální knihovny jsou velmi důležité pro projekty s delší životností. Je extrémně nepříjemné opravovat již napsaný kód pokaždé, když si někdo z týmu aktualizuje své balíčky v R!
+
+Aplikace {renv} je vcelku přímočará. Po jeho instalaci ho spustíme funkcí `activate()`:
+
+```{r}
+#| eval: false
+install.packages("renv")
+renv::activate()
+```
+
+Od této chvíle budou všechny balíčky instalované pouze v rámci našeho projektu/složky. Pozor, to také znamená, že musíte znovu nainstalovat balíčky, které už máte instalované "celosystémově"! (Ano, znamená to, že například {tidyverse} budete instalovat pro každý projekt zvlášť). Tímto zajistíme, že každý projekt spolehá na své vlastní balíčky. Instalovat balíčky můžeme pomocí `install.packages()`, jak jsme zvyklí.
+
+Balíčky nejsou zafixovány automaticky. Až si nainstalujeme balíčky potřebné pro náš projekt, zafixujeme jejich verzi pomocí:
+
+```{r}
+#| eval: false
+renv::snapshot()
+```
+
+Po zavolání této funkce {renv} projde všechny skripty v našem projektu a zafixuje verze balíčků všech funkcí, které jsme použili. Pokud bychom se k projektu vraceli v budoucnu znovu nebo bychom předávali projekt někomu dalšímu, můžeme nainstalovat všechny zafixované balíčky pomocí:
+
+```{r}
+#| eval: false
+renv::restore()
+```
+
+Takto zajistíme, že i po letech budeme moct jednoduše nainstalovat balíčky, které byli aktuální při vzniku naší analýzy. V případě, že si používání {renv} rozmyslíme, že je možné ho pro daný projekt vypnout pomocí:
+
+```{r}
+#| eval: false
+renv::deactivate()
+```
+
+::: callout-tip
+## {renv} a {pak} pospolu
+
+Pokud jste si oblíbili jak {renv}, tak dříve zmíněný {pak}, nic vám nebrání je využívat dohromady. Ideální postup je následující: V kořenovém adresáři vašeho projektu najdete (skrytý) soubor `.Renviron`, který Rko spustí pokaždé, když projekt otevřete. Otevřete ho jako jakkýkoliv jiný textový dokument/skript. Pokud jste aktivovali {renv}, soubor bude již obsahovat řádek `source("renv/activate.R")`. Nad(!) tento řádek vložte `renv.config.pak.enabled = TRUE`. A je to! Pokud v rámci toho projektu použijete funkci `install.packages()`, bude místo toho použita `pak()`. Fixování verzí balíčků funguje stejně jako předtím. Více informací viz.: <https://pak.r-lib.org/reference/faq.html#how-can-i-use-pak-with-renv->.
+:::
+
+## git a GitHub
+
+Nástroje jako `renv` nám umožňují zafixovat používané balíčky a s trochou snahy jsme schopní si udržet pořádek i ve struktuře složek. Ale co se skripty? Jak sledovat, co se ve skriptech změnilo a kdo za změny může? A co když si skript rozbijeme a přestane fungovat, jak se rychle vrátíme k poslední funknční verzi? Přesně k řešení těchto a dalších problémů slouží nástroj jménem git.
+
+git není nástroj specifický pro Rko. Jde o jeden z nejpoužívanějších nástrojů v programování. Svým účelem se trochu podobá nístrojům jako OneDrive nebo Google Drive - sleduje a ukládá změny ve sledovaných souborech. Zatímco tyto nástroje ale sledují změny na úrovni souborů, git sleduje změny na úrovni řádků. Je tedy možné vždy dohledat, kdy a kým byl každý řádek skriptu přidán, upraven nebo smazán. K jednotlivým verzím skriptu je možné se kdykoliv vrátit, takže se nemusíme bát, že bychom naši analýzu nenávratně zničili. git také hlídá, zda se jeden skript nesnaží změnit více než jedna osoba najednou a na případné konflikty upozorní. git samotný ukladá změny lokálně, na náš osobní počítač. Pro sdílení a zálohování se využívají vzdálené repozitáře se využívají vzdálené repozitáře, z nichž nejznámější je [Github](https://github.com). Na Githubu najdete velkou řadu Rkovských balíčků, včetně samotného Tidyverse: <https://github.com/tidyverse/tidyverse>.
+
+V profesionálním prostředí jsou git a Github standardem a jejich používání nám ušetří řadu času a starostí. Naneštěstí, začít s jejich používáním je daleko méně přímočaré, než u předchozích zmíněných nástrojů. Naštěstí, Jenny Bryan a Jim Hester napsali skvělou učebnici [Happy Git and GitHub for the useR](https://happygitwithr.com), která vás provede všemi záludnostmi od instalace až po základí používání. My osobně doporučujeme nainstalovat si [GitHub Desktop](https://github.com/apps/desktop), aplikaci která používání git a Githubu výrazně ulehčuje.
+
+## rig
+
+Poslední části procesu, kterou je třeba zafixovat, je R samotné. Podobně jako se může v čase měnit fungování jednotlivých balíčků, se může z verze na verzi měnit i fungování Rka. Velké změny v jádru Rka jsou méně časté, ale objevují se pravidelně a je nezbytné, abychom na ně byli připraveni. A to i proto, že každý balíček spolehá na verzi verze minimálního stáří. Například balíček {ggplot2} verze 3.5. vyžaduje verzi Rka 4.1. nebo novější.
+
+Způsobů, jak kontrolovat, kterou verzi Rka používáme, je více. Pravděpodobně nejpřímočařejším je [rigg](https://github.com/r-lib/rig). Nejedná se o klasický Rkovský balíček, ale podobně jako git jde o nástroj nad rámec Rka samotného. rigg lze nainstalovat buď jako klasickou aplikaci (tedy stáhnout .exe soubor pro Windows nebo .dmg soubor pro MacOS z <https://github.com/r-lib/rig/releases>), případně přes terminálové manažery jako Scoop, Homebrew nebo apt. Po instalaci se rig používá v terminálu. Například nejnovější verzi Rka nainstalujeme pomocí:
+
+```         
+rig add release
+```
+
+Seznam dalších verzí Rka dostupných k instalaci zobrazíme pomocí:
+
+```         
+rig available
+```
+
+Tímto způsobem můžeme mít vždy k dispozici nejnovější verzi Rka a zároveň mít možnost se v případě potřeby vrátit k jakkékoliv předchozí. rig má také pár dalších funkcí usnadňujících život, např. `rig system add-pak` pro instalaci balíčků pomocí {pak}.
+
+## Plán postupu a další nástroje
+
+Výš zmíněné nástroje představují základ pro zodpovědnou a reprodukovatelnou práci v R. Pokud se vám ale ze jejich seznamu točí hlava, nemusíte zoufat. Není nutné začít používat všechny najednou. Začněte postupně, bod po bodu. Nejdříve si navykněte na pravidelnou strukturu složek. Po pár týdnech přidejte {pak}. Po měsíci nebo dvou {renv}. Za pár měsíců bude bude reprodukovatelnou analýzu dat ovládat levou zadní!
+
+Jak to tak bývá, vždy je možné jít pokračovat dál. Kromě již zmíněných, existují i další nástroje vhodné pro specifické situace. Zmiňme například [Docker](https://www.docker.com), pomocí kterého můžeme zajistit reprodukovatelnost celého operačního systému. Pomocí Dockeru můžeme na náš počítač nainstalovat menší "virtuální" počítač, což oceníme v situacích, kdy naše analýza spoléhá kromě Rka na další nástroje a programovací jazyky. Nebo [{targets}](https://books.ropensci.org/targets/), Rkovský balíček, který sleduje v jakém pořadí se mají spouštět naše skripty a automaticky tak udělá pokaždé, když v řetězci. dojde ke změně.
