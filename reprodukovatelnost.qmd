@@ -1,14 +1,14 @@
 # Reprodukovatelnost práce
 
-V začátcích analytické práce je pro většinu z nás typické pracovat na malých, jednorázových projektech. Postupem času se ale budeme čím dál tím častěji dostávat k projektům s rostoucím mírou komplexity. Komplexita v kontextu analýzy dat má přitom mnoho podob. Může se jednat o kom∫plexitou časovou - některé projekty trvají roky. Dalším typem komplexity je komplexita organizační - na mnoha projektech pracuje více osob najednou. A nezřídka se setkáme setkáme i s komplexitou obsahou - komplexní analýzy vyžadují velké množství na sebe navazujících kroků.
+V začátcích analytické práce je pro většinu z nás typické pracovat na malých, jednorázových projektech. Postupem času se ale budeme čím dál tím častěji dostávat k projektům s rostoucí mírou komplexity. Komplexita v kontextu analýzy dat má přitom mnoho podob. Může se jednat o komplexitu časovou - některé projekty trvají roky. Dalším typem komplexity je komplexita organizační - na mnoha projektech pracuje více osob najednou. A nezřídka se setkáme i s komplexitou obsahovou - komplexní analýzy vyžadují velké množství na sebe navazujících kroků.
 
-S rostoucí komplexitou rostou i nároky na organizovanost naší práce. Nevystačíme si již s tím že "nějak dojdeme k výsledku". Ke kýženému výsledku je třeba dojít cestou, která je reprodukovatelná pro ostatní. To nám může ze začátku připadat jako zbytečná práce navíc, ale vězte, že se úsilí nám naše vrátí - reprodukovatelnost analýz nepomáhá jen našim kolegům, ale i našim budoucím já.
+S rostoucí komplexitou rostou i nároky na organizovanost naší práce. Nevystačíme si již s tím, že "nějak dojdeme k výsledku". Ke kýženému výsledku je třeba dojít cestou, která je reprodukovatelná pro ostatní. To nám může ze začátku připadat jako zbytečná práce navíc, ale vězte, že se nám naše úsilí vrátí - reprodukovatelnost analýz nepomáhá jen našim kolegům, ale i našemu budoucímu já.
 
 Protože reprodukovatelnost analýz je velkým tématem, které by si zasloužilo učebnici samo o sobě, představíme si zde pouze úplně základní principy.
 
 ## Struktura projektu
 
-Základem organizované práce je dobrá struktura projektu. Každý pracovní projekt by měl být na vašem počítači uložen právě v jedné složce. Složky projektů by měli mít konzistentní struktru, například:
+Základem organizované práce je dobrá struktura projektu. Každý pracovní projekt by měl být na vašem počítači uložen právě v jedné složce. Složky projektů by měly mít konzistentní strukturu, například:
 
 ```         
 project_folder:
