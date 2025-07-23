@@ -43,6 +43,7 @@ book:
         - mnoho-promennych.qmd
         - faktory.qmd
         - stringy.qmd
+        - dates.qmd
     - part: "Vizualizace dat"
       chapters: 
         - obsah-grafu.qmd
@@ -57,6 +58,7 @@ book:
       chapters: 
         - vlastni-funkce.qmd
         - for-loops.qmd
+        - reprodukovatelnost.qmd
     - co-dal.qmd
 license: "CC BY-NC"
 citation: true
