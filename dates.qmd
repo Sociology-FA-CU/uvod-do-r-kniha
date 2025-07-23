@@ -36,3 +36,69 @@ dmy("21-Jul-2025")
 ymd_hms("2025-07-21 16:46:59")
 mdy_hm("07/21/2025 16:46")
 ```
+
+Kromě vytváření časových dat z textových řetězců můžeme také jednoduše zjistit současný čas pomocí funkcí `today()` a `now()`:
+
+```{r}
+today() #současné datum
+now() #současné datum včetně hodiny, minuty a vteřiny
+```
+
+## Formátování časových proměnných
+
+V závislosti na situaci budeme potřebovat zobrazovat časová data různými způsoby. K tomu nám poslouží obecná funkce `format()`. Například klasické české formátování získáme pomocí:
+
+```{r}
+current_date <- as_date("2025-07-21")
+format(current_date, "%d. %m. %Y")
+```
+
+Funkce `format()` využívá speciálních znaků, začínajících `%`. Například čtyřmístné označení roku je `%Y`, zatímco dvoumístné označení pomocí `%y`. Ostatní znaky (například tečky a čářky) jsou zobrazovány klasickým způsobem. Přehled nejpoužívanějších speciálních znaků uvádíme v následující tabulce.
+
+| Typ   | Znak | Význam                      | Příklad  |
+|-------|------|-----------------------------|----------|
+| Rok   | `%Y` | 4-místný rok                | 2021     |
+| Rok   | `%y` | 2-místný rok                | 21       |
+| Měsíc | `%m` | měsíc jako čislice          | 2        |
+| Měsíc | `%b` | Zkrácený měsíc (v jazyce R) | Feb      |
+| Měsíc | `%B` | Plný název měsíce           | February |
+| Den   | `%d` | Den jako číslice (bez nul)  | 2        |
+| Den   | `%e` | Den jako číslice (s nulami) | 02       |
+| Čas   | `%H` | Hodina (24 hodin)           | 13       |
+| Čas   | `%I` | Hodina (12 hodin)           | 1        |
+| Čas   | `%p` | AM/PM                       | pm       |
+| Čas   | `%M` | Minuty                      | 35       |
+| Čas   | `%S` | Vteřiny                     | 45       |
+
+Pro představu si můžeme si můžeme ukázat pár příkladů:
+
+```{r}
+format(current_date, "%d. %B %Y")
+format(current_date, "Year %Y (%B)")
+format(current_date, "%e. %m. %y")
+```
+
+## Transformace časových dat
+
+Z existujících časových dat můžeme vyextrahovat jednotlivé komponenty pomocí funkcí `year()`, `month()`, `day()`, `hour()`, `minute()` a `second()` z balíčku `lubridate`. To se hodí zejména v situacích, kdy máme velmi podrobná časová data, z nichž pro nás je ale relevatní například jen rok.
+
+```{r}
+current_date <- as_date("2025-07-21")
+year(current_date)
+day(current_date)
+```
+
+Alternativně můžeme datum zaokrouhlit na nejbližší jednotky, například na nejbližší rok:
+
+```{r}
+round_date(current_date, "year")
+```
+
+Častou aktivitou při práci s časovými daty je výpočet časových intervalů. Vraťme se k našemu datasetu `countries`, který obsahuje informace a roku založení každého státu. Nás by ale spíše zajímalo, kolik času již od založení uběhlo, tedy jak starý každý stát je. Naštěstí pro nás, s časovými daty se dá pracovat stejně, jako s numerickými a stačí nám tedy odečíst současné datum (funkce `today()`) od proměnné `foundation_date`. Výsledkem je počet dní od založení. Protože ale počítat stáří národních států na dny není moc praktické, převedeme výsledek na roky pomocí funkce `time_length()`:
+
+```{r}
+countries %>%
+    select(foundation_date) %>%
+    mutate(country_age = today() - foundation_date,
+           country_age_years = time_length(country_age, "years"))
+```
