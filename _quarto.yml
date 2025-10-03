@@ -71,8 +71,8 @@ format:
   html:
     mainfont: "Roboto"
     theme:
-      light: flatly
-      dark: darkly
+      light: [flatly, custom.css]
+      dark: [darkly, custom.css]
   pdf:
     documentclass: scrreprt
   epub:
